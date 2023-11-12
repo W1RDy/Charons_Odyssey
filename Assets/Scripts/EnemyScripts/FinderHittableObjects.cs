@@ -5,8 +5,7 @@ public static class FinderHittableObjects
 {
     public static List<IHittable> FindHittableObjectByRay(float _distance, Vector3 _weaponPosition)
     {
-        var _camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        var _target = (_camera.ScreenToWorldPoint(Input.mousePosition) - _weaponPosition).normalized;
+        var _target = (CustomCamera.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition) - _weaponPosition).normalized;
         var _hit = Physics2D.Raycast(_weaponPosition, _target, _distance, 1 << 6);
         if (_hit.collider != null) return new List<IHittable>() { _hit.collider.GetComponent<IHittable>() };
         return null;
