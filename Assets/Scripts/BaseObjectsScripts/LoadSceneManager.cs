@@ -38,6 +38,12 @@ public class LoadSceneManager : MonoBehaviour
         StartCoroutine(AsyncLoading(_sceneIndex));
     }
 
+    public void ReloadScene()
+    {
+        var _buildIndex = SceneManager.GetActiveScene().buildIndex;
+        LoadScene(_buildIndex);
+    }
+
     public void LoadNextLevel()
     {
         var _buildIndex = SceneManager.GetActiveScene().buildIndex;

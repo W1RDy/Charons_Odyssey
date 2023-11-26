@@ -5,6 +5,13 @@ public class Paddle : ColdWeapon
 {
     public float RecliningForce => (_weaponData as PaddleData).RecliningForce;
 
+    public override void Attack()
+    {
+        if (!_isCooldown)
+            Debug.Log("Paddle");
+        base.Attack();
+    }
+
     protected override void ApplyDamage(List<IHittable> _hittables)
     {
         foreach (var _hittable in _hittables)
@@ -18,6 +25,6 @@ public class Paddle : ColdWeapon
 
     private void ReclineObjs(IReclinable _reclinable)
     {
-        _reclinable.GetRecline(_weaponPoint, RecliningForce);
+        _reclinable.GetRecline(weaponPoint, RecliningForce);
     }
 }

@@ -12,7 +12,7 @@ public class TaskInfo
 
 public enum TaskType
 {
-    HoldOuForTime,
-    GetSomething,
-    BringSomething
+    HoldOutForTime,
+    GetItem,
+    BringItem
 }

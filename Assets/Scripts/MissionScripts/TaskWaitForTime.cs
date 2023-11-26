@@ -9,7 +9,6 @@ public class TaskWaitForTime : BaseTask
     public override void ActivateTask()
     {
         base.ActivateTask();
-        var timer = new Timer();
-        StartCoroutine(timer.TimeCounterCoroutine(_timeForWaiting, () => FinishTask()));
+        StartCoroutine(Delayer.DelayCoroutine(_timeForWaiting, () => FinishTask()));
     }
 }

@@ -3,19 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseTask : MonoBehaviour 
+public abstract class BaseTask : MonoBehaviour
 {
     public int index;
+    public Goals goals;
     public TaskInfo taskInfo;
-    public Mission mission;
+    public event Action TaskIsFinished;
 
     public virtual void ActivateTask()
     {
-        Debug.Log(taskInfo.targetText);
+        goals.SetGoals(taskInfo.targetText);
     }
 
     public virtual void FinishTask()
     {
-        mission.ActivateNextTask();
+        TaskIsFinished?.Invoke();
     }
 }

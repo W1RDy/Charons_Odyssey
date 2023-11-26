@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public interface IMovable 
@@ -10,4 +11,10 @@ public interface IMovable
 public interface IMovableWithFlips : IMovable
 {
     public void Flip();
+}
+
+public interface IMovableWithStops : IMovable
+{
+    public void StartMove();
+    public void StopMove();
 }

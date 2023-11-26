@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour, IHasHealth 
+public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable
 {
-    [SerializeField] private float _hp;
+    [SerializeField] protected float _hp;
+    public EnemyStates State { get; private set;}
 
     public void TakeHit(float damage)
     {
@@ -15,4 +16,24 @@ public abstract class Enemy : MonoBehaviour, IHasHealth
     {
         gameObject.SetActive(false);
     }
+
+    public virtual void Attack()
+    {
+
+    }
+
+    public void ChangeState(EnemyStates state)
+    {
+        Debug.Log("state: " + state);
+        State = state;
+    }
+}
+
+public enum EnemyStates
+{
+    Idle,
+    Moving,
+    Reclined,
+    WaitingCooldown,
+    Attacking
 }

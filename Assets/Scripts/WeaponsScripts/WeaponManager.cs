@@ -16,9 +16,18 @@ public class WeaponManager : MonoBehaviour
             Instance = this;
             InitializeWeaponsDictionary();
         }
-        else Destroy(gameObject);
 
         DontDestroyOnLoad(Instance);
+    }
+
+    private void Start()
+    {
+        if (Instance != this) Destroy(gameObject);
+
+        foreach (var weapon in Instance._weaponsDict.Values)
+        {
+            weapon.weaponPoint = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().weaponPoint;
+        }
     }
 
     private void InitializeWeaponsDictionary()

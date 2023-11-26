@@ -19,4 +19,6 @@ public class CustomCamera : MonoBehaviour
         var width = height * Camera.main.aspect;
         return new Vector2(width, height);
     }
+
+    public Vector2 GetCameraPos() => MainCamera.transform.position;
 }

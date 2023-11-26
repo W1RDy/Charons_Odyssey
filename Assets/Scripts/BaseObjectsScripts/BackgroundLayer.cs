@@ -14,7 +14,7 @@ public class BackgroundLayer : IMovable
     public float randomOffsetValue;
     private Transform _layer;
     private BackgroundLayerPart _leftPart;
-    private float cameraWidthInUints;
+    private float _cameraWidthInUints;
 
     public void InitLayer(Transform layer)
     {
@@ -31,7 +31,7 @@ public class BackgroundLayer : IMovable
             layerParts[i].partTransform.position = new Vector2(layerParts[i].partTransform.position.x + offset, layerParts[i].partTransform.position.y);
         }
         _leftPart = layerParts[0];
-        cameraWidthInUints = CustomCamera.Instance.GetCameraSizeInUints().x;
+        _cameraWidthInUints = CustomCamera.Instance.GetCameraSizeInUints().x;
     }
 
     public void Move()
@@ -47,10 +47,10 @@ public class BackgroundLayer : IMovable
 
     private void UpdateLayerParts()
     {
-        if (_leftPart.partTransform.position.x < -cameraWidthInUints * 2)
+        if (_leftPart.partTransform.position.x < CustomCamera.Instance.GetCameraPos().x - _cameraWidthInUints * 2f)
         {
             var offset = GetRandomOffset();
-            _leftPart.partTransform.position = new Vector2(_leftPart.NextPart.partTransform.position.x + (float)Math.Round(cameraWidthInUints, 2) + offset, _leftPart.partTransform.position.y);
+            _leftPart.partTransform.position = new Vector2(_leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerSize.x + offset, _leftPart.partTransform.position.y);
             _leftPart = _leftPart.PreviousPart;
         }
     }
@@ -68,9 +68,15 @@ public class BackgroundLayerPart
     public Transform partTransform;
     public BackgroundLayerPart NextPart { get; private set; }
     public BackgroundLayerPart PreviousPart { get; private set; }
+    public Vector2 LayerSize { get; private set; }
 
     public void SetParts(BackgroundLayerPart _nextPart, BackgroundLayerPart _previousPart)
     {
+        foreach (var sprite in partTransform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (LayerSize == null || sprite.sprite.bounds.size.x > LayerSize.x) 
+                LayerSize = sprite.sprite.bounds.size;
+        }
         NextPart = _nextPart;
         PreviousPart = _previousPart;
     }

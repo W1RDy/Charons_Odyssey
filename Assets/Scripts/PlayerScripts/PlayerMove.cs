@@ -9,10 +9,12 @@ public class PlayerMove : MonoBehaviour, IMovableWithFlips
     private bool _isMove;
     private Vector3 _direction;
     private float _speed;
+    private Player _player;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _player = GetComponent<Player>();
     }
 
     private void FixedUpdate()
@@ -25,6 +27,7 @@ public class PlayerMove : MonoBehaviour, IMovableWithFlips
     {
         if (direction != Vector3.zero) _isMove = true;
         else _isMove = false;
+        _player.SetMoveAnimation(_isMove);
 
         if ((direction.x > 0 && transform.localScale.x < 0) || (direction.x < 0 && transform.localScale.x > 0))
             Flip();

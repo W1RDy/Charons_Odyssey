@@ -2,19 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
-public class Timer 
+public class TimeCounter
 {
     private float _time;
     private bool _isActivated;
 
-    public void StartTimer()
+    public void StartCounter()
     {
         _time = Time.realtimeSinceStartup;
         _isActivated = true;
     }
 
-    public float StopTimer()
+    public float StopCounter()
     {
         var totalTime = GetTime();
         _isActivated = false;
@@ -26,11 +27,5 @@ public class Timer
     {
         if (_isActivated) return Time.realtimeSinceStartup - _time;
         return 0;
-    }
-
-    public IEnumerator TimeCounterCoroutine (float _duration, Action _action)
-    {
-        yield return new WaitForSeconds(_duration);
-        _action();
     }
 }

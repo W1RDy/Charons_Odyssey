@@ -7,14 +7,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 _currentMoveValue;
     private PlayerMove _playerMove;
     private Player _player;
-    private Timer _timer;
+    private TimeCounter _timer;
     private bool _isCollideWithLadder;
 
     private void Start()
     {
         _playerMove = GetComponent<PlayerMove>();
         _player = GetComponent<Player>();
-        _timer = new Timer();
+        _timer = new TimeCounter();
     }
 
     private void Update()
@@ -39,10 +39,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0)) _player.Attack(WeaponType.Pistol);
         else if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.Mouse1))
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1)) _timer.StartTimer();
+            if (Input.GetKeyDown(KeyCode.Mouse1)) _timer.StartCounter();
             else
             {
-                if (_timer.StopTimer() > 0.3f) _player.Attack(WeaponType.Paddle);
+                if (_timer.StopCounter() > 0.3f) _player.Attack(WeaponType.Paddle);
                 else _player.Attack(WeaponType.Fist);
             }
         }

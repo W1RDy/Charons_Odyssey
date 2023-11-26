@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Weapon : MonoBehaviour
 {
     [SerializeField] protected WeaponData _weaponData;
-    [SerializeField] protected Transform _weaponPoint;
+    public Transform weaponPoint;
     public float Cooldown => _weaponData.Cooldown;
     public float Damage => _weaponData.Damage;
     public WeaponType GetWeaponType() => _weaponData.Type;
@@ -15,7 +15,7 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Attack()
     {
-        StartCoroutine(WaitCooldown());
+        WaitCooldown();
     }
 
     protected virtual void ApplyDamage(List<IHittable> _hittables)
@@ -27,11 +27,10 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitCooldown()
+    private void WaitCooldown()
     {
         _isCooldown = true;
-        yield return new WaitForSeconds(Cooldown);
-        _isCooldown = false;
+        StartCoroutine(Delayer.DelayCoroutine(Cooldown, () => _isCooldown = false));
     }
 }
 
@@ -44,7 +43,8 @@ public abstract class Guns : Weapon
         if (!_isCooldown)
         {
             base.Attack();
-            var _hittables = FinderHittableObjects.FindHittableObjectByRay(Distance, _weaponPoint.position);
+            Debug.Log("Gun");
+            var _hittables = FinderHittableObjects.FindHittableObjectByRay(Distance, weaponPoint.position, AttackableObjectIndex.Player);
             if (_hittables != null) ApplyDamage(_hittables);
         }
     }
@@ -57,7 +57,7 @@ public abstract class ColdWeapon : Weapon
         if (!_isCooldown)
         {
             base.Attack();
-            var _hittables = FinderHittableObjects.FindHittableObjectByCircle(Distance, _weaponPoint.position);
+            var _hittables = FinderHittableObjects.FindHittableObjectByCircle(Distance, weaponPoint.position, AttackableObjectIndex.Player);
             if (_hittables != null) ApplyDamage(_hittables);
         }
     }
