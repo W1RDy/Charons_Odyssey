@@ -12,8 +12,9 @@ public class EnemyDefault : Enemy, IReclinable
     private IMovableWithStops _movable;
     private Rigidbody2D _rb;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _rb = GetComponent<Rigidbody2D>();
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _movable = GetComponent<IMovableWithStops>();
@@ -40,15 +41,20 @@ public class EnemyDefault : Enemy, IReclinable
         if (State == EnemyStates.Idle)
         {
             ChangeState(EnemyStates.Attacking);
-            var player = FinderHittableObjects.FindHittableObjectByCircle(_hitDistance, transform.position, AttackableObjectIndex.Enemy)[0];
-            if (player != null) player.TakeHit(_damage);
+            StartCoroutine(Delayer.DelayCoroutine(1f, () =>
+            {
+                var player = FinderHittableObjects.FindHittableObjectByCircle(_hitDistance, transform.position, AttackableObjectIndex.Enemy);
+                if (player != null) player[0].TakeHit(_damage);
+            }
+            ));
+
             WaitCooldown();
         }
     }
 
     private void WaitCooldown()
     {
-        ChangeState(EnemyStates.WaitingCooldown);
+        StartCoroutine(Delayer.DelayCoroutine(1.1f, () => ChangeState(EnemyStates.WaitingCooldown)));
         StartCoroutine(Delayer.DelayCoroutine(_cooldown, () => ChangeState(EnemyStates.Idle)));
     }
 
