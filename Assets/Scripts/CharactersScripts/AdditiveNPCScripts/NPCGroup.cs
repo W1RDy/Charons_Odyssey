@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCGroup : MonoBehaviour, ITalkableGroup
+public class NPCGroup : MonoBehaviour, ITalkableGroup, IAvailable
 {
     [SerializeField] private NPC[] _NPCs;
     [SerializeField] private Trigger _trigger;
     [SerializeField] private float _talkDelay;
     [SerializeField] private string _branchIndex;
+    [SerializeField] private bool _isAvailable = true;
     private ITalkable _currentTalkable;
 
     private void Awake()
@@ -28,9 +29,12 @@ public class NPCGroup : MonoBehaviour, ITalkableGroup
 
     public void Talk()
     {
-        _currentTalkable = _NPCs[0]; // исправить обязательно
-        DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
-        _trigger.TriggerWorked -= Talk;
+        if (_isAvailable)
+        {
+            _currentTalkable = _NPCs[0]; // исправить обязательно
+            DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
+            _trigger.TriggerWorked -= Talk;
+        }
     }
 
     private ITalkable FindTalkable(string _index)
@@ -40,5 +44,10 @@ public class NPCGroup : MonoBehaviour, ITalkableGroup
             if (NPC.GetTalkableIndex() == _index) return NPC;
         }
         throw new ArgumentNullException("NPC with index " + _index + " isn't found!");
+    }
+
+    public void ChangeAvailable(bool isAvailable)
+    {
+        _isAvailable = isAvailable;
     }
 }

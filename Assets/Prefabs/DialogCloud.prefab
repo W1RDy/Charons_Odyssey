@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2305561924813780371}
   - component: {fileID: 4462291311515871643}
   - component: {fileID: 6641968837959280908}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DialogCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 5329652325233763382}
   - component: {fileID: 5156698483788328622}
   - component: {fileID: 7467352522010951768}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}

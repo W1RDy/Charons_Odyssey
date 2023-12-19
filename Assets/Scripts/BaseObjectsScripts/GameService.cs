@@ -14,7 +14,7 @@ public class GameService : MonoBehaviour
     public void LoseGame()
     {
         _windowActivator.ActivateWindow(WindowType.LoseWindow);
-        StartCoroutine(Delayer.DelayCoroutine(2f, () => LoadSceneManager.Instance.ReloadScene()));
+        LoadSceneManager.Instance.ReloadScene(2 * 1000);
     }
 
     public void WinGame()

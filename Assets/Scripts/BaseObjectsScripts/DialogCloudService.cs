@@ -34,6 +34,6 @@ public class DialogCloudService : MonoBehaviour
 
     public void RemoveDialogCloud()
     {
-        Destroy(_currentDialogCloud.gameObject);
+        if (_currentDialogCloud) Destroy(_currentDialogCloud.gameObject);
     }
 }

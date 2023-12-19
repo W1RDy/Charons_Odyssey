@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class Timer : MonoBehaviour
 {
@@ -21,11 +22,14 @@ public class Timer : MonoBehaviour
         _indicator.text = _time.ToString();
     }
 
-    private IEnumerator TimerCoroutine()
+    private async void TimerLife()
     {
         while (true)
         {
-            yield return new WaitForSeconds(1);
+            var token = this.GetCancellationTokenOnDestroy();
+            await Delayer.Delay(1, token);
+            if (token.IsCancellationRequested) StopTimer();
+
             if (!_isWorked) break;
             _time += 1;
             SetTimer();
@@ -40,6 +44,6 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         _isWorked = true;
-        StartCoroutine(TimerCoroutine());
+        TimerLife();
     }
 }

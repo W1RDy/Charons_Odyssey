@@ -8,7 +8,7 @@ public class Trigger : MonoBehaviour
 {
     public event Action TriggerWorked;
     public event Action TriggerTurnedOff;
-    public bool playerInTrigger = false;
+    [HideInInspector] public bool playerInTrigger = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

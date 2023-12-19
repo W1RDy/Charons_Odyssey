@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public abstract class NPC : MonoBehaviour, ITalkable
+public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 {
     [SerializeField] private string _talkableIndex;
     [SerializeField] private Trigger _trigger;
     [SerializeField] private float _talkDelay;
     [SerializeField] private string _branchIndex;
+    [SerializeField] protected bool _isAvailable = true;
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
@@ -24,12 +25,20 @@ public abstract class NPC : MonoBehaviour, ITalkable
 
     public void Talk()
     {
-        DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
-        _trigger.TriggerWorked -= Talk;
+        if (_isAvailable)
+        {
+            DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
+            _trigger.TriggerWorked -= Talk;
+        }
     }
 
     public string GetTalkableIndex()
     {
         return _talkableIndex;
+    }
+
+    public void ChangeAvailable(bool isAvailable)
+    {
+        _isAvailable = isAvailable;
     }
 }

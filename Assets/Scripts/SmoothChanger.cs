@@ -1,22 +1,23 @@
+using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
-public static class SmoothChanger<SmoothableType, Type> where SmoothableType : ISmoothable<Type>
+public static class SmoothChanger
 {
-    public static IEnumerator SmoothChange(SmoothableType startValue, Type secondValue, float duration, Action<Type> callback)
+    public async static UniTask SmoothChange(float startValue, float endValue, float duration, Action<float> callback, CancellationToken token)
     {
         float current = 0;
-        Type firstValue = startValue.GetValue();
+        float firstValue = startValue;
 
         while (current < duration)
         {
-            var value = startValue.ChangeValue(firstValue, secondValue, current / duration);
+            if (token.IsCancellationRequested) return;
+            var value = Mathf.Lerp(firstValue, endValue, current/duration);
             callback(value);
             current += Time.unscaledDeltaTime;
-            yield return null;
+            await UniTask.Yield();
         }
-        callback(secondValue);
+        callback(endValue);
     }
 }

@@ -31,5 +31,6 @@ public class WindowConfig
 
 public enum WindowType
 {
-    LoseWindow
+    LoseWindow,
+    TradeWindow
 }

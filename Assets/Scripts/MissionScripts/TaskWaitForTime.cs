@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,20 @@ public class TaskWaitForTime : BaseTask
 
     public override void ActivateTask()
     {
-        base.ActivateTask();
-        StartCoroutine(Delayer.DelayCoroutine(_timeForWaiting, () => FinishTask()));
+        if (gameObject.activeInHierarchy)
+        {
+            base.ActivateTask();
+            WaitWhileTimerFinished();
+        }
+    }
+
+    private async void WaitWhileTimerFinished()
+    {
+        var token = this.GetCancellationTokenOnDestroy();
+        await Delayer.Delay(_timeForWaiting, token);
+        if (token.IsCancellationRequested) return;
+
+        FinishTask();
+        Debug.Log("Done");
     }
 }

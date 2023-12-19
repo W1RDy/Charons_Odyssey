@@ -8,7 +8,6 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
     private Enemy _enemy;
     private float _speed;
     private bool _isMove;
-    private EnemyStates _previousState;
     private Rigidbody2D _rb;
 
     private void Awake()
@@ -17,9 +16,14 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
         _rb = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        _target = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
     private void FixedUpdate()
     {
-        if (_isMove) Move();
+        if (_isMove && _target) Move();
     }
 
     public void Move()
@@ -42,21 +46,20 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
 
     public void StartMove()
     {
-        if (_enemy.State == EnemyStates.Idle || _enemy.State == EnemyStates.WaitingCooldown)
+        if (StatesManager.Instance.IsCanMakeTransition(tag, _enemy.State, State.Move))
         {
             _isMove = true;
-            _previousState = _enemy.State;
-            _enemy.ChangeState(EnemyStates.Moving);
+            _enemy.EnableState(State.Move);
         }
     }
 
     public void StopMove()
     {
-        if (_enemy.State == EnemyStates.Moving)
+        if (_enemy.State == State.Move)
         {
             _isMove = false;
             _rb.velocity = Vector2.zero;
-            _enemy.ChangeState(_previousState);
+            _enemy.DisableState(State.Move);
         }
     }
 }

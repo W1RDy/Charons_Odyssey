@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public static class FinderHittableObjects
+public static class FinderObjects
 {
     public static List<IHittable> FindHittableObjectByRay(float _distance, Vector3 _weaponPosition, AttackableObjectIndex attackableIndex)
     {
@@ -25,6 +25,23 @@ public static class FinderHittableObjects
                 if (hittable != null) _result.Add(hittable);
             }
             if (_result.Count > 0) return _result;
+        }
+        return null;
+    }
+
+    public static IInteractable FindInteractableObjectByCircle(float _radius, Vector2 _circlePosition)
+    {
+        Collider2D[] _colliders = Physics2D.OverlapCircleAll(_circlePosition, _radius, 1 << 0);
+        List<IInteractable> _result = new List<IInteractable>();
+        if (_colliders != null)
+        {
+            foreach (var _collider in _colliders)
+            {
+                var interactable = _collider.GetComponent<IInteractable>();
+                if (interactable == null) interactable = _collider.GetComponentInParent<IInteractable>();
+                if (interactable != null) _result.Add(interactable);
+            }
+            if (_result.Count > 0) return _result[0];
         }
         return null;
     }

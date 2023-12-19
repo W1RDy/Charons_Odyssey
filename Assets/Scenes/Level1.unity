@@ -189,6 +189,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &96465497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 96465498}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &96465498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96465497}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 153574753}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &110868067
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +268,11 @@ MonoBehaviour:
     - message: Hello, Grew!
       isNeedChangeTalkable: 1
       talkableIndex: Tom
+  - index: Trader
+    messageConfigs:
+    - message: I have the best stuff!!
+      isNeedChangeTalkable: 0
+      talkableIndex: Trader
   _dialogCloudService: {fileID: 923567215}
 --- !u!4 &110868069
 Transform:
@@ -298,6 +333,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1647822929}
+  - {fileID: 96465498}
   - {fileID: 1534413305}
   - {fileID: 1805725664}
   m_Father: {fileID: 0}
@@ -725,6 +761,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5017158065469366654, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6618530281766480270, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -989,7 +1029,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: -1625723463
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!224 &791579407
 RectTransform:
@@ -1010,6 +1050,84 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &794343766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 794343768}
+  - component: {fileID: 794343767}
+  m_Layer: 0
+  m_Name: StatesService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &794343767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794343766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f721758950bae834c92f9edb172574da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objStatesConfigs:
+  - objTag: Player
+    stateConfigs:
+    - priorityIndex: 0
+      state: 0
+      connectedStates: 
+    - priorityIndex: 1
+      state: 3
+      connectedStates: 
+    - priorityIndex: 2
+      state: 4
+      connectedStates: 
+    - priorityIndex: 3
+      state: 5
+      connectedStates: 
+    - priorityIndex: 4
+      state: 6
+      connectedStates: 
+  - objTag: Enemy
+    stateConfigs:
+    - priorityIndex: 0
+      state: 0
+      connectedStates: 
+    - priorityIndex: 1
+      state: 2
+      connectedStates: 0000000003000000
+    - priorityIndex: 2
+      state: 3
+      connectedStates: 0000000002000000
+    - priorityIndex: 3
+      state: 5
+      connectedStates: 0200000001000000
+    - priorityIndex: 4
+      state: 1
+      connectedStates: 
+--- !u!4 &794343768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794343766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.80836594, y: -0.603916, z: -0.83272874}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &843681790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,6 +1535,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5017158065469366654, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017158065469366654, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017158065469366654, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6618530281766480270, guid: 69aa86397650b1d4ab0edaddccc9a4b2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1573,7 +1703,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 3083004623509713153}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1614,6 +1744,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: 3e62178999b943541ada4c99f49ec624, type: 2}
   weaponPoint: {fileID: 0}
+  shootPoint: {fileID: 96465498}
+  player: {fileID: 0}
 --- !u!4 &1534413305
 Transform:
   m_ObjectHideFlags: 0
@@ -1626,7 +1758,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 153574753}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1643376207 stripped
 Transform:
@@ -1878,7 +2010,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 153574753}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1932077151 stripped
 Transform:
@@ -2037,6 +2169,8 @@ MonoBehaviour:
   _windows:
   - type: 0
     windowPrefab: {fileID: 2002202288}
+  - type: 1
+    windowPrefab: {fileID: 2313524752092892271}
 --- !u!4 &2119813109
 Transform:
   m_ObjectHideFlags: 0
@@ -2405,6 +2539,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 7451432203271759989, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
+      propertyPath: _windowActivator
+      value: 
+      objectReference: {fileID: 1137998389}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
 --- !u!114 &2313524752092892270 stripped
@@ -2418,6 +2556,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d393d1eee8ef4134198c2801c55347ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2313524752092892271 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1741062123548320418, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
+  m_PrefabInstance: {fileID: 2313524752092892269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3083004623509713153
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2640,6 +2783,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8414354557276729468, guid: 29bdecfad3ff47847a87cfea7c8b3ed8, type: 3}
+      propertyPath: _isAvailable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 496053650554708113, guid: 29bdecfad3ff47847a87cfea7c8b3ed8, type: 3}
       propertyPath: m_Name
       value: Enemy

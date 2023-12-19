@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Ladder
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Enemy
   - Player
   - Background
-  - 
+  - ClosedBuilding
   - 
   - 
   - 
@@ -49,8 +50,14 @@ TagManager:
   - name: Enemy
     uniqueID: 2425880439
     locked: 0
+  - name: MiddlePlane
+    uniqueID: 115194095
+    locked: 0
   - name: Player
     uniqueID: 847314451
+    locked: 0
+  - name: FirstPlane
+    uniqueID: 148342453
     locked: 0
   - name: UI
     uniqueID: 2669243833

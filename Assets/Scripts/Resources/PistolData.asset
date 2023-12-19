@@ -15,5 +15,5 @@ MonoBehaviour:
   _damage: 4
   _cooldown: 3
   _type: 1
-  _distance: 5
+  _distance: 7
   _patronsCount: 5

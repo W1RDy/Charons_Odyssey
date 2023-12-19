@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ public class DialogManager : MonoBehaviour
         else Destroy(gameObject);
 
         DontDestroyOnLoad(Instance);
-        _dialogCloudService = GameObject.Find("DialogCloudService").GetComponent<DialogCloudService>();
+        Instance._dialogCloudService = GameObject.Find("DialogCloudService").GetComponent<DialogCloudService>();
     }
 
     private void InitializeMessagesDictionary()
@@ -37,14 +38,16 @@ public class DialogManager : MonoBehaviour
     {
         dialogIsFinished = false;
         ActivateDialog(_branchIndex, _talkable);
-        StartCoroutine(DialogCoroutine(_delay, _talkable));
+        DialogLife(_talkable, _delay);
     }
 
-    private IEnumerator DialogCoroutine(float _delay, ITalkable _talkable)
+    private async void DialogLife(ITalkable _talkable, float _delay)
     {
         while (!dialogIsFinished)
         {
-            yield return new WaitForSeconds(_delay);
+            var token = this.GetCancellationTokenOnDestroy();
+            await Delayer.Delay(_delay, token);
+            if (token.IsCancellationRequested) break;
             ActivateNextMessage(_talkable);
         }
     }

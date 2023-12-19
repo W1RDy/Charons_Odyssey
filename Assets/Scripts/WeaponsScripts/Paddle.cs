@@ -8,7 +8,10 @@ public class Paddle : ColdWeapon
     public override void Attack()
     {
         if (!_isCooldown)
+        {
             Debug.Log("Paddle");
+            player.SetAttackAnimation(WeaponType.Paddle);
+        }
         base.Attack();
     }
 
@@ -25,6 +28,6 @@ public class Paddle : ColdWeapon
 
     private void ReclineObjs(IReclinable _reclinable)
     {
-        _reclinable.GetRecline(weaponPoint, RecliningForce);
+        _reclinable.GetRecline(player.weaponPoint, RecliningForce);
     }
 }

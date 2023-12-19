@@ -1,13 +1,13 @@
-using System;
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public static class Delayer
 {
-    public static IEnumerator DelayCoroutine(float _delay, Action _action)
+    public async static UniTask Delay(float delay, CancellationToken token)
     {
-        yield return new WaitForSeconds(_delay);
-        _action();
+        await UniTask.Delay((int)(delay * 1000), cancellationToken: token).SuppressCancellationThrow();
     }
 }

@@ -55,5 +55,6 @@ public class ItemConfig
 
 public enum ItemType
 {
-    MissionItem
+    MissionItem,
+    Key
 }

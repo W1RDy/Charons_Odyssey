@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 2595446200809570439}
   - component: {fileID: 2595446200809570432}
   m_Layer: 0
-  m_Name: paraxod
+  m_Name: ShipView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -532,7 +532,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2595446202111645666}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 2595446202798467784}
   - component: {fileID: 291709567}
   m_Layer: 0
-  m_Name: paraxod2_1
+  m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1041,20 +1041,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 2595446202111645676}
     m_Modifications:
     - target: {fileID: 644532458728592764, guid: a983376973847c34183cb34d18adc1a4, type: 3}
-      propertyPath: m_Size.x
-      value: 0.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 644532458728592764, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_Size.y
       value: 2.45
       objectReference: {fileID: 0}
     - target: {fileID: 644532458728592764, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.5925926
+      value: 0.6666667
       objectReference: {fileID: 0}
     - target: {fileID: 644532458728592764, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.4074075
+      value: 2.4444444
       objectReference: {fileID: 0}
     - target: {fileID: 1030686137914747302, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_Constraints
@@ -1074,7 +1070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6817126187609085752, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_Name
-      value: paraxod2_0 (1)
+      value: Ladder
       objectReference: {fileID: 0}
     - target: {fileID: 6817126187609085753, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_RootOrder
@@ -1148,7 +1144,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6817126187609085752, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_Name
-      value: paraxod2_0
+      value: Ladder
       objectReference: {fileID: 0}
     - target: {fileID: 6817126187609085753, guid: a983376973847c34183cb34d18adc1a4, type: 3}
       propertyPath: m_RootOrder

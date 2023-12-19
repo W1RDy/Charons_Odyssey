@@ -8,6 +8,7 @@ public class WeaponManager : MonoBehaviour
     private Dictionary<WeaponType, Weapon> _weaponsDict;
 
     public static WeaponManager Instance;
+    private Player _player;
 
     private void Awake()
     {
@@ -24,9 +25,10 @@ public class WeaponManager : MonoBehaviour
     {
         if (Instance != this) Destroy(gameObject);
 
+        Instance._player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         foreach (var weapon in Instance._weaponsDict.Values)
         {
-            weapon.weaponPoint = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().weaponPoint;
+            weapon.player = Instance._player;
         }
     }
 
