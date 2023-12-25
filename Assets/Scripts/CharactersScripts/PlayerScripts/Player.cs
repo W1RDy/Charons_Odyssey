@@ -2,12 +2,12 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMove))]
-public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, IHasStates
+public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable // класс перегружен
 {
-    [SerializeField] private State _currentState;
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
     [SerializeField] private HpIndicator _hpIndicator;
@@ -15,42 +15,84 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public Transform weaponPoint;
     private PlayerMove _playerMove;
     private Animator _animator;
-    private List<State> _activatedStates;
     private float _maxHp;
     public Transform weaponView;
     public Transform weaponEnd;
+    private HashSet<Collider2D> _colliders;
+    private bool _onGround;
+    public DialogCloudService dialogCloudService;
+    private CancellationToken _token;
+
+    #region Player's States
+
+    [SerializeField] private PlayerStayState _stayState;
+    [SerializeField] private PlayerMoveState _moveState;
+    [SerializeField] private PlayerClimbState _climbState;
+    [SerializeField] private PlayerHealState _healState;
+    [SerializeField] private PlayerStayWithGunState _stayWithGunState;
+    [SerializeField] private PlayerAttackWithFistState _attackWithFistState;
+    [SerializeField] private PlayerAttackWithPaddleState _attackWithPaddleState;
+    [SerializeField] private PlayerAttackWithPistolState _attackWithPistolState;
+    [SerializeField] private PlayerTalkState _talkState;
+
+    #endregion
+
+    public PlayerStateMachine StateMachine { get; set; }
 
     private void Awake()
     {
         _playerMove = GetComponent<PlayerMove>();
         _playerMove.SetSpeed(_speed);
         _animator = GetComponentInChildren<Animator>();
-        _activatedStates = new List<State>();
         _maxHp = _hp;
+
+        StateMachine = new PlayerStateMachine();
+        
+        _colliders = new HashSet<Collider2D>();
+        _token = this.GetCancellationTokenOnDestroy();
+        InitializeStatesInstances();
+    }
+
+    private void InitializeStatesInstances()
+    {
+        List<PlayerState> _statesInstances = new List<PlayerState>()
+        {
+            Instantiate(_stayState),
+            Instantiate(_moveState),
+            Instantiate(_climbState),
+            Instantiate(_healState),
+            Instantiate(_attackWithFistState),
+            Instantiate(_attackWithPaddleState),
+            Instantiate(_attackWithPistolState),
+            Instantiate(_stayWithGunState),
+            Instantiate(_talkState)
+        };
+
+        StateMachine.InitializeStatesDictionary(_statesInstances);
+    }
+
+    private void Start()
+    {
+        StateMachine.InitializeStates(this);
+        StateMachine.InitializeCurrentState(StateMachine.GetState(PlayerStateType.Idle));
+    }
+
+    private void Update()
+    {
+        StateMachine.CurrentState.Update();
+    }
+
+    public void ChangeState(PlayerStateType stateType)
+    {
+        StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
     }
 
     public void Attack(WeaponType weaponType)
     {
-        if (_currentState != State.Climb)
-        {
-            var weapon = WeaponManager.Instance.GetWeapon(weaponType);
-            weapon.Attack();
-        }
-    }
-
-    public void SetAttackState(Weapon weapon)
-    {
-        EnableState(State.Attack);
-        WaitWhileAnimation(State.Attack, weapon);
-    }
-
-    private async void WaitWhileAnimation(State state, Weapon weapon = null)
-    {
-        var token = this.GetCancellationTokenOnDestroy();
-        await UniTask.Yield();
-        await Delayer.Delay(_animator.GetCurrentAnimatorStateInfo(0).length, token);
-        if (state == State.Attack) weapon.FinishAttack();
-        DisableState(state);
+        if (weaponType == WeaponType.Fist) ChangeState(PlayerStateType.AttackWithFist);
+        else if (weaponType == WeaponType.Pistol) ChangeState(PlayerStateType.AttackWithPistol);
+        else if (weaponType == WeaponType.Paddle) ChangeState(PlayerStateType.AttackWithPaddle);
+        else throw new TypeAccessException(weaponType + "is incorrect WeaponType!");
     }
 
     public void TakeHeal(float healValue)
@@ -58,8 +100,6 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         _hp += healValue;
         if (_hp > _maxHp) _hp = _maxHp;
         _hpIndicator.SetHp(_hp);
-        EnableState(State.Heal);
-        WaitWhileAnimation(State.Heal);
     }
 
     public void TakeHit(float damage)
@@ -75,42 +115,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         _gameService.LoseGame();
     }
 
-    public void SetAttackAnimation(WeaponType weaponType)
-    {
-        _animator.SetInteger("AttackIndex", (int)weaponType + 1);
-    }
-
-    public void EnableState(State _state)
-    {
-        if (!_activatedStates.Contains(_state))
-        {
-            if (_state == State.Idle) _activatedStates.Clear();
-            _activatedStates.Add(_state);
-            _currentState = StatesManager.Instance.ChangeCurrentState(gameObject.tag, _currentState, _activatedStates);
-            //Debug.Log("player current state = " + _currentState);
-            SetAnimation(_state, true);
-            if (_currentState == State.Attack || _currentState == State.Heal) _activatedStates.Remove(State.Move);
-        }
-    }
-
-    public void DisableState(State _state)
-    {
-        if (_activatedStates.Contains(_state))
-        {
-            if (_state == State.Idle) throw new ArgumentException("Can't disable default state, set state instead!");
-            _activatedStates.Remove(_state);
-            _currentState = StatesManager.Instance.ChangeCurrentState(gameObject.tag, _currentState, _activatedStates);
-            //Debug.Log("player current state = " + _currentState);
-            SetAnimation(_state, false);
-        }
-    }
-
-    public State GetState()
-    {
-        return _currentState;
-    }
-
-    public void SetIdleAnimation()
+    private void SetIdleAnimation()
     {
         foreach (var parameter in _animator.parameters)
         {
@@ -121,16 +126,63 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         }
     }
 
-    public void SetAnimation(State state, bool _isActivateState)
+    public void SetAnimation(string animationIndex, bool isActivate)
     {
-        if (state == State.Idle) SetIdleAnimation();
-        else if (state == State.Attack && !_isActivateState) _animator.SetInteger("AttackIndex", 0);
+        if (animationIndex == "Idle" && isActivate) SetIdleAnimation();
         else
         {
-            try { _animator.SetBool(state.ToString(), _isActivateState); }
-            catch { if (_isActivateState) _animator.SetTrigger(state.ToString()); }
+            try { _animator.SetBool(animationIndex, isActivate); }
+            catch { if (isActivate) _animator.SetTrigger(animationIndex); }
         }
     }
 
+    public float GetAnimationDuration()
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).length;
+    }
+
+    public string GetAnimationName()
+    {
+        return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+    }
+
     public void Flip() => _playerMove.Flip();
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Ground" && collision.GetContact(collision.contacts.Length - 1).point.y > collision.collider.bounds.center.y)
+        {
+            _colliders.Add(collision.collider);
+            _onGround = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Ground")
+        {
+            RemoveGround(collision.collider);
+        }
+    }
+
+    public void RemoveGround(Collider2D collider)
+    {
+        _colliders.Remove(collider);
+        if (_colliders.Count == 0) _onGround = false;
+    }
+
+    public bool OnGround() => _onGround;
+
+    public void StartTalk()
+    {
+        ChangeState(PlayerStateType.Talk);
+    }
+
+    public async void Talk(string message)
+    {
+        await UniTask.WaitUntil(() => StateMachine.CurrentState.GetStateType() == PlayerStateType.Talk, cancellationToken: _token);
+        if (!_token.IsCancellationRequested) (StateMachine.CurrentState as PlayerTalkState).Talk(message);
+    }
+
+    public string GetTalkableIndex() => "сharon";
 }

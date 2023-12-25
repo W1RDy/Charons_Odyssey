@@ -15,4 +15,4 @@ MonoBehaviour:
   _damage: 1
   _cooldown: 0
   _type: 0
-  _distance: 1
+  _distance: 0.5

@@ -5,9 +5,10 @@ using UnityEngine;
 public class ButtonService : MonoBehaviour
 {
     [SerializeField] private WindowActivator _windowActivator;
+    [SerializeField] private NPCTrader _trader;
 
-    public void CloseTradeWindow()
+    public void CloseTrade()
     {
-        _windowActivator.DeactivateWindow(WindowType.TradeWindow);
+        _trader.CloseTrade();
     }
 }

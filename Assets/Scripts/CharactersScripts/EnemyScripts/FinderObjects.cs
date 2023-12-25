@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 public static class FinderObjects
 {
-    public static List<IHittable> FindHittableObjectByRay(float _distance, Vector3 _weaponPosition, AttackableObjectIndex attackableIndex)
-    {
-        var hittableObjLayer = attackableIndex == AttackableObjectIndex.Player ? (int)AttackableObjectIndex.Enemy : (int)AttackableObjectIndex.Player;
-        var _target = (CustomCamera.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition) - _weaponPosition).normalized;
-        var _hit = Physics2D.Raycast(_weaponPosition, _target, _distance, 1 << hittableObjLayer);
-        if (_hit.collider != null) return new List<IHittable>() { _hit.collider.GetComponent<IHittable>() };
-        return null;
-    }
+    //public static List<IHittable> FindHittableObjectByRay(float _distance, Vector3 _weaponPosition, AttackableObjectIndex attackableIndex)
+    //{
+    //    var hittableObjLayer = attackableIndex == AttackableObjectIndex.Player ? (int)AttackableObjectIndex.Enemy : (int)AttackableObjectIndex.Player;
+    //    var _target = (CustomCamera.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition) - _weaponPosition).normalized;
+    //    var _hit = Physics2D.Raycast(_weaponPosition, _target, _distance, 1 << hittableObjLayer);
+    //    if (_hit.collider != null) return new List<IHittable>() { _hit.collider.GetComponent<IHittable>() };
+    //    return null;
+    //}
 
     public static List<IHittable> FindHittableObjectByCircle(float _radius, Vector2 _circlePosition, AttackableObjectIndex attackableIndex)
     {
@@ -38,7 +38,6 @@ public static class FinderObjects
             foreach (var _collider in _colliders)
             {
                 var interactable = _collider.GetComponent<IInteractable>();
-                if (interactable == null) interactable = _collider.GetComponentInParent<IInteractable>();
                 if (interactable != null) _result.Add(interactable);
             }
             if (_result.Count > 0) return _result[0];

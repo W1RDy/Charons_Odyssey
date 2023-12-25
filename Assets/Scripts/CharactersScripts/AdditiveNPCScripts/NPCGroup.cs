@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCGroup : MonoBehaviour, ITalkableGroup, IAvailable
+public class NPCGroup : MonoBehaviour, ITalkable, IAvailable
 {
     [SerializeField] private NPC[] _NPCs;
     [SerializeField] private Trigger _trigger;
@@ -14,40 +14,32 @@ public class NPCGroup : MonoBehaviour, ITalkableGroup, IAvailable
 
     private void Awake()
     {
-        _trigger.TriggerWorked += Talk;
+        _trigger.TriggerWorked += StartDialog;
     }
 
-    public void ChangeTalkable(string _talkableIndex)
+    public void Talk(string message)
     {
-        _currentTalkable = FindTalkable(_talkableIndex);
+
     }
 
-    public Vector2 GetTalkableTopPoint()
+    public void StartDialog()
     {
-        return _currentTalkable.GetTalkableTopPoint();
-    }
-
-    public void Talk()
-    {
-        if (_isAvailable)
-        {
-            _currentTalkable = _NPCs[0]; // исправить обязательно
-            DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
-            _trigger.TriggerWorked -= Talk;
-        }
-    }
-
-    private ITalkable FindTalkable(string _index)
-    {
-        foreach (var NPC in _NPCs)
-        {
-            if (NPC.GetTalkableIndex() == _index) return NPC;
-        }
-        throw new ArgumentNullException("NPC with index " + _index + " isn't found!");
+        DialogManager.Instance.ActivateDialog(_branchIndex, _NPCs);
+        _trigger.TriggerWorked -= StartDialog;
     }
 
     public void ChangeAvailable(bool isAvailable)
     {
         _isAvailable = isAvailable;
+    }
+
+    public ITalkable[] GetTalkables()
+    {
+        return _NPCs;
+    }
+
+    public string GetTalkableIndex()
+    {
+        return _NPCs[0].GetTalkableIndex();
     }
 }

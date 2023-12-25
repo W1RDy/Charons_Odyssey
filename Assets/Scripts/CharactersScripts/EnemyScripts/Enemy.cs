@@ -3,20 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IHasStates, IAvailable
+public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 {
     [SerializeField] protected float _hp;
     [SerializeField] protected bool _isAvailable;
-    public State State { get; private set; }
     protected Animator _animator;
     protected SpriteRenderer _spriteRenderer;
-    public List<State> _activatedStates;
+
+    #region Enemy's states
+
+    [SerializeField] private EnemyIdleState _idleState;
+    [SerializeField] private EnemyMoveState _moveState;
+    [SerializeField] private EnemyAttackState _attackState;
+    [SerializeField] private EnemyReclineState _reclineState;
+
+    #endregion
+
+    public EnemyStateMachine StateMachine { get; set; }
 
     protected virtual void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _activatedStates = new List<State>() { State.Idle };
+
+        StateMachine = new EnemyStateMachine();
+        InitializeStatesInstances();
+    }
+
+    private void InitializeStatesInstances()
+    {
+        var _stateInstances = new List<EnemyState>()
+        {
+           Instantiate(_idleState),
+           Instantiate(_moveState),
+           Instantiate(_attackState),
+           Instantiate(_reclineState)
+        };
+
+        StateMachine.InitializeStatesDictionary(_stateInstances);
+    }
+
+    private void Start()
+    {
+        StateMachine.InitializeStates(this);
+        StateMachine.InitializeCurrentState(StateMachine.GetState(EnemyStateType.Idle));
+    }
+
+    protected virtual void Update()
+    {
+        StateMachine.CurrentState.Update();
+    }
+
+    public void ChangeState(EnemyStateType stateType)
+    {
+        StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
     }
 
     public void TakeHit(float damage)
@@ -36,49 +76,22 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IHasStates
 
     }
 
-    public void EnableState(State state)
-    {
-        if (_isAvailable || (!_isAvailable && State != State.Idle))
-        {
-            if (state == State.Idle) _activatedStates.Clear();
-            if (!_activatedStates.Contains(state))
-            {
-                _activatedStates.Add(state);
-                State = StatesManager.Instance.ChangeCurrentState(tag, State, _activatedStates);
-                if (state == State.Idle || state == State.WaitCooldown || state == State.Recline) SetIdleAnimation();
-                else _animator.SetBool(state.ToString(), true);
-                Debug.Log("state: " + State);
-            }
-        }
-    }
-
-    public void DisableState(State state)
-    {
-        if (!_isAvailable) EnableState(State.Idle);
-        else
-        {
-            if (_activatedStates.Contains(state))
-            {
-                _activatedStates.Remove(state);
-                State = StatesManager.Instance.ChangeCurrentState(tag, State, _activatedStates);
-                Debug.Log("enemy current state = " + State);
-                if (state == State.Idle) throw new ArgumentException("Can't disable default state, set state instead!");
-                else _animator.SetBool(state.ToString(), false);
-            }
-        }
-    }
-
-    public State GetState()
-    {
-        return State;
-    }
-
     public void SetIdleAnimation()
     {
         foreach (var parameter in _animator.parameters)
         {
             if (parameter.type == AnimatorControllerParameterType.Bool)
                 _animator.SetBool(parameter.name, parameter.defaultBool);
+        }
+    }
+
+    public void SetAnimation(string animationIndex, bool isActivate)
+    {
+        if (animationIndex == "Idle" && isActivate) SetIdleAnimation();
+        else
+        { 
+            try { _animator.SetBool(animationIndex, isActivate); }
+            catch { if (isActivate) _animator.SetTrigger(animationIndex); }
         }
     }
 
@@ -100,7 +113,16 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IHasStates
 
     public void ChangeAvailable(bool isAvailable) 
     {
-        Debug.Log(isAvailable);
         _isAvailable = isAvailable;
+    }
+
+    public float GetAnimationDuration()
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).length;
+    }
+
+    public string GetAnimationName()
+    {
+        return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
     }
 }

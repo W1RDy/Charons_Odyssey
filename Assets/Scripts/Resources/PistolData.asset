@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a7891f7ec71e234f9aec53369b30923, type: 3}
   m_Name: PistolData
   m_EditorClassIdentifier: 
-  _damage: 4
-  _cooldown: 3
+  _damage: 2
+  _cooldown: 0.5
   _type: 1
   _distance: 7
   _patronsCount: 5
+  _bullet: {fileID: 3755183575540638025, guid: 3bd92e0056c77004b9539a6923835813, type: 3}

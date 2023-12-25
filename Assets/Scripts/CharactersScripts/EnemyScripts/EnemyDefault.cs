@@ -13,36 +13,38 @@ public class EnemyDefault : Enemy, IReclinable
     [SerializeField] private float _cooldown;
     private Transform _target;
     private IMovableWithStops _movable;
-    private Rigidbody2D _rb;
-    bool isReclined = false;
-    CancellationToken token;
+    public float HitDistance { get => _hitDistance; }
+    public float Damage { get => _damage; }
+    public float AttackCooldown { get => _cooldown; }
 
     protected override void Awake()
     {
         base.Awake();
-        _rb = GetComponent<Rigidbody2D>();
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _movable = GetComponent<IMovableWithStops>();
         _movable.SetSpeed(_speed);
         _trigger.TriggerWorked += StartMove;
         _trigger.TriggerTurnedOff += _movable.StopMove;
-        token = this.GetCancellationTokenOnDestroy();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         if (_isAvailable)
         {
             if (_target && Vector3.Distance(_target.position, transform.position) < _hitDistance)
             {
-                _movable.StopMove();
-                Attack();
+                if (StateMachine.GetState(EnemyStateType.Attack).IsStateAvailable()) Attack();
+                else ChangeState(EnemyStateType.Idle);
             }
-            else if (_trigger.playerInTrigger && State != State.Move && Vector3.Distance(_target.position, transform.position) > _hitDistance)
+            else if (_trigger.playerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
             {
-                _movable.StartMove();
+                ChangeState(EnemyStateType.Move);
             }
+
+            if (StateMachine.CurrentState.IsStateFinished) ChangeState(EnemyStateType.Idle);
         }
+        else ChangeState(EnemyStateType.Idle);
     }
 
     private void StartMove()
@@ -50,54 +52,17 @@ public class EnemyDefault : Enemy, IReclinable
         if (_isAvailable) _movable.StartMove();
     }
 
-    public override async void Attack()
+    public override void Attack()
     {
-        if (StatesManager.Instance.IsCanMakeTransition(tag, State, State.Attack))
-        {
-            EnableState(State.Attack);
-            Debug.Log("Attack");
-            var token = this.GetCancellationTokenOnDestroy();
-            await Delayer.Delay(1, token);
-            if (token.IsCancellationRequested) return;
-            var player = FinderObjects.FindHittableObjectByCircle(_hitDistance, transform.position, AttackableObjectIndex.Enemy);
-            if (player != null) player[0].TakeHit(_damage);
-
-            await WaitCooldown();
-        }
+        ChangeState(EnemyStateType.Attack);
     }
 
-    private async UniTask WaitCooldown()
-    {
-        try
-        {
-            Debug.Log("Wait");
-            DisableState(State.Attack);
-            EnableState(State.WaitCooldown);
-            await Delayer.Delay(_cooldown, token);
-            if (!isReclined && !token.IsCancellationRequested)
-            {
-                DisableState(State.WaitCooldown);
-                EnableState(State.Idle);
-            }
-            else isReclined = false;
-        }
-        catch(OperationCanceledException) { }
-    }
-
-    public async void GetRecline(Transform _recliner, float _reclineForce)
+    public void GetRecline(Transform _recliner, float _reclineForce)
     {
         if (_hp > 0)
         {
-            Debug.Log("Recline");
-            _movable.StopMove();
-            EnableState(State.Recline);
-            _rb.AddForce((transform.position - _recliner.position).normalized * _reclineForce, ForceMode2D.Impulse);
-            await Delayer.Delay(1, token);
-            if (!token.IsCancellationRequested)
-            {
-                isReclined = true;
-                EnableState(State.Idle);
-            }
+            (StateMachine.GetState(EnemyStateType.Recline) as EnemyReclineState).SetReclineParameters(_recliner, _reclineForce);
+            ChangeState(EnemyStateType.Recline);
         }
     }
 

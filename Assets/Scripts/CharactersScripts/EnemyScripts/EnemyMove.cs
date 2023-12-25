@@ -5,14 +5,12 @@ using UnityEngine;
 public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
 {
     [SerializeField] private Transform _target;
-    private Enemy _enemy;
     private float _speed;
     private bool _isMove;
     private Rigidbody2D _rb;
 
     private void Awake()
     {
-        _enemy = GetComponent<Enemy>();
         _rb = GetComponent<Rigidbody2D>();
     }
 
@@ -46,20 +44,17 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
 
     public void StartMove()
     {
-        if (StatesManager.Instance.IsCanMakeTransition(tag, _enemy.State, State.Move))
-        {
-            _isMove = true;
-            _enemy.EnableState(State.Move);
-        }
+        _isMove = true;
     }
 
     public void StopMove()
     {
-        if (_enemy.State == State.Move)
-        {
-            _isMove = false;
-            _rb.velocity = Vector2.zero;
-            _enemy.DisableState(State.Move);
-        }
+        _isMove = false;
+        _rb.velocity = Vector2.zero;
+    }
+
+    public bool IsMoving()
+    {
+        return _isMove;
     }
 }

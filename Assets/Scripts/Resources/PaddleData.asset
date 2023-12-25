@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e3598a36b2a4e49a64f130d540c18d, type: 3}
   m_Name: PaddleData
   m_EditorClassIdentifier: 
-  _damage: 3
-  _cooldown: 6
+  _damage: 4
+  _cooldown: 5
   _type: 2
-  _distance: 5
+  _distance: 1.5
   _recliningForce: 10

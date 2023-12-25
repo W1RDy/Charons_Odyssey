@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -10,25 +8,27 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     [SerializeField] private float _talkDelay;
     [SerializeField] private string _branchIndex;
     [SerializeField] protected bool _isAvailable = true;
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] protected DialogCloudService _dialogCloudService; 
+    protected SpriteRenderer _spriteRenderer;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _trigger.TriggerWorked += Talk;
+        _trigger.TriggerWorked += StartDialog;
     }
 
-    public Vector2 GetTalkableTopPoint()
+    public void Talk(string message)
     {
-        return new Vector2(transform.position.x, transform.position.y + _spriteRenderer.sprite.bounds.size.y);
+        _dialogCloudService.SpawnDialogCloud(new Vector2(transform.position.x, transform.position.y + _spriteRenderer.sprite.bounds.size.y));
+        _dialogCloudService.UpdateDialogCloud(message);
     }
 
-    public void Talk()
+    public void StartDialog()
     {
         if (_isAvailable)
         {
-            DialogManager.Instance.StartDialog(_branchIndex, this, _talkDelay);
-            _trigger.TriggerWorked -= Talk;
+            DialogManager.Instance.ActivateDialog(_branchIndex, new ITalkable[] {this});
+            _trigger.TriggerWorked -= StartDialog;
         }
     }
 

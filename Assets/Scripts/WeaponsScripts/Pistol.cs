@@ -1,4 +1,6 @@
-﻿public class Pistol : Guns
+﻿using UnityEngine;
+
+public class Pistol : Guns
 {
 
 }

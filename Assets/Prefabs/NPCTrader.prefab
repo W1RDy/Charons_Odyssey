@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 5144211933235545070}
   - component: {fileID: 6420675029109197598}
   - component: {fileID: 4366103865861040945}
+  - component: {fileID: 8946297185435387698}
   m_Layer: 0
   m_Name: NPCTrader
   m_TagString: Untagged
@@ -172,4 +173,33 @@ MonoBehaviour:
   _trigger: {fileID: 2070062937237015765}
   _talkDelay: 2
   _branchIndex: Trader
+  _isAvailable: 1
+  _dialogCloudService: {fileID: 0}
   _windowActivator: {fileID: 0}
+  _traderTradeSprite: {fileID: 0}
+--- !u!61 &8946297185435387698
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366103865861040950}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.92, y: 1.1851852}
+  m_EdgeRadius: 0

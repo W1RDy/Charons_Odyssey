@@ -6,19 +6,20 @@ public class DialogCloudService : MonoBehaviour
 {
     [SerializeField] private DialogCloud _dialogCloudPrefab;
     [SerializeField] private float _cloudOffset;
+    [SerializeField] private Transform _spawnParent;
     private DialogCloud _currentDialogCloud;
-    private Transform _spawnParent;
 
-    private void Awake()
+    public void SpawnDialogCloud(Vector3 pos)
     {
-        _spawnParent = GameObject.Find("WorldCanvas").transform;
-    }
-
-    public DialogCloud SpawnDialogCloud(ITalkable _talkable)
-    {
-        _currentDialogCloud = Instantiate(_dialogCloudPrefab, _spawnParent).GetComponent<DialogCloud>();
-        SetSpawnPosition(_talkable);
-        return _currentDialogCloud;
+        if (_currentDialogCloud == null)
+        {
+            _currentDialogCloud = Instantiate(_dialogCloudPrefab, _spawnParent).GetComponent<DialogCloud>();
+            SetSpawnPosition(pos);
+        }
+        else if (_currentDialogCloud.transform.position != pos)
+        {
+            SetSpawnPosition(pos);
+        }
     }
 
     public void UpdateDialogCloud(string _message)
@@ -26,10 +27,9 @@ public class DialogCloudService : MonoBehaviour
         _currentDialogCloud.SetMessage(_message);
     }
 
-    public void SetSpawnPosition(ITalkable _talkable)
+    private void SetSpawnPosition(Vector2 pos)
     {
-        var _topPoint = _talkable.GetTalkableTopPoint();
-        _currentDialogCloud.transform.position = new Vector2(_topPoint.x, _topPoint.y + _cloudOffset);
+        _currentDialogCloud.transform.position = new Vector2(pos.x, pos.y + _cloudOffset);
     }
 
     public void RemoveDialogCloud()

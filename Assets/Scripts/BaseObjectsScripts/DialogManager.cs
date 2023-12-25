@@ -8,8 +8,8 @@ public class DialogManager : MonoBehaviour
 {
     [SerializeField] private DialogBranch[] dialogBranches;
     [SerializeField] private DialogCloudService _dialogCloudService;
-    private DialogBranch _currentBranch;
     private bool dialogIsFinished = true;
+    private Player _charon;
 
     public static DialogManager Instance;
     private Dictionary<string, DialogBranch> branchDictionary;
@@ -21,35 +21,64 @@ public class DialogManager : MonoBehaviour
             Instance = this;
             InitializeMessagesDictionary();
         }
-        else Destroy(gameObject);
 
         DontDestroyOnLoad(Instance);
+    }
+
+    private void Start()
+    {
+        if (Instance != this) Destroy(gameObject);
+        Instance._charon = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         Instance._dialogCloudService = GameObject.Find("DialogCloudService").GetComponent<DialogCloudService>();
     }
 
-    private void InitializeMessagesDictionary()
+    private async void InitializeMessagesDictionary()
     {
-        branchDictionary = new Dictionary<string, DialogBranch>();
+        branchDictionary = await DownloaderDataFromGoogleSheets.DownloadDialogsData();
 
-        foreach (var dialogBranch in dialogBranches) branchDictionary[dialogBranch.index] = dialogBranch;
+        foreach (var branch in  branchDictionary)
+        {
+            Debug.Log(branch.Key);
+            foreach(var message in  branch.Value.messageConfigs)
+            {
+                Debug.Log(message.talkableIndex);
+            }
+        }
     }
 
-    public void StartDialog(string _branchIndex, ITalkable _talkable, float _delay)
+    public void ActivateDialog(string branchIndex, ITalkable[] talkables)
     {
+        _charon.StartTalk();
+        DialogBranch branch = branchDictionary[branchIndex];
         dialogIsFinished = false;
-        ActivateDialog(_branchIndex, _talkable);
-        DialogLife(_talkable, _delay);
+        var _message = branch.GetFirstMessage();
+        var talkable = ChooseTalkable(talkables, _message.talkableIndex);
+        talkable.Talk(_message.message);
+        Dialog(2f, branch, talkables);
     }
 
-    private async void DialogLife(ITalkable _talkable, float _delay)
+    public async void Dialog(float _delay, DialogBranch branch, ITalkable[] talkables)
     {
         while (!dialogIsFinished)
         {
-            var token = this.GetCancellationTokenOnDestroy();
-            await Delayer.Delay(_delay, token);
-            if (token.IsCancellationRequested) break;
-            ActivateNextMessage(_talkable);
+            var _token = this.GetCancellationTokenOnDestroy();
+            await Delayer.Delay(_delay, _token);
+            if (_token.IsCancellationRequested) break;
+            ActivateNextMessage(branch, talkables);
         }
+    }
+
+    private void ActivateNextMessage(DialogBranch branch, ITalkable[] talkables)
+    {
+        var _message = branch.GetNextMessage();
+        if (_message == null)
+        {
+            FinishDialog();
+            return;
+        }
+
+        var talkable = ChooseTalkable(talkables, _message.talkableIndex);
+        talkable.Talk(_message.message);
     }
 
     public void FinishDialog()
@@ -58,27 +87,19 @@ public class DialogManager : MonoBehaviour
         dialogIsFinished = true;
     }
 
-    public void ChangeTalkable(string _index, ITalkableGroup _talkableGroup)
+    private ITalkable ChooseTalkable(ITalkable[] talkables, string index)
     {
-        _talkableGroup.ChangeTalkable(_index);
-        _dialogCloudService.SetSpawnPosition(_talkableGroup); // исправить обязательно
-    }
-
-    private void ActivateDialog(string _branchIndex, ITalkable _talkable)
-    {
-        _currentBranch = branchDictionary[_branchIndex];
-        var _message = _currentBranch.GetFirstMessage();
-        _dialogCloudService.SpawnDialogCloud(_talkable);
-        _dialogCloudService.UpdateDialogCloud(_message.message);
-    }
-
-    private void ActivateNextMessage(ITalkable _talkable)
-    {
-        var _message = _currentBranch.GetNextMessage();
-        if (_message != null) _dialogCloudService.UpdateDialogCloud(_message.message);
-        else FinishDialog();
-
-        if (_message != null && _message.isNeedChangeTalkable) ChangeTalkable(_message.talkableIndex, _talkable as ITalkableGroup);
+        index = index.Replace(" ", "");;
+        if (index == _charon.GetTalkableIndex())
+        {
+            return _charon;
+        }
+        foreach (var talkable in talkables)
+        {
+            Debug.Log(talkable.GetTalkableIndex());
+            if (talkable.GetTalkableIndex() == index) return talkable;
+        }
+        throw new ArgumentNullException("Talkable with index " + index + " doesn't exist!");
     }
 
     public bool DialogIsFinished() => dialogIsFinished;
@@ -88,8 +109,15 @@ public class DialogManager : MonoBehaviour
 public class DialogBranch
 {
     public string index;
-    public MessageConfig[] messageConfigs;
+    public List<MessageConfig> messageConfigs;
     private int _messageIndexInOrder;
+
+    public DialogBranch(string index, List<MessageConfig> messageConfigs)
+    {
+        this.index = index;
+        this.messageConfigs = messageConfigs;
+        _messageIndexInOrder = -1;
+    }
 
     public MessageConfig GetFirstMessage()
     {
@@ -100,7 +128,7 @@ public class DialogBranch
     public MessageConfig GetNextMessage()
     {
         _messageIndexInOrder++;
-        return _messageIndexInOrder < messageConfigs.Length ? messageConfigs[_messageIndexInOrder] : null;
+        return _messageIndexInOrder < messageConfigs.Count ? messageConfigs[_messageIndexInOrder] : null;
     }
 }
 
@@ -110,4 +138,11 @@ public class MessageConfig
     public string message;
     public bool isNeedChangeTalkable;
     public string talkableIndex;
+
+    public MessageConfig(string message, bool isNeedChangeTalkable, string talkableIndex)
+    {
+        this.message = message;
+        this.isNeedChangeTalkable = isNeedChangeTalkable;
+        this.talkableIndex = talkableIndex;
+    }
 }

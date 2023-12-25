@@ -1,43 +1,56 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 _currentMoveValue;
     private PlayerMove _playerMove;
     private Player _player;
     private TimeCounter _timer;
-    private bool _isCollideWithLadder;
     private bool _isControl = true;
-    public bool IsControl { set { if (typeof(bool) == value.GetType()) _isControl = value; } }
+    private Collider2D _playerCollider;
+    public LadderMoveChecker LadderMoveChecker { get; private set; }
+    public bool IsControl 
+    {
+        get => _isControl; 
+        set 
+        {
+            if (typeof(bool) == value.GetType()) _isControl = value; 
+        } 
+    }
 
     private void Start()
     {
         _playerMove = GetComponent<PlayerMove>();
         _player = GetComponent<Player>();
         _timer = new TimeCounter();
+        LadderMoveChecker = new LadderMoveChecker();
+        _playerCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
     {
         if (_isControl)
         {
-            if (Input.GetAxis("Horizontal") != _currentMoveValue.x || (Input.GetAxis("Horizontal") != 0 && _player.GetState() == State.Idle))
+            if (Input.GetAxis("Horizontal") != 0 && !_playerMove.IsMoving())
             {
-                _currentMoveValue.x = Input.GetAxis("Horizontal");
-                _playerMove.SetDirection(new Vector2(_currentMoveValue.x, 0));
+                _player.ChangeState(PlayerStateType.Move);
+            }
+            else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0 && _player.StateMachine.CurrentState.IsStateFinished)
+            {
+                if (_player.StateMachine.CurrentState.GetStateType() == PlayerStateType.AttackWithPistol) _player.ChangeState(PlayerStateType.IdleWithGun);
+                else _player.ChangeState(PlayerStateType.Idle);
             }
 
-            if (Input.GetAxis("Vertical") != _currentMoveValue.y && _isCollideWithLadder)
+            if (LadderMoveChecker.IsCanMove(_player, Input.GetAxis("Vertical")) && _player.OnGround())
             {
-                _currentMoveValue.y = Input.GetAxis("Vertical");
-                _playerMove.SetClimbDirection(_currentMoveValue);
+                _player.ChangeState(PlayerStateType.Climb);
             }
-            else if (_currentMoveValue.y != 0 && !_isCollideWithLadder) // подправить
+            else if ((LadderMoveChecker.GetLadder() == null && Input.GetAxis("Vertical") != 0) || (LadderMoveChecker.GetLadder() != null && LadderMoveChecker.GetLadder().LadderIsUsing() && _player.OnGround())) // переделать
             {
-                _currentMoveValue.y = 0;
-                _playerMove.SetClimbDirection(_currentMoveValue);
+                _player.ChangeState(PlayerStateType.Idle);
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse0)) _player.Attack(WeaponType.Pistol);
@@ -53,24 +66,28 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                var _interactable = FinderObjects.FindInteractableObjectByCircle(2f, _player.transform.position);
+                var _interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);
                 if (_interactable != null) _interactable.Interact();
             }
-            else if (Input.GetKeyDown(KeyCode.Q))
+            else if (Input.GetKeyDown(KeyCode.Q) && Inventory.Instance.HasItem(ItemType.FirstAidKit))
             {
-                _player.TakeHeal(3);
+                _player.ChangeState(PlayerStateType.Heal);
             }
         }
-        else _playerMove.DisableMovement();
+        else
+        {
+            _player.ChangeState(PlayerStateType.Idle);
+            _playerMove.DisableMovement();
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Ladder") _isCollideWithLadder = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Ladder") _isCollideWithLadder = false;
+        if (collision.tag == "Ladder")
+        {
+            var ladder = collision.GetComponent<Ladder>();
+            if (ladder.IsColliderOnLaddersCenter (_playerCollider)) LadderMoveChecker.SetLadderToCheck(ladder); 
+            else LadderMoveChecker.RemoveLadderToCheck();
+        }
     }
 }

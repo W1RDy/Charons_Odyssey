@@ -17,7 +17,7 @@ public class Item : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            Inventory.Instance.AddItem(new ItemConfig(this));
+            Inventory.Instance.AddItem(this);
             gameObject.SetActive(false);
             _collider.enabled = false;
         }

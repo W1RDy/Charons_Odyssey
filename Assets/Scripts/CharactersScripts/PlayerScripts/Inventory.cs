@@ -22,21 +22,34 @@ public class Inventory : MonoBehaviour
         DontDestroyOnLoad(Instance);
     }
 
-    public void AddItem(ItemConfig _item)
+    public void AddItem(Item _item)
     {
-        _items.Add(_item.type, _item);
+        ItemConfig itemConfig;
+        if (!_items.ContainsKey(_item.type))
+        {
+            itemConfig = new ItemConfig(_item);
+            _items.Add(_item.type, itemConfig);
+        }
+        else itemConfig = _items[_item.type];
+
+        itemConfig.count++;
         InventoryUpdated?.Invoke();
     }
 
     public void RemoveItem(ItemType _itemType)
     {
-        _items.Remove(_itemType);
-        InventoryUpdated?.Invoke();
+        if (_items.ContainsKey(_itemType))
+        {
+            var item = _items[_itemType];
+            item.count--;
+            if (item.count < 0) item.count = 0;
+            InventoryUpdated?.Invoke();
+        }
     }
 
     public bool HasItem(ItemType _itemType)
     {
-        return _items.ContainsKey(_itemType);
+        return _items.ContainsKey(_itemType) && _items[_itemType].count > 0;
     }
 }
 
@@ -45,6 +58,7 @@ public class ItemConfig
 {
     public ItemType type;
     public Item itemObject;
+    public int count = 0;
 
     public ItemConfig(Item _itemObject)
     {
@@ -56,5 +70,6 @@ public class ItemConfig
 public enum ItemType
 {
     MissionItem,
-    Key
+    Key,
+    FirstAidKit
 }
