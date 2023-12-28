@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 public class HpIndicator : MonoBehaviour
 {
-    private Text _hpIndicator;
+    private Image _hpIndicator;
 
     private void Awake()
     {
-        _hpIndicator = GetComponent<Text>();
+        _hpIndicator = transform.GetChild(0).GetComponent<Image>();
     }
 
     public void SetHp(float hp)
     {
-        _hpIndicator.text = "Çהמנמגüו: " + hp;
+        _hpIndicator.fillAmount = hp / 10;
     }
 }

@@ -12,7 +12,7 @@ public abstract class BaseTask : MonoBehaviour
 
     public virtual void ActivateTask()
     {
-        if (gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy && goals && goals.gameObject.activeInHierarchy)
         {
             goals.SetGoals(taskInfo.targetText);
         }

@@ -25,6 +25,6 @@ public abstract class GunsData : WeaponData
     [SerializeField] private int _patronsCount;
     [SerializeField] private Bullet _bullet;
 
-    public float PatronsCount => _patronsCount;
+    public int PatronsCount => _patronsCount;
     public Bullet Bullet => _bullet;
 }

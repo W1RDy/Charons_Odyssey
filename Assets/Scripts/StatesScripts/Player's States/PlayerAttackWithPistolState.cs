@@ -11,6 +11,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private Pistol _pistol;
     private Transform _shootPoint;
     private Transform _pistolEnd;
+    private BulletsCounterIndicator _bulletsCounterIndicator;
 
     public override void Initialize(Player player)
     {
@@ -18,6 +19,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         _weapon = WeaponManager.Instance.GetWeapon(WeaponType.Pistol);
         _pistol = _weapon as Pistol;
         _pistolEnd = player.weaponEnd;
+        _bulletsCounterIndicator = player.bulletsCounterIndicator;
         try
         {
             _shootPoint = GameObject.Find("ShootPoint").transform;
@@ -36,16 +38,23 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     public async override void Attack()
     {
-        if (!IsCooldown)
+        if (!IsCooldown && _pistol.PatronsCount > 0)
         {
             base.Attack();
             await UniTask.WaitUntil(() => _player.GetAnimationName().EndsWith("Shot"));
             _player.weaponView.gameObject.SetActive(true);
-            var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
-            if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180); 
-            bullet.Initialize(AttackableObjectIndex.Player, _pistol.Distance, _pistol.Damage);
+            Shot();
             _player.SetAnimation("HoldPistol", true);
         }
+    }
+
+    private void Shot()
+    {
+        var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
+        if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
+        bullet.Initialize(AttackableObjectIndex.Player, _pistol.Distance, _pistol.Damage);
+        _pistol.DisablePatron();
+        _bulletsCounterIndicator.SetCount(_pistol.PatronsCount);
     }
 
     public override void Update()
@@ -87,5 +96,10 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
             _player.weaponView.gameObject.SetActive(false);
             await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Pistol"));
         }
+    }
+
+    public override bool IsStateAvailable()
+    {
+        return !IsCooldown && _pistol.PatronsCount > 0;
     }
 }

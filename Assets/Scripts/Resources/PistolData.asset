@@ -16,5 +16,5 @@ MonoBehaviour:
   _cooldown: 0.5
   _type: 1
   _distance: 7
-  _patronsCount: 5
+  _patronsCount: 8
   _bullet: {fileID: 3755183575540638025, guid: 3bd92e0056c77004b9539a6923835813, type: 3}

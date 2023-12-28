@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     [SerializeField] private float _speed;
     [SerializeField] private HpIndicator _hpIndicator;
     [SerializeField] private GameService _gameService;
+    public BulletsCounterIndicator bulletsCounterIndicator;
     public Transform weaponPoint;
     private PlayerMove _playerMove;
     private Animator _animator;
@@ -75,6 +76,9 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     {
         StateMachine.InitializeStates(this);
         StateMachine.InitializeCurrentState(StateMachine.GetState(PlayerStateType.Idle));
+
+        var _pistol = WeaponManager.Instance.GetWeapon(WeaponType.Pistol) as Pistol;
+        bulletsCounterIndicator.SetCount(_pistol.PatronsCount);
     }
 
     private void Update()

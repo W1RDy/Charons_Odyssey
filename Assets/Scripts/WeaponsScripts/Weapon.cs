@@ -16,9 +16,18 @@ public abstract class Weapon : MonoBehaviour
 
 public abstract class Guns : Weapon
 {
-    public float PatronsCount => (_weaponData as GunsData).PatronsCount;
+    private int _patronsCount;
+    public int PatronsCount { 
+        get => _patronsCount;
+        set { if (value.GetType() == typeof(int)) _patronsCount = value; }
+        } 
     [SerializeField] protected Transform shootPoint;
     public GameObject BulletPrefab => (_weaponData as GunsData).Bullet.gameObject;
+
+    private void Awake()
+    {
+        _patronsCount = (_weaponData as GunsData).PatronsCount;
+    }
 }
 
 public abstract class ColdWeapon : Weapon

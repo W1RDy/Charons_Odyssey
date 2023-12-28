@@ -49,7 +49,13 @@ public class Inventory : MonoBehaviour
 
     public bool HasItem(ItemType _itemType)
     {
-        return _items.ContainsKey(_itemType) && _items[_itemType].count > 0;
+        return GetItemCount(_itemType) > 0;
+    }
+
+    public int GetItemCount(ItemType _itemType)
+    {
+        if (_items.ContainsKey(_itemType)) return _items[_itemType].count;
+        return 0;
     }
 }
 
