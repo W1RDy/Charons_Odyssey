@@ -7,14 +7,14 @@ using System.Threading;
 [CreateAssetMenu(fileName = "Stay With Gun State", menuName = "Player's State/Stay With Gun State")]
 public class PlayerStayWithGunState : PlayerStayState
 { 
-    private GameObject _weapon;
+    private Pistol _pistol;
     private Transform _shootPoint;
     private int _waitsMethodCount;
 
-    public override void Initialize(Player player)
+    public virtual void Initialize(Player player, Weapon weapon)
     {
         base.Initialize(player);
-        _weapon = player.weaponView.gameObject;
+        _pistol = weapon as Pistol;
         try
         {
             _shootPoint = GameObject.Find("ShootPoint").transform;
@@ -28,7 +28,7 @@ public class PlayerStayWithGunState : PlayerStayState
     public override void Enter()
     {
         base.Enter();
-        _weapon.SetActive(true);
+        _pistol.View.pistolView.gameObject.SetActive(true);
         IsStateFinished = false;
         _player.SetAnimation("HoldPistol", true);
         WaitSomeTime();
@@ -38,7 +38,7 @@ public class PlayerStayWithGunState : PlayerStayState
     {
         base.Update();
 
-        var rotation = AngleService.GetAngleByTarget(_player.weaponView, _shootPoint);
+        var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
         if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
         {
             _player.Flip();
@@ -60,9 +60,9 @@ public class PlayerStayWithGunState : PlayerStayState
 
     private void RotateGun(Quaternion rotation)
     {
-        _shootPoint.position = CustomCamera.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _shootPoint.position = _player.CustomCamera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        _player.weaponView.rotation = rotation;
+        _pistol.View.pistolView.rotation = rotation;
     }
 
     public override void Exit()
@@ -76,7 +76,7 @@ public class PlayerStayWithGunState : PlayerStayState
         {
             _player.SetAnimation("HoldPistol", false);
             await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Shot"));
-            _weapon.SetActive(false);
+            _pistol.View.pistolView.gameObject.SetActive(false);
             await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Pistol"));
         }
     }

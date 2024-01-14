@@ -68,5 +68,6 @@ public class LoadSceneManager : MonoBehaviour
         asyncOperation.allowSceneActivation = true;
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().buildIndex == sceneIndex, cancellationToken: _token);
         await OpenCloseLoadingScreen(false);
+        Time.timeScale = 1;
     }
 }

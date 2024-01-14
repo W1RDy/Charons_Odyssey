@@ -6,12 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Attack With Fist State", menuName = "Player's State/Attack With Fist State")]
 public class PlayerAttackWithFistState : PlayerAttackBaseState
 {
-    public override void Initialize(Player player)
-    {
-        base.Initialize(player);
-        _weapon = WeaponManager.Instance.GetWeapon(WeaponType.Fist);
-    }
-
     public override void Enter()
     {
         _player.SetAnimation("FistAttack", true);
@@ -23,7 +17,7 @@ public class PlayerAttackWithFistState : PlayerAttackBaseState
         if (!IsCooldown)
         {
             base.Attack();
-            var hittables = FinderObjects.FindHittableObjectByCircle(_weapon.Distance, _player.weaponPoint.position, AttackableObjectIndex.Player);
+            var hittables = FinderObjects.FindHittableObjectByCircle(_weapon.Distance, _weapon.WeaponPoint.position, AttackableObjectIndex.Player);
             if (hittables != null) ApplyDamage(hittables);
         }
     }

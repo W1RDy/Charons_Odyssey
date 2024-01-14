@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Zenject;
 
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private LevelInfo[] _levels;
     public static LevelManager Instance;
     private Dictionary<int, LevelInfo> _levelsDictionary;
+    private GameService _gameService;
+
+    [Inject]
+    private void Construct(GameService gameService)
+    {
+        _gameService = gameService;
+    }
 
     private void Awake()
     {
@@ -32,7 +39,7 @@ public class LevelManager : MonoBehaviour
 
     public LevelInfo GetNextLevel()
     {
-        var buildIndex = SceneManager.GetActiveScene().buildIndex;
-        return GetLevel(buildIndex + 1);
+        var index = _gameService.LevelIndex;
+        return GetLevel(index + 1);
     }
 }

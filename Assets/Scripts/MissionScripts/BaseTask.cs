@@ -5,16 +5,19 @@ using UnityEngine;
 
 public abstract class BaseTask : MonoBehaviour
 {
-    public int index;
-    public Goals goals;
-    public TaskInfo taskInfo;
+    [SerializeField] protected int _index;
+    [SerializeField] protected Goals _goals;
+    [SerializeField] protected TaskInfo _taskInfo;
+
+    public int Index { get => _index; }
     public event Action TaskIsFinished;
 
     public virtual void ActivateTask()
     {
-        if (gameObject.activeInHierarchy && goals && goals.gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy && _goals && _goals.gameObject.activeInHierarchy)
         {
-            goals.SetGoals(taskInfo.targetText);
+            Debug.Log(_goals);
+            _goals.ActivateGoal(_taskInfo.targetText);
         }
     }
 

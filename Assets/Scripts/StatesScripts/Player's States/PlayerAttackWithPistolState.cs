@@ -12,15 +12,12 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private Pistol _pistol;
     private Transform _shootPoint;
     private Transform _pistolEnd;
-    private BulletsCounterIndicator _bulletsCounterIndicator;
 
-    public override void Initialize(Player player)
+    public override void Initialize(Player player, Weapon weapon)
     {
-        base.Initialize(player);
-        _weapon = WeaponManager.Instance.GetWeapon(WeaponType.Pistol);
+        base.Initialize(player, weapon);
         _pistol = _weapon as Pistol;
-        _pistolEnd = player.weaponEnd;
-        _bulletsCounterIndicator = player.bulletsCounterIndicator;
+        _pistolEnd = _pistol.View.pistolEnd;
         try
         {
             _shootPoint = GameObject.Find("ShootPoint").transform;
@@ -43,7 +40,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         {
             base.Attack();
             await UniTask.WaitUntil(() => _player.GetAnimationName().EndsWith("Shot"));
-            _player.weaponView.gameObject.SetActive(true);
+            _pistol.View.pistolView.gameObject.SetActive(true);
             Shot();
             _player.SetAnimation("HoldPistol", true);
         }
@@ -54,8 +51,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
         if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
         bullet.Initialize(AttackableObjectIndex.Player, _pistol.Distance, _pistol.Damage);
-        _pistol.DisablePatron();
-        _bulletsCounterIndicator.SetCount(_pistol.PatronsCount);
+        _pistol.DisablePatrons(1);
     }
 
     public override void Update()
@@ -63,7 +59,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         Debug.Log("AttackWithPistol_Update");
         base.Update();
 
-        var rotation = AngleService.GetAngleByTarget(_player.weaponView, _shootPoint);
+        var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
         if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
         {
             _player.Flip();
@@ -73,9 +69,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private void RotateGun(Quaternion rotation)
     {
-        _shootPoint.position = CustomCamera.Instance.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _shootPoint.position = _player.CustomCamera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
-        _player.weaponView.rotation = rotation;
+        _pistol.View.pistolView.rotation = rotation;
     }
 
     public override void Exit()
@@ -83,7 +79,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         if (IsStateFinished)
         {
             base.Exit();
-            _player.weaponView.gameObject.SetActive(false);
+            _pistol.View.pistolView.gameObject.SetActive(false);
             _player.SetAnimation("PistolAttack", false);
         }
     }
@@ -94,7 +90,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         if (newStateType != PlayerStateType.IdleWithGun)
         {
             await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Shot"));
-            _player.weaponView.gameObject.SetActive(false);
+            _pistol.View.pistolView.gameObject.SetActive(false);
             await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Pistol"));
         }
     }

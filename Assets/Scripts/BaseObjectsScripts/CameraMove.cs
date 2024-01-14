@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CameraMove : MonoBehaviour, IMovable
 {
     [SerializeField] float _speed;
     private Transform _player;
 
-    private void Awake ()
+    [Inject]
+    private void Construct(Player player)
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _player = player.transform;
     }
 
     private void Update()

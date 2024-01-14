@@ -12,11 +12,14 @@ public class Space : MonoBehaviour
 
     public void OpenSpace()
     {
-        _isOpen = true;
-        _mask.gameObject.SetActive(true);
-        _firstPlane.sortingLayerName = "Background"; 
-        MakeObjAvailable();
-        _collider.enabled = false;
+        if (!_isOpen)
+        {
+            _isOpen = true;
+            _mask.gameObject.SetActive(true);
+            if (_firstPlane) _firstPlane.enabled = false;
+            MakeObjAvailable();
+            _collider.enabled = false;
+        }
     }
 
     public void CloseSpace()
@@ -35,7 +38,7 @@ public class Space : MonoBehaviour
             foreach (var obj in availableObjs)
             {
                 var availableObj = obj.GetComponent<IAvailable>();
-                if (availableObj == null) availableObj = obj.GetComponentInParent<IAvailable>();
+                //if (availableObj == null) availableObj = obj.GetComponentInParent<IAvailable>();
                 if (availableObj != null) availableObj.ChangeAvailable(_isOpen);
             }
         }

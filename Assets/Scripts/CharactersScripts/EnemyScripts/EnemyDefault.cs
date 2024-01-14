@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public class EnemyDefault : Enemy, IReclinable
 {
@@ -17,10 +18,15 @@ public class EnemyDefault : Enemy, IReclinable
     public float Damage { get => _damage; }
     public float AttackCooldown { get => _cooldown; }
 
+    [Inject]
+    private void Construct(Player player)
+    {
+        _target = player.transform;
+    }
+
     protected override void Awake()
     {
         base.Awake();
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
         _movable = GetComponent<IMovableWithStops>();
         _movable.SetSpeed(_speed);
         _trigger.TriggerWorked += StartMove;
@@ -37,7 +43,7 @@ public class EnemyDefault : Enemy, IReclinable
                 if (StateMachine.GetState(EnemyStateType.Attack).IsStateAvailable()) Attack();
                 else ChangeState(EnemyStateType.Idle);
             }
-            else if (_trigger.playerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
+            else if (_trigger.PlayerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
             {
                 ChangeState(EnemyStateType.Move);
             }

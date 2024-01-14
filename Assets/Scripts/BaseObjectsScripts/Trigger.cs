@@ -8,14 +8,14 @@ public class Trigger : MonoBehaviour
 {
     public event Action TriggerWorked;
     public event Action TriggerTurnedOff;
-    [HideInInspector] public bool playerInTrigger = false;
+    public bool PlayerInTrigger { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
             TriggerWorked?.Invoke();
-            playerInTrigger = true;
+            PlayerInTrigger = true;
         }
     }
 
@@ -24,7 +24,7 @@ public class Trigger : MonoBehaviour
         if (collision.tag == "Player")
         {
             TriggerTurnedOff?.Invoke();
-            playerInTrigger = false;
+            PlayerInTrigger = false;
         }
     }
 }

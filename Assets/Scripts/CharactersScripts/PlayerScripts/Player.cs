@@ -11,19 +11,29 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 {
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
+    private float _maxHp;
+    private bool _onGround;
+
     private HpIndicator _hpIndicator;
+
     private GameService _gameService;
-    [HideInInspector] public BulletsCounterIndicator bulletsCounterIndicator;
-    public Transform weaponPoint;
     private PlayerMove _playerMove;
     private Animator _animator;
-    private float _maxHp;
-    public Transform weaponView;
-    public Transform weaponEnd;
     private HashSet<Collider2D> _colliders;
-    private bool _onGround;
-    [HideInInspector] public DialogCloudService dialogCloudService;
+    public CustomCamera CustomCamera { get; private set; }
+
     private CancellationToken _token;
+    private WeaponService _weaponService;
+    private DialogManager _dialogManager;
+    private DialogCloudService _dialogCloudService;
+    private Inventory _inventory;
+    private BulletsCounterIndicator _bulletsCounterIndicator;
+
+    [SerializeField] private PistolViewConfig _pistolView;
+    [SerializeField] private Transform _weaponPoint;
+
+    public PistolViewConfig PistolView { get => _pistolView; }
+    public Transform WeaponPoint { get => _weaponPoint; }
 
     #region Player's States
 
@@ -42,12 +52,16 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public PlayerStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(HpIndicator hpIndicator, GameService gameService, BulletsCounterIndicator bulletsCounterIndicator, DialogCloudService dialogCloudService)
+    private void Construct(HpIndicator hpIndicator, GameService gameService, CustomCamera customCamera, Inventory inventory, WeaponService weaponService, DialogManager dialogManager, DialogCloudService dialogCloudService, BulletsCounterIndicator bulletsCounterIndicator)
     {
         _hpIndicator = hpIndicator;
         _gameService = gameService;
-        this.bulletsCounterIndicator = bulletsCounterIndicator;
-        this.dialogCloudService = dialogCloudService;
+        this.CustomCamera = customCamera;
+        _weaponService = weaponService;
+        _dialogManager = dialogManager;
+        _dialogCloudService = dialogCloudService;
+        _inventory = inventory;
+        this._bulletsCounterIndicator = bulletsCounterIndicator;
     }
 
     private void Awake()
@@ -84,11 +98,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private void Start()
     {
-        StateMachine.InitializeStates(this);
+        _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator);
+        StateMachine.InitializeStates(this, _weaponService, _dialogManager, _dialogCloudService, _inventory);
         StateMachine.InitializeCurrentState(StateMachine.GetState(PlayerStateType.Idle));
 
-        var pistol = WeaponManager.Instance.GetWeapon(WeaponType.Pistol) as Pistol;
-        bulletsCounterIndicator.SetCount(pistol.PatronsCount);
+        _bulletsCounterIndicator.SetCount((_weaponService.GetWeapon(WeaponType.Pistol) as Pistol).PatronsCount);
     }
 
     private void Update()

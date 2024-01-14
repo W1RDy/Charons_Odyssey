@@ -7,7 +7,7 @@ public class Door : MonoBehaviour, IInteractable
 {
     [SerializeField] private SpriteRenderer _view;
     [SerializeField] private bool _isLocked;
-    private Space _space;
+    [SerializeField] private Space[] _spaces;
     private Collider2D _collider;
     private Inventory _inventory;
 
@@ -19,7 +19,6 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Awake()
     {
-        _space = GetComponentInParent<Space>();
         _collider = GetComponent<Collider2D>();
     }
 
@@ -33,7 +32,7 @@ public class Door : MonoBehaviour, IInteractable
                 _isLocked = false;
             }
             _collider.enabled = false;
-            _space.OpenSpace();
+            foreach (var space in _spaces) space.OpenSpace();
             _view.gameObject.SetActive(false);
         }
     }

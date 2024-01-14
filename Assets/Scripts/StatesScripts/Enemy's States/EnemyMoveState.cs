@@ -6,13 +6,11 @@ using UnityEngine;
 public class EnemyMoveState : EnemyState
 {
     protected EnemyMove _enemyMove;
-    protected Transform _player;
     protected EnemyMove _movable;
 
     public override void Initialize(Enemy enemy)
     {
         base.Initialize(enemy);
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
         _movable = enemy.GetComponent<EnemyMove>();
     }
 

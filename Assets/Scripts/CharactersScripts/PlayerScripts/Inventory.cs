@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class Inventory : MonoBehaviour
 {
@@ -17,12 +16,12 @@ public class Inventory : MonoBehaviour
     public void AddItem(Item item)
     {
         ItemConfig itemConfig;
-        if (!_items.ContainsKey(item.type))
+        if (!_items.ContainsKey(item.Type))
         {
             itemConfig = new ItemConfig(item);
-            _items.Add(item.type, itemConfig);
+            _items.Add(item.Type, itemConfig);
         }
-        else itemConfig = _items[item.type];
+        else itemConfig = _items[item.Type];
 
         itemConfig.count++;
         InventoryUpdated?.Invoke();
@@ -60,7 +59,7 @@ public class ItemConfig
 
     public ItemConfig(Item itemObject)
     {
-        type = itemObject.type;
+        type = itemObject.Type;
         this.itemObject = itemObject;
     }
 }
@@ -69,5 +68,6 @@ public enum ItemType
 {
     MissionItem,
     Key,
-    FirstAidKit
+    FirstAidKit,
+    Patrons
 }

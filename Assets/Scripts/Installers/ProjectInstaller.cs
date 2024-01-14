@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -7,11 +8,15 @@ public class ProjectInstaller : MonoInstaller
 {
     [SerializeField] private LoadSceneManager _sceneManagerPrefab;
     [SerializeField] private Inventory _inventoryPrefab;
+    [SerializeField] private DialogManager _dialogManager;
+    [SerializeField] private WeaponService _weaponService;
 
     public override void InstallBindings()
     {
         BindLoadSceneManager();
         BindInventory();
+        BindDialogManager();
+        BindWeaponManager();
     }
 
     private void BindLoadSceneManager()
@@ -22,5 +27,15 @@ public class ProjectInstaller : MonoInstaller
     private void BindInventory()
     {
         Container.Bind<Inventory>().FromComponentInNewPrefab(_inventoryPrefab).AsSingle();
+    }
+
+    private void BindDialogManager()
+    {
+        Container.Bind<DialogManager>().FromComponentInNewPrefab(_dialogManager).AsSingle();
+    }
+
+    private void BindWeaponManager()
+    {
+        Container.Bind<WeaponService>().FromComponentInNewPrefab(_weaponService).AsSingle();
     }
 }

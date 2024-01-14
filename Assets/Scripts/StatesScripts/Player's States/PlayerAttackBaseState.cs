@@ -17,6 +17,12 @@ public abstract class PlayerAttackBaseState : PlayerState
         WaitWhileAttack();
     }
 
+    public virtual void Initialize(Player player, Weapon weapon)
+    {
+        base.Initialize(player);
+        _weapon = weapon;
+    }
+
     public virtual void Attack()
     {
         

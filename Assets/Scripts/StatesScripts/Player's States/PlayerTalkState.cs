@@ -9,13 +9,15 @@ public class PlayerTalkState : PlayerState
     private SpriteRenderer _spriteRenderer;
     private PlayerController _playerController;
     private DialogCloudService _dialogCloudService;
+    private DialogManager _dialogManager;
 
-    public override void Initialize(Player player)
+    public virtual void Initialize(Player player, DialogManager dialogManager, DialogCloudService dialogCloudService)
     {
         base.Initialize(player);
         _spriteRenderer = player.transform.GetChild(0).GetComponent<SpriteRenderer>();
         _playerController = player.GetComponent<PlayerController>();
-        _dialogCloudService = player.dialogCloudService;
+        _dialogCloudService = dialogCloudService;
+        _dialogManager = dialogManager;
     }
 
     public override void Enter()
@@ -26,7 +28,7 @@ public class PlayerTalkState : PlayerState
 
     public override void Update()
     {
-        if (DialogManager.Instance.DialogIsFinished()) IsStateFinished = true;
+        if (_dialogManager.DialogIsFinished()) IsStateFinished = true;
     }
 
     public void Talk(string message)

@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &167103316
 Transform:
   m_ObjectHideFlags: 0
@@ -394,13 +394,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 10
-  _speed: 6
-  _hpIndicator: {fileID: 0}
-  _gameService: {fileID: 0}
-  weaponPoint: {fileID: 8506509901634725678}
-  weaponView: {fileID: 1057895811}
-  weaponEnd: {fileID: 991589543}
-  dialogCloudService: {fileID: 0}
+  _speed: 5
+  _pistolView:
+    pistolEnd: {fileID: 991589543}
+    pistolView: {fileID: 1057895811}
+  _weaponPoint: {fileID: 8506509901634725678}
   _stayState: {fileID: 11400000, guid: 559da36ba4e8d2e4c82b42be093d3110, type: 2}
   _moveState: {fileID: 11400000, guid: 052d540024dc10f44ad5bc7d2f957bb1, type: 2}
   _climbState: {fileID: 11400000, guid: 851c71b6b518ec8478b5357fa5fd9ca7, type: 2}

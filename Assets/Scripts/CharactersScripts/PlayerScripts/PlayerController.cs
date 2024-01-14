@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private bool _isControl = true;
     private Collider2D _playerCollider;
     private Inventory _inventory;
+    private ButtonService _buttonService;
     public LadderMoveChecker LadderMoveChecker { get; private set; }
     public bool IsControl 
     {
@@ -29,13 +30,18 @@ public class PlayerController : MonoBehaviour
         _inventory = inventory;
     }
 
+    private void Awake()
+    {
+        LadderMoveChecker = new LadderMoveChecker();
+    }
+
     private void Start()
     {
         _playerMove = GetComponent<PlayerMove>();
         _player = GetComponent<Player>();
         _timer = new TimeCounter();
-        LadderMoveChecker = new LadderMoveChecker();
         _playerCollider = GetComponent<Collider2D>();
+        _buttonService = GameObject.Find("Canvas/ButtonService").GetComponent<ButtonService>();
     }
 
     private void Update()
@@ -87,6 +93,8 @@ public class PlayerController : MonoBehaviour
             _player.ChangeState(PlayerStateType.Idle);
             _playerMove.DisableMovement();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) _buttonService.ActivatePause();
     }
 
     private void OnTriggerStay2D(Collider2D collision)

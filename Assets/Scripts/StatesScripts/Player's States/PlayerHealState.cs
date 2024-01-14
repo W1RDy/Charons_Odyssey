@@ -9,9 +9,9 @@ public class PlayerHealState : PlayerState
 {
     private Inventory _inventory;
 
-    [Inject]
-    private void Construct(Inventory inventory)
+    public virtual void Initialize(Player player, Inventory inventory)
     {
+        base.Initialize(player);
         _inventory = inventory;
     }
 

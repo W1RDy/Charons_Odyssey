@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
@@ -10,11 +11,18 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     [SerializeField] protected bool _isAvailable = true;
     [SerializeField] protected DialogCloudService _dialogCloudService; 
     protected SpriteRenderer _spriteRenderer;
+    private DialogActivator _dialogActivator;
+
+    [Inject]
+    private void Consruct(DialogActivator dialogActivator)
+    {
+        _dialogActivator = dialogActivator;
+    }
 
     protected virtual void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _trigger.TriggerWorked += StartDialog;
+        if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
 
     public void Talk(string message)
@@ -27,9 +35,15 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     {
         if (_isAvailable)
         {
-            DialogManager.Instance.ActivateDialog(_branchIndex, new ITalkable[] {this});
+            _dialogActivator.ActivateDialog(_branchIndex, this);
             _trigger.TriggerWorked -= StartDialog;
         }
+    }
+
+    public void UpdateDialog(string dialogIndex)
+    {
+        _branchIndex = dialogIndex;
+        _trigger.TriggerWorked += StartDialog;
     }
 
     public string GetTalkableIndex()

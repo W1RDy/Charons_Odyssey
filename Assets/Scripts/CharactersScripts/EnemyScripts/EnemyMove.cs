@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
 {
@@ -9,14 +10,15 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
     private bool _isMove;
     private Rigidbody2D _rb;
 
+    [Inject]
+    private void Construct(Player player)
+    {
+        _target = player.transform;
+    }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Start()
-    {
-        _target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void FixedUpdate()

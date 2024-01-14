@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 
-public class Pistol : Guns // оставить пистолет MonoBehaviour, от остальных классов оружий избавиться
+public class Pistol : Guns
 {
-    public void DisablePatron()
-    {
-        PatronsCount--;
-    }
+    public PistolViewConfig View { get; private set; }
 
-    public void AddPatron()
+    public void Initialize(Transform weaponPoint, PistolViewConfig pistolView, BulletsCounterIndicator bulletsCounterIndicator)
     {
-        PatronsCount++;
+        base.Initialize(weaponPoint);
+        View = pistolView;
+        _bulletsCounterIndicator = bulletsCounterIndicator;
     }
 }

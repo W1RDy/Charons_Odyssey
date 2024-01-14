@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class SceneInstaller : MonoInstaller
+public class GameSceneInstaller : MonoInstaller
 {
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private Transform _spawnPosition;
@@ -9,12 +9,19 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private HpIndicator _hpIndicator;
     [SerializeField] private BulletsCounterIndicator _bulletsCounterIndicator;
     [SerializeField] private DialogCloudService _dialogCloudService;
+    [SerializeField] private CustomCamera _customCamera;
+    [SerializeField] private ButtonService _buttonService;
+    [SerializeField] private DialogUpdater _dialogUpdater;
 
     public override void InstallBindings()
     {
         BindServices();
         BindHUD();
+        BindCustomCamera();
         BindPlayer();
+        BindDialogActivator();
+        BindDialogUpdater();
+        BindButtonService();
     }
 
     private void BindHUD()
@@ -53,5 +60,25 @@ public class SceneInstaller : MonoInstaller
     private void BindDialogCloudService()
     {
         Container.Bind<DialogCloudService>().FromInstance(_dialogCloudService).AsSingle();
+    }
+
+    private void BindCustomCamera()
+    {
+        Container.Bind<CustomCamera>().FromInstance(_customCamera).AsSingle();
+    }
+
+    private void BindDialogActivator()
+    {
+        Container.BindInterfacesAndSelfTo<DialogActivator>().FromNew().AsSingle();
+    }
+
+    private void BindButtonService()
+    {
+        Container.Bind<ButtonService>().FromInstance(_buttonService).AsSingle();
+    }
+
+    private void BindDialogUpdater()
+    {
+        Container.Bind<DialogUpdater>().FromInstance(_dialogUpdater).AsSingle();
     }
 }

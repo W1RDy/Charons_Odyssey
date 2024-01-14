@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Random = UnityEngine.Random;
+using Zenject;
 
 [Serializable]
 public class BackgroundLayer : IMovable
@@ -15,10 +16,12 @@ public class BackgroundLayer : IMovable
     private Transform _layer;
     private BackgroundLayerPart _leftPart;
     private float _cameraWidthInUints;
+    private CustomCamera _customCamera;
 
-    public void InitLayer(Transform layer)
+    public void InitLayer(Transform layer, CustomCamera customCamera)
     {
         _layer = layer;
+        _customCamera = customCamera;
         layerParts = layerParts.OrderBy(transform => transform.partTransform.position.x).ToArray();
         for (int i = 0; i < layerParts.Length; i++)
         {
@@ -31,7 +34,7 @@ public class BackgroundLayer : IMovable
             layerParts[i].partTransform.position = new Vector2(layerParts[i].partTransform.position.x + offset, layerParts[i].partTransform.position.y);
         }
         _leftPart = layerParts[0];
-        _cameraWidthInUints = CustomCamera.Instance.GetCameraSizeInUints().x;
+        _cameraWidthInUints = _customCamera.GetCameraSizeInUints().x;
     }
 
     public void Move()
@@ -47,7 +50,7 @@ public class BackgroundLayer : IMovable
 
     private void UpdateLayerParts()
     {
-        if (_leftPart.partTransform.position.x < CustomCamera.Instance.GetCameraPos().x - _cameraWidthInUints * 2f)
+        if (_leftPart.partTransform.position.x < _customCamera.GetCameraPos().x - _cameraWidthInUints * 2f)
         {
             var _offset = GetRandomOffset();
             _leftPart.partTransform.position = new Vector2(_leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerSize.x + _offset, _leftPart.partTransform.position.y);

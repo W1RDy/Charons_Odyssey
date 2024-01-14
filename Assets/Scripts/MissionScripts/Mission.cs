@@ -1,31 +1,38 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Mission : MonoBehaviour
 {
-    public BaseTask[] tasks;
+    [SerializeField] private BaseTask[] _tasks;
     [SerializeField] private Timer _timer;
     [SerializeField] private GameService _gameService;
     private BaseTask _currentTask;
+    protected CancellationToken _token;
 
-    private void Start()
+    private async void Start()
     {
-        _currentTask = tasks[0];
+        _currentTask = _tasks[0];
+        _token = this.GetCancellationTokenOnDestroy();
+        foreach (var task in _tasks) task.TaskIsFinished += ActivateNextTask;
+
+        await Delayer.Delay(1f, _token);
+        if (_token.IsCancellationRequested) return;
         _currentTask.ActivateTask();
-        foreach (var task in tasks) task.TaskIsFinished += ActivateNextTask;
     }
 
     public void ActivateNextTask()
     {
         _currentTask.TaskIsFinished -= ActivateNextTask;
-        var index = _currentTask.index + 1;
+        var index = _currentTask.Index + 1;
 
-        if (index >= tasks.Length) FinishMission();
+        if (index >= _tasks.Length) FinishMission();
         else
         {
-            _currentTask = tasks[index];
+            _currentTask = _tasks[index];
             _currentTask.ActivateTask();
         }
     }

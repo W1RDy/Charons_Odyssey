@@ -14,5 +14,6 @@ public enum TaskType
 {
     HoldOutForTime,
     GetItem,
-    BringItem
+    BringItem,
+    Talk
 }

@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class CustomCamera : MonoBehaviour
 {
-    public static CustomCamera Instance;
     public Camera MainCamera { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
         MainCamera = GetComponent<Camera>();
     }
 
