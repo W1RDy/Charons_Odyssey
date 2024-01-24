@@ -18,10 +18,9 @@ public class GameSceneInstaller : MonoInstaller
         BindServices();
         BindHUD();
         BindCustomCamera();
-        BindPlayer();
         BindDialogActivator();
         BindDialogUpdater();
-        BindButtonService();
+        BindPlayer();
     }
 
     private void BindHUD()
@@ -31,9 +30,10 @@ public class GameSceneInstaller : MonoInstaller
     }
 
     private void BindServices()
-    {
+    { 
         BindGameService();
         BindDialogCloudService();
+        BindButtonService();
     }
 
     private void BindPlayer()

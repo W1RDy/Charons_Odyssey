@@ -32,9 +32,9 @@ public class PlayerHealState : PlayerState
     private async void WaitWhileHeal()
     {
         var token = _player.GetCancellationTokenOnDestroy();
-        await UniTask.WaitUntil(() => _player.GetAnimationName().EndsWith("Heal"));
+        await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Heal"));
         if (token.IsCancellationRequested) return;
-        await Delayer.Delay(_player.GetAnimationDuration(), token);
+        await Delayer.Delay(_player.GetCurrentAnimationDuration(), token);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;

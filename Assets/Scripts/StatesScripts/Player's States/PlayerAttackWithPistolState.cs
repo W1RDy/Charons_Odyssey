@@ -12,10 +12,12 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private Pistol _pistol;
     private Transform _shootPoint;
     private Transform _pistolEnd;
+    private CustomCamera _camera;
 
-    public override void Initialize(Player player, Weapon weapon)
+    public void Initialize(Player player, Weapon weapon, CustomCamera customCamera)
     {
         base.Initialize(player, weapon);
+        _camera = customCamera;
         _pistol = _weapon as Pistol;
         _pistolEnd = _pistol.View.pistolEnd;
         try
@@ -39,7 +41,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         if (!IsCooldown && _pistol.PatronsCount > 0)
         {
             base.Attack();
-            await UniTask.WaitUntil(() => _player.GetAnimationName().EndsWith("Shot"));
+            await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
             _pistol.View.pistolView.gameObject.SetActive(true);
             Shot();
             _player.SetAnimation("HoldPistol", true);
@@ -69,7 +71,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private void RotateGun(Quaternion rotation)
     {
-        _shootPoint.position = _player.CustomCamera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _shootPoint.position = _camera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
         _pistol.View.pistolView.rotation = rotation;
     }
@@ -89,9 +91,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         _player.SetAnimation("HoldPistol", false);
         if (newStateType != PlayerStateType.IdleWithGun)
         {
-            await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Shot"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
             _pistol.View.pistolView.gameObject.SetActive(false);
-            await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Pistol"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"));
         }
     }
 

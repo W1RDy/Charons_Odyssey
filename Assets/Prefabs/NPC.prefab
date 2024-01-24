@@ -70,7 +70,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064735805d3affd42b5870fce28f8fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInTrigger: 0
 --- !u!1 &2318741463117365590
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,8 +141,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 115194095
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -168,6 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925052f75bac8c349858be8325783979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _talkableIndex: 
   _trigger: {fileID: 515450549}
   _talkDelay: 2
   _branchIndex: Hello
+  _isAvailable: 1
+  _dialogCloudService: {fileID: 0}

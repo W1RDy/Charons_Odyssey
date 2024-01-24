@@ -18,28 +18,6 @@ public class PlayerStateMachine
         }
     }
 
-    public void InitializeStates(Player player, WeaponService weaponService, DialogManager dialogManager, DialogCloudService dialogCloudService, Inventory inventory)
-    {
-        foreach (var state in _statesDictionary.Values)
-        {
-            if (state.GetStateType() == PlayerStateType.AttackWithPistol || state.GetStateType() == PlayerStateType.AttackWithPaddle || state.GetStateType() == PlayerStateType.AttackWithFist || state.GetStateType() == PlayerStateType.IdleWithGun)
-            {
-                Weapon weapon;
-                if (state.GetStateType() == PlayerStateType.AttackWithPistol || state.GetStateType() == PlayerStateType.IdleWithGun) weapon = weaponService.GetWeapon(WeaponType.Pistol);
-                else if (state.GetStateType() == PlayerStateType.AttackWithPaddle) weapon = weaponService.GetWeapon(WeaponType.Paddle);
-                else weapon = weaponService.GetWeapon(WeaponType.Fist);
-
-                if (state.GetStateType() == PlayerStateType.IdleWithGun) (state as PlayerStayWithGunState).Initialize(player, weapon);
-                else (state as PlayerAttackBaseState).Initialize(player, weapon);
-            }
-            else if (state.GetStateType() == PlayerStateType.Talk)
-                (state as PlayerTalkState).Initialize(player, dialogManager, dialogCloudService);
-            else if (state.GetStateType() == PlayerStateType.Heal)
-                (state as PlayerHealState).Initialize(player, inventory);
-            else state.Initialize(player);
-        }
-    }
-
     public PlayerState GetState(PlayerStateType stateType) => _statesDictionary[stateType];
 
     public void InitializeCurrentState(PlayerState defaultState)

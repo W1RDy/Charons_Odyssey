@@ -41,6 +41,7 @@ public abstract class Guns : Weapon
 
     public void AddPatrons(int patrons)
     {
+        Debug.Log("Add patrons");
         _patronsCount += patrons;
         _bulletsCounterIndicator.SetCount(_patronsCount);
     }

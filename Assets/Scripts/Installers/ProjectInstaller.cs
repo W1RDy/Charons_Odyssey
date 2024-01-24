@@ -13,6 +13,7 @@ public class ProjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        BindInputService();
         BindLoadSceneManager();
         BindInventory();
         BindDialogManager();
@@ -37,5 +38,12 @@ public class ProjectInstaller : MonoInstaller
     private void BindWeaponManager()
     {
         Container.Bind<WeaponService>().FromComponentInNewPrefab(_weaponService).AsSingle();
+    }
+
+    private void BindInputService()
+    {
+        var inputService = new PCInputService();
+        inputService.InitializeService();
+        Container.Bind<IInputService>().To<PCInputService>().FromInstance(inputService).AsSingle();
     }
 }

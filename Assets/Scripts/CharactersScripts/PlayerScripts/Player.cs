@@ -18,16 +18,13 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private GameService _gameService;
     private PlayerMove _playerMove;
-    private Animator _animator;
+    private PlayerView _playerView;
     private HashSet<Collider2D> _colliders;
-    public CustomCamera CustomCamera { get; private set; }
 
     private CancellationToken _token;
     private WeaponService _weaponService;
-    private DialogManager _dialogManager;
-    private DialogCloudService _dialogCloudService;
-    private Inventory _inventory;
     private BulletsCounterIndicator _bulletsCounterIndicator;
+    private PlayerStatesInitializer _playerStatesInitializator;
 
     [SerializeField] private PistolViewConfig _pistolView;
     [SerializeField] private Transform _weaponPoint;
@@ -52,56 +49,33 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public PlayerStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(HpIndicator hpIndicator, GameService gameService, CustomCamera customCamera, Inventory inventory, WeaponService weaponService, DialogManager dialogManager, DialogCloudService dialogCloudService, BulletsCounterIndicator bulletsCounterIndicator)
+    private void Construct(HpIndicator hpIndicator, GameService gameService, WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator)
     {
         _hpIndicator = hpIndicator;
         _gameService = gameService;
-        this.CustomCamera = customCamera;
         _weaponService = weaponService;
-        _dialogManager = dialogManager;
-        _dialogCloudService = dialogCloudService;
-        _inventory = inventory;
-        this._bulletsCounterIndicator = bulletsCounterIndicator;
+        _bulletsCounterIndicator = bulletsCounterIndicator;
     }
 
     private void Awake()
     {
         _playerMove = GetComponent<PlayerMove>();
         _playerMove.SetSpeed(_speed);
-        _animator = GetComponentInChildren<Animator>();
+        _playerView = GetComponentInChildren<PlayerView>();
         _maxHp = _hp;
 
         StateMachine = new PlayerStateMachine();
-        
+        _playerStatesInitializator = GetComponent<PlayerStatesInitializer>();
+
         _colliders = new HashSet<Collider2D>();
         _token = this.GetCancellationTokenOnDestroy();
-        InitializeStatesInstances();
-    }
-
-    private void InitializeStatesInstances()
-    {
-        List<PlayerState> _statesInstances = new List<PlayerState>()
-        {
-            Instantiate(_stayState),
-            Instantiate(_moveState),
-            Instantiate(_climbState),
-            Instantiate(_healState),
-            Instantiate(_attackWithFistState),
-            Instantiate(_attackWithPaddleState),
-            Instantiate(_attackWithPistolState),
-            Instantiate(_stayWithGunState),
-            Instantiate(_talkState)
-        };
-
-        StateMachine.InitializeStatesDictionary(_statesInstances);
+        _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState, _attackWithPistolState, _stayWithGunState, _talkState);
+        _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator);
     }
 
     private void Start()
     {
-        _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator);
-        StateMachine.InitializeStates(this, _weaponService, _dialogManager, _dialogCloudService, _inventory);
-        StateMachine.InitializeCurrentState(StateMachine.GetState(PlayerStateType.Idle));
-
+        _playerStatesInitializator.InitializeStates();
         _bulletsCounterIndicator.SetCount((_weaponService.GetWeapon(WeaponType.Pistol) as Pistol).PatronsCount);
     }
 
@@ -143,35 +117,19 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         _gameService.LoseGame();
     }
 
-    private void SetIdleAnimation()
-    {
-        foreach (var parameter in _animator.parameters)
-        {
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-                _animator.SetBool(parameter.name, parameter.defaultBool);
-            else if (parameter.type == AnimatorControllerParameterType.Int)
-                _animator.SetInteger(parameter.name, parameter.defaultInt);
-        }
-    }
-
     public void SetAnimation(string animationIndex, bool isActivate)
     {
-        if (animationIndex == "Idle" && isActivate) SetIdleAnimation();
-        else
-        {
-            try { _animator.SetBool(animationIndex, isActivate); }
-            catch { if (isActivate) _animator.SetTrigger(animationIndex); }
-        }
+        _playerView.SetAnimation(animationIndex, isActivate);
     }
 
-    public float GetAnimationDuration()
+    public string GetCurrentAnimationName()
     {
-        return _animator.GetCurrentAnimatorStateInfo(0).length;
+        return _playerView.GetAnimationName();
     }
 
-    public string GetAnimationName()
+    public float GetCurrentAnimationDuration()
     {
-        return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        return _playerView.GetAnimationDuration();
     }
 
     public void Flip() => _playerMove.Flip();

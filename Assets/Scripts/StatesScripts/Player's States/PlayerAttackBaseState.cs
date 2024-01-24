@@ -47,9 +47,9 @@ public abstract class PlayerAttackBaseState : PlayerState
     private async void WaitWhileAttack()
     {
         var token = _player.GetCancellationTokenOnDestroy();
-        await UniTask.WaitUntil(() => _player.GetAnimationName().EndsWith("Hit") || _player.GetAnimationName().EndsWith("Shot"));
+        await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Hit") || _player.GetCurrentAnimationName().EndsWith("Shot"));
         if (token.IsCancellationRequested) return;
-        await Delayer.Delay(_player.GetAnimationDuration(), token);
+        await Delayer.Delay(_player.GetCurrentAnimationDuration(), token);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;

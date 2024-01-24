@@ -10,10 +10,12 @@ public class PlayerStayWithGunState : PlayerStayState
     private Pistol _pistol;
     private Transform _shootPoint;
     private int _waitsMethodCount;
+    private CustomCamera _camera;
 
-    public virtual void Initialize(Player player, Weapon weapon)
+    public virtual void Initialize(Player player, Weapon weapon, CustomCamera customCamera)
     {
         base.Initialize(player);
+        _camera = customCamera;
         _pistol = weapon as Pistol;
         try
         {
@@ -60,7 +62,7 @@ public class PlayerStayWithGunState : PlayerStayState
 
     private void RotateGun(Quaternion rotation)
     {
-        _shootPoint.position = _player.CustomCamera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
+        _shootPoint.position = _camera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
 
         _pistol.View.pistolView.rotation = rotation;
     }
@@ -75,9 +77,9 @@ public class PlayerStayWithGunState : PlayerStayState
         if (newStateType != PlayerStateType.AttackWithPistol)
         {
             _player.SetAnimation("HoldPistol", false);
-            await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Shot"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
             _pistol.View.pistolView.gameObject.SetActive(false);
-            await UniTask.WaitWhile(() => _player.GetAnimationName().EndsWith("Pistol"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"));
         }
     }
 }

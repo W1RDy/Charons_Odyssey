@@ -23,7 +23,10 @@ public class PatronsItem : SelfUsableItem
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
-        gun.AddPatrons(patronsCount);
+        if (collision.tag == "Player")
+        {
+            base.OnTriggerEnter2D(collision);
+            gun.AddPatrons(patronsCount);
+        }
     }
 }
