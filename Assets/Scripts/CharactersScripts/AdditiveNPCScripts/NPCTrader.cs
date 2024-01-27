@@ -9,9 +9,9 @@ public class NPCTrader : NPC, IInteractable
     [SerializeField] private Sprite _traderTradeSprite;
     private Sprite _defaultSprite;
 
-    protected override void Awake()
+    public override void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
     {
-        base.Awake();
+        base.InitializeNPC(direction, dialogId, isAvailable);
         _defaultSprite = GetComponent<SpriteRenderer>().sprite;
     }
 

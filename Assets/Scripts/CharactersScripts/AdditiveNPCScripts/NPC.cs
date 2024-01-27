@@ -9,18 +9,23 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     [SerializeField] private float _talkDelay;
     [SerializeField] private string _branchIndex;
     [SerializeField] protected bool _isAvailable = true;
-    [SerializeField] protected DialogCloudService _dialogCloudService; 
+    protected DialogCloudService _dialogCloudService; 
     protected SpriteRenderer _spriteRenderer;
     private DialogActivator _dialogActivator;
 
     [Inject]
-    private void Consruct(DialogActivator dialogActivator)
+    private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService)
     {
         _dialogActivator = dialogActivator;
+        _dialogCloudService = dialogCloudService;
     }
 
-    protected virtual void Awake()
+    public virtual void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
     {
+        if (direction == Direction.Left) transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        UpdateDialog(dialogId);
+        ChangeAvailable(isAvailable);
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
@@ -35,7 +40,7 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     {
         if (_isAvailable)
         {
-            _dialogActivator.ActivateDialog(_branchIndex, this);
+            _dialogActivator.ActivateDialog(_branchIndex);
             _trigger.TriggerWorked -= StartDialog;
         }
     }
@@ -43,7 +48,7 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     public void UpdateDialog(string dialogIndex)
     {
         _branchIndex = dialogIndex;
-        _trigger.TriggerWorked += StartDialog;
+        if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
 
     public string GetTalkableIndex()

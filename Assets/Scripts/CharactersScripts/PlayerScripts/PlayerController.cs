@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
                 else _player.ChangeState(PlayerStateType.Idle);
             }
 
-            if (_inputService.ButtonIsPushed(InputButtonType.Climb) && LadderMoveChecker.IsCanMove(_player, Input.GetAxis("Vertical")) && _player.OnGround())
+            if (_inputService.ButtonIsPushed(InputButtonType.Climb) && LadderMoveChecker.IsCanUse(_player, Input.GetAxis("Vertical")))
             {
                 _player.ChangeState(PlayerStateType.Climb);
             }
@@ -94,6 +94,14 @@ public class PlayerController : MonoBehaviour
             var ladder = collision.GetComponent<Ladder>();
             if (ladder.IsColliderOnLaddersCenter (_playerCollider)) LadderMoveChecker.SetLadderToCheck(ladder); 
             else LadderMoveChecker.RemoveLadderToCheck();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Ladder")
+        {
+            LadderMoveChecker.RemoveLadderToCheck();
         }
     }
 }

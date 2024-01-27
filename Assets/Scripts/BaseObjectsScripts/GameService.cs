@@ -11,20 +11,23 @@ public class GameService : MonoBehaviour
     private Inventory _inventory;
     private IInputService _inputService;
     private ButtonService _buttonService;
+    private LevelInitializer _levelInitializer;
     public int LevelIndex { get => _levelIndex; }
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService)
+    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService, LevelInitializer levelInitializer)
     {
         _loadSceneManager = loadSceneManager;
         _inventory = inventory;
         _inputService = inputService;
         _buttonService = buttonService;
+        _levelInitializer = levelInitializer;
     }
 
     private void Start()
     {
         _inventory.RemoveItem(ItemType.MissionItem);
+        _levelInitializer.SpawnAllLevelObjects();
     }
 
     private void Update() 

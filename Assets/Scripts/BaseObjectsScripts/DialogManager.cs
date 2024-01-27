@@ -21,40 +21,40 @@ public class DialogManager : MonoBehaviour // разбить класс
     {
         _branchDictionary = await DownloaderDataFromGoogleSheets.DownloadDialogsData();
 
-        //foreach (var branch in  _branchDictionary)
-        //{
-        //    Debug.Log(branch.Key);
-        //    foreach(var message in  branch.Value.messageConfigs)
-        //    {
-        //        Debug.Log(message.talkableIndex);
-        //    }
-        //}
+        foreach (var branch in _branchDictionary)
+        {
+            Debug.Log(branch.Key);
+            foreach (var message in branch.Value.messageConfigs)
+            {
+                Debug.Log(message.talkableIndex);
+            }
+        }
     }
 
-    public void ActivateDialog(string branchIndex, ITalkable[] talkables, CancellationToken token)
+    public void ActivateDialog(string branchIndex, TalkableFinderOnLevel talkableFinder, CancellationToken token)
     {
         if (_currentDialog == null)
         {
             _currentDialog = _branchDictionary[branchIndex];
             _dialogIsFinished = false;
             var message = _currentDialog.GetFirstMessage();
-            var talkable = ChooseTalkable(talkables, message.talkableIndex);
+            var talkable = talkableFinder.GetTalkable(message.talkableIndex);
             talkable.Talk(message.message);
-            Dialog(2f, talkables, token);
+            Dialog(2f, talkableFinder, token);
         }
     }
 
-    public async void Dialog(float delay, ITalkable[] talkables, CancellationToken token)
+    public async void Dialog(float delay, TalkableFinderOnLevel talkableFinder, CancellationToken token)
     {
         while (true)
         {
             await Delayer.Delay(delay, token);
             if (token.IsCancellationRequested || _dialogIsFinished) break;
-            ActivateNextMessage(talkables);
+            ActivateNextMessage(talkableFinder);
         }
     }
 
-    private void ActivateNextMessage(ITalkable[] talkables)
+    private void ActivateNextMessage(TalkableFinderOnLevel talkableFinder)
     {
         var message = _currentDialog.GetNextMessage();
         if (message == null)
@@ -63,7 +63,7 @@ public class DialogManager : MonoBehaviour // разбить класс
             return;
         }
 
-        var talkable = ChooseTalkable(talkables, message.talkableIndex);
+        var talkable = talkableFinder.GetTalkable(message.talkableIndex);
         talkable.Talk(message.message);
     }
 
@@ -72,16 +72,6 @@ public class DialogManager : MonoBehaviour // разбить класс
         _dialogIsFinished = true;
         DeactivateDialog(_currentDialog.index);
         _currentDialog = null;
-    }
-
-    private ITalkable ChooseTalkable(ITalkable[] talkables, string index)
-    {
-        index = index.Replace(" ", "");;
-        foreach (var talkable in talkables)
-        {
-            if (talkable.GetTalkableIndex() == index) return talkable;
-        }
-        throw new ArgumentNullException("Talkable with index " + index + " doesn't exist!");
     }
 
     public bool DialogIsFinished() => _dialogIsFinished;

@@ -13,9 +13,22 @@ public class ProjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        BindInputService();
-        BindLoadSceneManager();
+        BindServices();
+        BindManagers();
         BindInventory();
+    }
+
+    private void BindServices()
+    {
+        BindInputService();
+        BindEnemyService();
+        BindNPCService();
+        BindItemService();
+    }
+
+    private void BindManagers()
+    {
+        BindLoadSceneManager();
         BindDialogManager();
         BindWeaponManager();
     }
@@ -45,5 +58,26 @@ public class ProjectInstaller : MonoInstaller
         var inputService = new PCInputService();
         inputService.InitializeService();
         Container.Bind<IInputService>().To<PCInputService>().FromInstance(inputService).AsSingle();
+    }
+
+    private void BindEnemyService()
+    {
+        var enemyService = new EnemyService();
+        enemyService.InitializeService();
+        Container.Bind<EnemyService>().FromInstance(enemyService).AsSingle();
+    }
+
+    private void BindNPCService()
+    {
+        var npcService = new NPCService();
+        npcService.InitializeService();
+        Container.Bind<NPCService>().FromInstance(npcService).AsSingle();
+    }
+
+    private void BindItemService()
+    {
+        var itemService = new ItemService();
+        itemService.InitializeService();
+        Container.Bind<ItemService>().FromInstance(itemService).AsSingle();
     }
 }

@@ -24,13 +24,17 @@ public class EnemyDefault : Enemy, IReclinable
         _target = player.transform;
     }
 
-    protected override void Awake()
+    public override void InitializeEnemy(Direction direction, bool isAvailable)
     {
-        base.Awake();
+        base.InitializeEnemy(direction, isAvailable);
         _movable = GetComponent<IMovableWithStops>();
+
+        if (direction == Direction.Left) (_movable as IMovableWithFlips).Flip();
         _movable.SetSpeed(_speed);
         _trigger.TriggerWorked += StartMove;
         _trigger.TriggerTurnedOff += _movable.StopMove;
+
+        EnemyType = EnemyType.Default;
     }
 
     protected override void Update()

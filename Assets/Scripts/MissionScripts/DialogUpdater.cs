@@ -2,23 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class DialogUpdater : MonoBehaviour
 {
-    [SerializeField] private NPC[] _npcs;
+    private TalkableFinderOnLevel _talkableFinder;
+
+    [Inject]
+    private void Construct(TalkableFinderOnLevel talkableFinder)
+    {
+        _talkableFinder = talkableFinder;
+    }
 
     public void UpdateDialog(string npcIndex, string newDialogIndex)
     {
-        var npc = FindNpc(npcIndex);
+        var npc = _talkableFinder.GetTalkable(npcIndex) as NPC;
+        if (npc == null) throw new NullReferenceException("NPC with index " + npcIndex + "doesn't exist!");
         npc.UpdateDialog(newDialogIndex);
-    }
-
-    private NPC FindNpc(string index)
-    {
-        foreach (NPC npc in _npcs)
-        {
-            if (npc.GetTalkableIndex() == index) return npc;
-        }
-        throw new ArgumentNullException("NPC with index " + index + " doesn't exist!");
     }
 }

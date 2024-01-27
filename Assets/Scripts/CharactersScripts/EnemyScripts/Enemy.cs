@@ -2,9 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using Zenject;
 
 public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 {
+    public EnemyType EnemyType { get; protected set; }
     [SerializeField] protected float _hp;
     [SerializeField] protected bool _isAvailable;
     protected Animator _animator;
@@ -21,13 +24,14 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 
     public EnemyStateMachine StateMachine { get; set; }
 
-    protected virtual void Awake()
+    public virtual void InitializeEnemy(Direction direction, bool isAvailable)
     {
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
+        ChangeAvailable(isAvailable);
     }
 
     private void InitializeStatesInstances()

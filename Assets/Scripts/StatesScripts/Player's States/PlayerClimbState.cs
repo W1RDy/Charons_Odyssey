@@ -41,16 +41,16 @@ public class PlayerClimbState : PlayerState
 
     public override void Update()
     {
-        if (_isCanFinishState && _player.OnGround())
+        if (_isCanFinishState && _player.OnGround() || _ladderMoveChecker.GetLadder() == null)
         {
             IsStateFinished = true;
         }
 
-        if (_ladderMoveChecker.IsCanMove(_player, Input.GetAxis("Vertical")))
+        if (Input.GetAxis("Vertical") != _verticalMoveValue)
+        {
             _verticalMoveValue = Input.GetAxis("Vertical");
-        else _verticalMoveValue = 0;
-
-        _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
+            _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
+        }
     }
 
     private async void WaitSomeTime()

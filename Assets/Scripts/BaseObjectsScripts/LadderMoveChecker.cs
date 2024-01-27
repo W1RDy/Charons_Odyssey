@@ -21,22 +21,13 @@ public class LadderMoveChecker
         return _ladder;
     }
 
-    public bool IsCanMove(Player player, float direction)
+    public bool IsCanUse(Player player, float direction)
     {
-        var onGround = player.OnGround();
-        return IsCanMove(player, direction, onGround);
-    }
-
-    private bool IsCanMove(Player player, float direction, bool isStartMoving)
-    {
-        if (_ladder == null || direction == 0) return false;
+        if (_ladder == null || direction == 0 || !player.OnGround()) return false;
 
         var playerCollider = player.GetComponent<Collider2D>();
         var normalizedDirection = direction > 0 ? 1 : -1;
-
-        float predictedPos; 
-        if (isStartMoving) predictedPos = playerCollider.bounds.center.y + normalizedDirection * playerCollider.bounds.size.y;
-        else predictedPos = playerCollider.bounds.min.y + normalizedDirection * 0.01f;
+        var predictedPos = playerCollider.bounds.center.y + normalizedDirection * playerCollider.bounds.size.y;
 
         return _ladder.IsHaveLadderOnHeight(predictedPos);
     }

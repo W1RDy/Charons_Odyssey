@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 496053650554708113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.03, y: -1.34, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3385030913186987544}
   - {fileID: 733625873887661154}
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 10
-  _isAvailable: 1
+  _isAvailable: 0
   _idleState: {fileID: 11400000, guid: 903e47412f90b1545b951cf20adf3951, type: 2}
   _moveState: {fileID: 11400000, guid: c13ec59d31a44e0459d0098854e1bfd0, type: 2}
   _attackState: {fileID: 11400000, guid: 51b644d0c7e6ceb47806a384af21c808, type: 2}
@@ -292,4 +292,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064735805d3affd42b5870fce28f8fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInTrigger: 0
