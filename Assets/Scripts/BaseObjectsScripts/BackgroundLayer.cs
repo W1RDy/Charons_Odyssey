@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 using Zenject;
 
 [Serializable]
-public class BackgroundLayer : IMovable
+public class BackgroundLayer : IMovable // исправить баг со слоями
 {
     public string layerIndex;
     public BackgroundLayerPart[] layerParts;

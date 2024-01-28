@@ -8,27 +8,25 @@ using Zenject;
 public class DialogActivator : IDisposable
 {
     private Player _player;
-    private DialogManager _dialogManager;
+    private DialogLifeController _dialogLifeController;
     private DialogCloudService _dialogCloudService;
-    private TalkableFinderOnLevel _talkableFinder;
     private Action<string> DeactivateDialogDelegate;
 
     [Inject]
-    private void Construct(Player player, DialogManager dialogManager, DialogCloudService dialogCloudService, TalkableFinderOnLevel talkableFinder)
+    private void Construct(Player player, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService)
     {
         _player = player;
-        _dialogManager = dialogManager;
+        _dialogLifeController = dialogLifeController;
         _dialogCloudService = dialogCloudService;
-        _talkableFinder = talkableFinder;
 
         DeactivateDialogDelegate = dialogIndex => DeactivateDialog();
-        _dialogManager.DeactivateDialog += DeactivateDialogDelegate;
+        _dialogLifeController.DeactivateDialog += DeactivateDialogDelegate;
     }
 
     public void ActivateDialog(string branchIndex)
     {
         _player.StartTalk();
-        _dialogManager.ActivateDialog(branchIndex, _talkableFinder, _player.GetCancellationTokenOnDestroy());
+        _dialogLifeController.StartDialog(branchIndex, _player.GetCancellationTokenOnDestroy());
     }
 
     public void DeactivateDialog()
@@ -38,6 +36,6 @@ public class DialogActivator : IDisposable
 
     public void Dispose()
     {
-        _dialogManager.DeactivateDialog -= DeactivateDialogDelegate;
+        _dialogLifeController.DeactivateDialog -= DeactivateDialogDelegate;
     }
 }

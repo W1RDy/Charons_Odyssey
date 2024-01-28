@@ -6,7 +6,7 @@ using Zenject;
 public class GameService : MonoBehaviour
 {
     [SerializeField] private int _levelIndex;
-    [SerializeField] private WindowActivator _windowActivator;
+    private WindowActivator _windowActivator;
     private LoadSceneManager _loadSceneManager;
     private Inventory _inventory;
     private IInputService _inputService;
@@ -15,13 +15,14 @@ public class GameService : MonoBehaviour
     public int LevelIndex { get => _levelIndex; }
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService, LevelInitializer levelInitializer)
+    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService, LevelInitializer levelInitializer, WindowActivator windowActivator)
     {
         _loadSceneManager = loadSceneManager;
         _inventory = inventory;
         _inputService = inputService;
         _buttonService = buttonService;
         _levelInitializer = levelInitializer;
+        _windowActivator = windowActivator;
     }
 
     private void Start()

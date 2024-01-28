@@ -8,21 +8,21 @@ public class TaskTalk : BaseTask
 {
     [SerializeField] private string _goalDialogIndex;
     [SerializeField] private string _npcIndex;
-    private DialogManager _dialogManager;
+    private DialogLifeController _dialogController;
     private DialogUpdater _dialogUpdater;
     private Action<string> CheckDialog;
 
     [Inject]
-    private void Construct(DialogManager dialogManager, DialogUpdater dialogUpdater)
+    private void Construct(DialogLifeController dialogController, DialogUpdater dialogUpdater)
     {
-        _dialogManager = dialogManager;
+        _dialogController = dialogController;
         _dialogUpdater = dialogUpdater;
         CheckDialog = dialogIndex =>
         {
             if (dialogIndex == _goalDialogIndex) FinishTask();
         };
 
-        _dialogManager.DeactivateDialog += CheckDialog;
+        _dialogController.DeactivateDialog += CheckDialog;
     }
 
     public override void ActivateTask()
@@ -33,6 +33,6 @@ public class TaskTalk : BaseTask
 
     private void OnDestroy()
     {
-        _dialogManager.DeactivateDialog -= CheckDialog;
+        _dialogController.DeactivateDialog -= CheckDialog;
     }
 }

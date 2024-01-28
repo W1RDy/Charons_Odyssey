@@ -99,7 +99,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
         }
     }
 
-    IEnumerator TakeHit() // переделать
+    IEnumerator TakeHit() // убрать, когда появится анимация
     {
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.red;

@@ -7,17 +7,17 @@ public class PlayerStatesInitializer : MonoBehaviour
 {
     private Player _player;
     private WeaponService _weaponService;
-    private DialogManager _dialogManager;
+    private DialogLifeController _dialogLifeController;
     private DialogCloudService _dialogCloudService;
     private Inventory _inventory;
     private List<PlayerState> _statesInstances;
     private CustomCamera _customCamera;
 
     [Inject]
-    private void Construct(Inventory inventory, WeaponService weaponService, DialogManager dialogManager, DialogCloudService dialogCloudService, CustomCamera customCamera)
+    private void Construct(Inventory inventory, WeaponService weaponService, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService, CustomCamera customCamera)
     {
         _weaponService = weaponService;
-        _dialogManager = dialogManager;
+        _dialogLifeController = dialogLifeController;
         _dialogCloudService = dialogCloudService;
         _inventory = inventory;
         _customCamera = customCamera;
@@ -50,7 +50,7 @@ public class PlayerStatesInitializer : MonoBehaviour
                 else (state as PlayerAttackBaseState).Initialize(_player, weapon);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
-                (state as PlayerTalkState).Initialize(_player, _dialogManager, _dialogCloudService);
+                (state as PlayerTalkState).Initialize(_player, _dialogLifeController, _dialogCloudService);
             else if (state.GetStateType() == PlayerStateType.Heal)
                 (state as PlayerHealState).Initialize(_player, _inventory);
             else state.Initialize(_player);

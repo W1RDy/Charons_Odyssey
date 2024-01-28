@@ -35,7 +35,7 @@ public class PlayerAttackWithPaddleState : PlayerAttackBaseState
         {
             var objWithHealth = hittable as IHasHealth;
             var reclinable = hittable as IReclinable;
-            if (objWithHealth != null) objWithHealth.TakeHit(_paddle.Damage);
+            objWithHealth?.TakeHit(_paddle.Damage);
             if (reclinable != null) ReclineObjs(reclinable);
         }
     }

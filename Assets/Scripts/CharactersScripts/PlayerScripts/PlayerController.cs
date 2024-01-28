@@ -9,11 +9,11 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMove _playerMove;
     private Player _player;
+    private PlayerColliderChecker _playerColliderChecker;
     private bool _isControl = true;
-    private Collider2D _playerCollider;
     private IInputService _inputService;
     private Inventory _inventory;
-    public LadderMoveChecker LadderMoveChecker { get; private set; }
+    public LadderUseChecker LadderUseChecker { get; private set; }
     public bool IsControl 
     {
         get => _isControl; 
@@ -32,14 +32,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        LadderMoveChecker = new LadderMoveChecker();
+        LadderUseChecker = new LadderUseChecker();
     }
 
     private void Start()
     {
         _playerMove = GetComponent<PlayerMove>();
         _player = GetComponent<Player>();
-        _playerCollider = GetComponent<Collider2D>();
+        _playerColliderChecker = GetComponent<PlayerColliderChecker>();
     }
 
     private void Update()
@@ -57,12 +57,14 @@ public class PlayerController : MonoBehaviour
                 else _player.ChangeState(PlayerStateType.Idle);
             }
 
-            if (_inputService.ButtonIsPushed(InputButtonType.Climb) && LadderMoveChecker.IsCanUse(_player, Input.GetAxis("Vertical")))
+            var isCollideWithLadder = _playerColliderChecker.TryGetLadder(out var ladder);
+            if (_inputService.ButtonIsPushed(InputButtonType.Climb) && LadderUseChecker.IsCanUse(_player, ladder, Input.GetAxis("Vertical")))
             {
                 _player.ChangeState(PlayerStateType.Climb);
             }
-            else if ((LadderMoveChecker.GetLadder() == null && _inputService.ButtonIsPushed(InputButtonType.Climb)) || (LadderMoveChecker.GetLadder() != null && LadderMoveChecker.GetLadder().LadderIsUsing() && _player.OnGround())) // переделать
+            else if ((!isCollideWithLadder && _inputService.ButtonIsPushed(InputButtonType.Climb)) || LadderUseChecker.IsCanThrow(_player, ladder, Input.GetAxis("Vertical")))
             {
+                Debug.Log("Exit");
                 _player.ChangeState(PlayerStateType.Idle);
             }
 
@@ -73,7 +75,7 @@ public class PlayerController : MonoBehaviour
             if (_inputService.ButtonIsPushed(InputButtonType.Interact))
             {
                 var interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);
-                if (interactable != null) interactable.Interact();
+                interactable?.Interact();
             }
             else if (_inputService.ButtonIsPushed(InputButtonType.Heal) && _inventory.HasItem(ItemType.FirstAidKit))
             {
@@ -84,24 +86,6 @@ public class PlayerController : MonoBehaviour
         {
             _player.ChangeState(PlayerStateType.Idle);
             _playerMove.DisableMovement();
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.tag == "Ladder")
-        {
-            var ladder = collision.GetComponent<Ladder>();
-            if (ladder.IsColliderOnLaddersCenter (_playerCollider)) LadderMoveChecker.SetLadderToCheck(ladder); 
-            else LadderMoveChecker.RemoveLadderToCheck();
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Ladder")
-        {
-            LadderMoveChecker.RemoveLadderToCheck();
         }
     }
 }

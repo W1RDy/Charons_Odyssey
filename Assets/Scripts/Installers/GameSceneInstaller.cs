@@ -14,6 +14,7 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private DialogUpdater _dialogUpdater;
     [SerializeField] private LevelInitializer _levelInitializer;
     [SerializeField] private NPCGroup _npcGroupPrefab;
+    [SerializeField] private WindowActivator _windowActivator;
     private EnemyService _enemyService;
     private NPCService _npcService;
     private NPCFactory _npcFactory;
@@ -31,9 +32,11 @@ public class GameSceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindEssenceSpawner();
+        BindWindowActivator();
         BindServices();
         BindHUD();
         BindCustomCamera();
+        BindDialogLifeController();
         BindDialogActivator();
         BindDialogUpdater();
         BindTalkableFinder();
@@ -142,5 +145,15 @@ public class GameSceneInstaller : MonoInstaller
     {
         _talkableFinder = new TalkableFinderOnLevel();
         Container.Bind<TalkableFinderOnLevel>().FromInstance(_talkableFinder).AsSingle();
+    }
+
+    private void BindDialogLifeController()
+    {
+        Container.Bind<DialogLifeController>().FromNew().AsSingle();
+    }
+
+    private void BindWindowActivator()
+    {
+        Container.Bind<WindowActivator>().FromInstance(_windowActivator).AsSingle();
     }
 }

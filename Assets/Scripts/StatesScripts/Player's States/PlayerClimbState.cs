@@ -12,51 +12,41 @@ public class PlayerClimbState : PlayerState
     protected PlayerMove _playerMove;
     private float _verticalMoveValue = 0;
     private Ladder _ladder;
-    private LadderMoveChecker _ladderMoveChecker;
-    private CancellationToken _token;
-    private bool _isCanFinishState;
+    private LadderUseChecker _ladderUseChecker;
+    private PlayerColliderChecker _playerColliderChecker;
 
     public override void Initialize(Player player)
     {
         base.Initialize(player);
 
         _playerMove = player.GetComponent<PlayerMove>();
-        _ladderMoveChecker = _player.GetComponentInChildren<PlayerController>().LadderMoveChecker;
-        _token = _player.GetCancellationTokenOnDestroy();
+        _ladderUseChecker = _player.GetComponentInChildren<PlayerController>().LadderUseChecker;
+        _playerColliderChecker = _player.GetComponent<PlayerColliderChecker>();
     }
 
     public override void Enter()
     {
         _player.SetAnimation("Climb", true);
-        _ladder = _ladderMoveChecker.GetLadder();
-        if (_ladder == null) IsStateFinished = true;
-        else
+        IsStateFinished = !_playerColliderChecker.TryGetLadder(out _ladder);
+
+        if (_ladder)
         {
             _ladder.UseLadder();
-            IsStateFinished = false;
-            _isCanFinishState = false;
-            WaitSomeTime();
         }
     }
 
     public override void Update()
-    {
-        if (_isCanFinishState && _player.OnGround() || _ladderMoveChecker.GetLadder() == null)
-        {
-            IsStateFinished = true;
-        }
-
+    { 
         if (Input.GetAxis("Vertical") != _verticalMoveValue)
         {
             _verticalMoveValue = Input.GetAxis("Vertical");
             _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
         }
-    }
 
-    private async void WaitSomeTime()
-    {
-        await Delayer.Delay(0.5f, _token);
-        if (!_token.IsCancellationRequested) _isCanFinishState = true;
+        if (!_playerColliderChecker.TryGetLadder(out var ladder) || _ladderUseChecker.IsCanThrow(_player, ladder, _verticalMoveValue))
+        {
+            IsStateFinished = true;
+        }
     }
 
     public override void Exit()

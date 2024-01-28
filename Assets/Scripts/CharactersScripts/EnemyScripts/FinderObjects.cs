@@ -22,8 +22,7 @@ public static class FinderObjects
         {
             foreach (var collider in colliders)
             {
-                var hittable = collider.GetComponent<IHittable>(); // проверить предложение
-                if (hittable != null) result.Add(hittable);
+                if (collider.TryGetComponent<IHittable>(out var hittable)) result.Add(hittable);
             }
             if (result.Count > 0) return result;
         }
@@ -38,8 +37,7 @@ public static class FinderObjects
         {
             foreach (var collider in colliders)
             {
-                var interactable = collider.GetComponent<IInteractable>(); // проверить предложение
-                if (interactable != null) result.Add(interactable);
+                if (collider.TryGetComponent<IInteractable>(out var interactable)) result.Add(interactable);
             }
             if (result.Count > 0) return result[0];
         }

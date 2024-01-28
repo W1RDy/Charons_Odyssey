@@ -7,7 +7,7 @@ public class TalkableFinderOnLevel
 
     public void AddTalkable(ITalkable talkable)
     {
-        if (_talkableDictionary == null) _talkableDictionary = new Dictionary<string, ITalkable>();
+        _talkableDictionary ??= new Dictionary<string, ITalkable>();
 
         if (!_talkableDictionary.ContainsKey(talkable.GetTalkableIndex())) _talkableDictionary.Add(talkable.GetTalkableIndex(), talkable);
     }

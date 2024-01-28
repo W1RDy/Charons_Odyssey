@@ -1,13 +1,21 @@
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class NPCTrader : NPC, IInteractable
 {
-    [SerializeField] private WindowActivator _windowActivator;
     [SerializeField] private Sprite _traderTradeSprite;
+    private WindowActivator _windowActivator;
     private Sprite _defaultSprite;
+
+    [Inject]
+    private void Construct(WindowActivator windowActivator)
+    {
+        _windowActivator = windowActivator;
+    }
 
     public override void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
     {

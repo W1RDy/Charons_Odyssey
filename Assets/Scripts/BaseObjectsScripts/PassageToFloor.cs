@@ -8,12 +8,12 @@ using Zenject;
 public class PassageToFloor : MonoBehaviour
 {
     private Collider2D _collider;
-    private Player _player;
+    private PlayerColliderChecker _playerColliderChecker;
 
     [Inject]
     private void Construct(Player player)
     {
-        _player = player;
+        _playerColliderChecker = player.GetComponent<PlayerColliderChecker>();
     }
 
     private void Awake()
@@ -23,7 +23,7 @@ public class PassageToFloor : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && collision.ClosestPoint(_player.transform.position).y > transform.position.y)
+        if (collision.tag == "Player" && collision.ClosestPoint(_playerColliderChecker.transform.position).y > transform.position.y)
         {
             ActivatePassage();
         }
@@ -32,11 +32,12 @@ public class PassageToFloor : MonoBehaviour
     public void DeactivatePassage()
     {
         _collider.isTrigger = true;
-        _player.RemoveGround(_collider);
+        _playerColliderChecker.RemoveGround(_collider);
     }
 
     public void ActivatePassage()
     {
+        Debug.Log("Activate");
         _collider.isTrigger = false;
     }
 }

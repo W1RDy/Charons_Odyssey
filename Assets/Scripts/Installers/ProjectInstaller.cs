@@ -4,11 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
-public class ProjectInstaller : MonoInstaller
+public class ProjectInstaller : MonoInstaller // поработать с сервисами
 {
     [SerializeField] private LoadSceneManager _sceneManagerPrefab;
     [SerializeField] private Inventory _inventoryPrefab;
-    [SerializeField] private DialogManager _dialogManager;
     [SerializeField] private WeaponService _weaponService;
 
     public override void InstallBindings()
@@ -21,6 +20,7 @@ public class ProjectInstaller : MonoInstaller
     private void BindServices()
     {
         BindInputService();
+        BindDialogService();
         BindEnemyService();
         BindNPCService();
         BindItemService();
@@ -29,7 +29,6 @@ public class ProjectInstaller : MonoInstaller
     private void BindManagers()
     {
         BindLoadSceneManager();
-        BindDialogManager();
         BindWeaponManager();
     }
 
@@ -41,11 +40,6 @@ public class ProjectInstaller : MonoInstaller
     private void BindInventory()
     {
         Container.Bind<Inventory>().FromComponentInNewPrefab(_inventoryPrefab).AsSingle();
-    }
-
-    private void BindDialogManager()
-    {
-        Container.Bind<DialogManager>().FromComponentInNewPrefab(_dialogManager).AsSingle();
     }
 
     private void BindWeaponManager()
@@ -79,5 +73,12 @@ public class ProjectInstaller : MonoInstaller
         var itemService = new ItemService();
         itemService.InitializeService();
         Container.Bind<ItemService>().FromInstance(itemService).AsSingle();
+    }
+
+    private void BindDialogService()
+    {
+        var dialogService = new DialogService();
+        dialogService.InitializeSevice();
+        Container.Bind<DialogService>().FromInstance(dialogService).AsSingle();
     }
 }

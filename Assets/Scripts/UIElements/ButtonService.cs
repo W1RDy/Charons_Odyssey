@@ -5,14 +5,22 @@ using Zenject;
 
 public class ButtonService : MonoBehaviour
 {
-    [SerializeField] private WindowActivator _windowActivator;
-    [SerializeField] private NPCTrader _trader;
+    private WindowActivator _windowActivator;
+    private TalkableFinderOnLevel _talkableFinderOnLevel;
+    private NPCTrader _trader;
     private LoadSceneManager _loadSceneManager;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager)
+    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel)
     {
         _loadSceneManager = loadSceneManager;
+        _windowActivator = windowActivator;
+        _talkableFinderOnLevel = talkableFinderOnLevel;
+    }
+
+    private void Start()
+    {
+        _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
     }
 
     public void CloseTrade()

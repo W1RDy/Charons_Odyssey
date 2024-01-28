@@ -537,6 +537,7 @@ MonoBehaviour:
   _dialogUpdater: {fileID: 1593684095}
   _levelInitializer: {fileID: 946304579}
   _npcGroupPrefab: {fileID: 6374726999237428764, guid: d44e4434900fbd34989c25b45864a075, type: 3}
+  _windowActivator: {fileID: 1137998389}
 --- !u!1001 &477268698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1296,7 +1297,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelIndex: 0
-  _windowActivator: {fileID: 1137998389}
 --- !u!4 &1156764379
 Transform:
   m_ObjectHideFlags: 0
