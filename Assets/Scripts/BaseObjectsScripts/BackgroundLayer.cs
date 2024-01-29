@@ -7,12 +7,12 @@ using Random = UnityEngine.Random;
 using Zenject;
 
 [Serializable]
-public class BackgroundLayer : IMovable // исправить баг со слоями
+public class BackgroundLayer : IMovable
 {
     public string layerIndex;
     public BackgroundLayerPart[] layerParts;
     [Range(0, 10)] public float speed = 1;
-    public float randomOffsetValue;
+    public float[] randomOffsetRange;
     private Transform _layer;
     private BackgroundLayerPart _leftPart;
     private float _cameraWidthInUints;
@@ -52,15 +52,17 @@ public class BackgroundLayer : IMovable // исправить баг со слоями
     {
         if (_leftPart.partTransform.position.x < _customCamera.GetCameraPos().x - _cameraWidthInUints * 2f)
         {
-            var _offset = GetRandomOffset();
-            _leftPart.partTransform.position = new Vector2(_leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerSize.x + _offset, _leftPart.partTransform.position.y);
+            var offset = GetRandomOffset();
+            var layerRightBorder = _leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerExtent.x;
+            _leftPart.partTransform.position = new Vector2(layerRightBorder + _leftPart.LayerExtent.x + offset, _leftPart.partTransform.position.y);
             _leftPart = _leftPart.PreviousPart;
         }
     }
 
     private float GetRandomOffset()
     {
-        if (randomOffsetValue != 0) return Random.Range(-randomOffsetValue, randomOffsetValue);
+        if (randomOffsetRange.Length == 2) return Random.Range(randomOffsetRange[0], randomOffsetRange[1]);
+        else if (randomOffsetRange.Length > 0) throw new InvalidOperationException("RandomOffsetRange should have length 2 or 0!");
         return 0;
     }
 }
@@ -71,16 +73,16 @@ public class BackgroundLayerPart
     public Transform partTransform;
     public BackgroundLayerPart NextPart { get; private set; }
     public BackgroundLayerPart PreviousPart { get; private set; }
-    public Vector2 LayerSize { get; private set; }
+    public Vector2 LayerExtent { get; private set; }
 
     public void SetParts(BackgroundLayerPart nextPart, BackgroundLayerPart previousPart)
     {
-        foreach (var sprite in partTransform.GetComponentsInChildren<SpriteRenderer>())
-        {
-            if (LayerSize == null || sprite.sprite.bounds.size.x > LayerSize.x) 
-                LayerSize = sprite.sprite.bounds.size;
-        }
         NextPart = nextPart;
         PreviousPart = previousPart;
+        foreach (var sprite in partTransform.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (LayerExtent == null || sprite.sprite.bounds.extents.x > LayerExtent.x)
+                LayerExtent = sprite.sprite.bounds.extents;
+        }
     }
 }

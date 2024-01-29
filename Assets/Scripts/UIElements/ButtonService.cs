@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 using Zenject;
 
@@ -20,7 +21,11 @@ public class ButtonService : MonoBehaviour
 
     private void Start()
     {
-        _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
+        try
+        {
+            _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
+        }
+        catch { }
     }
 
     public void CloseTrade()
