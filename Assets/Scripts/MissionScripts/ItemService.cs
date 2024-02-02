@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ItemService
+public class ItemService : IService
 {
     #region Const
 

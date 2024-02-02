@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
-public class ProjectInstaller : MonoInstaller // поработать с сервисами
+public class ProjectInstaller : MonoInstaller
 {
     [SerializeField] private LoadSceneManager _sceneManagerPrefab;
     [SerializeField] private Inventory _inventoryPrefab;
@@ -12,8 +13,9 @@ public class ProjectInstaller : MonoInstaller // поработать с сервисами
 
     public override void InstallBindings()
     {
+        BindDataController();
         BindServices();
-        BindManagers();
+        BindLoadSceneManager();
         BindInventory();
     }
 
@@ -24,12 +26,7 @@ public class ProjectInstaller : MonoInstaller // поработать с сервисами
         BindEnemyService();
         BindNPCService();
         BindItemService();
-    }
-
-    private void BindManagers()
-    {
-        BindLoadSceneManager();
-        BindWeaponManager();
+        BindWeaponService();
     }
 
     private void BindLoadSceneManager()
@@ -42,9 +39,9 @@ public class ProjectInstaller : MonoInstaller // поработать с сервисами
         Container.Bind<Inventory>().FromComponentInNewPrefab(_inventoryPrefab).AsSingle();
     }
 
-    private void BindWeaponManager()
+    private void BindWeaponService()
     {
-        Container.Bind<WeaponService>().FromComponentInNewPrefab(_weaponService).AsSingle();
+        BindService(Container.InstantiatePrefabForComponent<WeaponService>(_weaponService));
     }
 
     private void BindInputService()
@@ -56,29 +53,34 @@ public class ProjectInstaller : MonoInstaller // поработать с сервисами
 
     private void BindEnemyService()
     {
-        var enemyService = new EnemyService();
-        enemyService.InitializeService();
-        Container.Bind<EnemyService>().FromInstance(enemyService).AsSingle();
+        BindService(new EnemyService());
     }
 
     private void BindNPCService()
     {
-        var npcService = new NPCService();
-        npcService.InitializeService();
-        Container.Bind<NPCService>().FromInstance(npcService).AsSingle();
+        BindService(new NPCService());
     }
 
     private void BindItemService()
     {
-        var itemService = new ItemService();
-        itemService.InitializeService();
-        Container.Bind<ItemService>().FromInstance(itemService).AsSingle();
+        BindService(new ItemService());
     }
 
     private void BindDialogService()
     {
-        var dialogService = new DialogService();
-        dialogService.InitializeSevice();
-        Container.Bind<DialogService>().FromInstance(dialogService).AsSingle();
+        BindService(new DialogService());
+    }
+
+    private void BindDataController()
+    {
+        var dataController = new DataController();
+        dataController.LoadDatas();
+        Container.Bind<DataController>().FromInstance(dataController).AsSingle();
+    }
+
+    private void BindService<T>(T service) where T : IService
+    {
+        service.InitializeService();
+        Container.Bind<T>().FromInstance(service).AsSingle();
     }
 }

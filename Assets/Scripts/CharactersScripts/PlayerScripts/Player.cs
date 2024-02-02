@@ -72,7 +72,6 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     private void Start()
     {
         _playerStatesInitializator.InitializeStates();
-        _bulletsCounterIndicator.SetCount((_weaponService.GetWeapon(WeaponType.Pistol) as Pistol).PatronsCount); // перенести, если появится больше оружия
     }
 
     private void Update()

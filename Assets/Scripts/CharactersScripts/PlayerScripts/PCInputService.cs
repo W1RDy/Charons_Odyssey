@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PCInputService : IInputService
+public class PCInputService : IInputService, IService
 {
     private Dictionary<InputButtonType, InputButton> _buttons;
     private TimeCounter _timeCounter;

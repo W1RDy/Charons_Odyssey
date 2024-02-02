@@ -16,7 +16,6 @@ public class Bullet : MonoBehaviour
         _layer = (int)attackedObj;
         GetComponent<DirectionalMove>().SetSpeed(_speed);
         _damage = damage;
-        Debug.Log(distance / _speed);
         Destroy(gameObject, distance / _speed);
     }
 

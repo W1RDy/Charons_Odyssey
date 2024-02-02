@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogService 
+public class DialogService : IService 
 {
     private Dictionary<string, DialogBranch> _branchDictionary;
 
-    public void InitializeSevice()
+    public void InitializeService()
     {
         InitializeMessagesDictionary();
     }
@@ -15,14 +15,14 @@ public class DialogService
     {
         _branchDictionary = await DownloaderDataFromGoogleSheets.DownloadDialogsData();
 
-        foreach (var branch in _branchDictionary)
-        {
-            Debug.Log(branch.Key);
-            foreach (var message in branch.Value.messageConfigs)
-            {
-                Debug.Log(message.talkableIndex);
-            }
-        }
+        //foreach (var branch in _branchDictionary)
+        //{
+        //    Debug.Log(branch.Key);
+        //    foreach (var message in branch.Value.messageConfigs)
+        //    {
+        //        Debug.Log(message.talkableIndex);
+        //    }
+        //}
     }
 
     public DialogBranch GetDialog(string dialogId)

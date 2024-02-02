@@ -3,30 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class PatronsItem : SelfUsableItem
+public class PatronsItem : InventoryItem
 {
     [SerializeField] private int patronsCount;
-    private Guns gun;
-    private WeaponService _weaponService;
-
-    [Inject]
-    private void Construct(WeaponService weaponService)
-    {
-        _weaponService = weaponService;
-    }
-
-    private void Start()
-    {      
-        gun = _weaponService.GetWeapon(WeaponType.Pistol) as Guns;
-        Debug.Log(gun);
-    }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            base.OnTriggerEnter2D(collision);
-            gun.AddPatrons(patronsCount);
+            _inventory.AddItem(this, patronsCount);
+            gameObject.SetActive(false);
+            _collider.enabled = false;
         }
     }
 }

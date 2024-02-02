@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class NPCService
+public class NPCService : IService
 {
     #region Const
     private const string Conductor = "Conductor";

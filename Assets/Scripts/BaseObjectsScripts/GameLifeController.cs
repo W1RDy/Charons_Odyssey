@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class GameService : MonoBehaviour
+public class GameLifeController : MonoBehaviour
 {
-    [SerializeField] private int _levelIndex;
     private WindowActivator _windowActivator;
     private LoadSceneManager _loadSceneManager;
     private Inventory _inventory;
     private IInputService _inputService;
     private ButtonService _buttonService;
     private LevelInitializer _levelInitializer;
-    public int LevelIndex { get => _levelIndex; }
 
     [Inject]
     private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService, LevelInitializer levelInitializer, WindowActivator windowActivator)
@@ -27,6 +25,7 @@ public class GameService : MonoBehaviour
 
     private void Start()
     {
+        _inventory.LoadInventory();
         _inventory.RemoveItem(ItemType.MissionItem);
         _levelInitializer.SpawnAllLevelObjects();
     }
@@ -47,6 +46,7 @@ public class GameService : MonoBehaviour
 
     public void WinGame()
     {
-        _loadSceneManager.LoadNextLevel();
+        _inventory.SaveInventory();
+        _loadSceneManager.LoadNextScene();
     }
 }

@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogCloudService : MonoBehaviour
+public class DialogCloudService : MonoBehaviour, IService
 {
     [SerializeField] private DialogCloud _dialogCloudPrefab;
     [SerializeField] private float _cloudOffset;
     [SerializeField] private Transform _spawnParent;
     private DialogCloud _currentDialogCloud;
+
+    public void InitializeService()
+    {
+
+    }
 
     public void SpawnDialogCloud(Vector3 pos)
     {

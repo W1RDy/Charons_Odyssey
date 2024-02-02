@@ -16,7 +16,6 @@ public abstract class BaseTask : MonoBehaviour
     {
         if (gameObject.activeInHierarchy && _goals && _goals.gameObject.activeInHierarchy)
         {
-            Debug.Log(_goals);
             _goals.ActivateGoal(_taskInfo.targetText);
         }
     }

@@ -35,5 +35,6 @@ public enum WindowType
     TradeWindow,
     PauseWindow,
     MenuWindow,
-    SettingsWindow
+    SettingsWindow,
+    ResetDataWindow
 }

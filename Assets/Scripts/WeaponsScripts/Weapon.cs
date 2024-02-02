@@ -23,27 +23,28 @@ public abstract class Weapon : MonoBehaviour
 public abstract class Guns : Weapon
 {
     private int _patronsCount;
-    public int PatronsCount { get => _patronsCount; }
     public GameObject BulletPrefab => (_weaponData as GunsData).Bullet.gameObject;
     protected BulletsCounterIndicator _bulletsCounterIndicator;
-
-    private void Start()
+    public int PatronsCount
     {
-        _patronsCount = (_weaponData as GunsData).PatronsCount;
-    }
+        get
+        {
+            return _patronsCount;
+        }
+        set
+        {
+            if (value.GetType() == typeof(int) && value > 100)
+            {
+                _patronsCount = (_weaponData as GunsData).PatronsCount;
+                _bulletsCounterIndicator.SetCount(_patronsCount);
 
-    public void DisablePatrons(int patrons)
-    {
-        _patronsCount -= patrons;
-        if (_patronsCount < 0) _patronsCount = 0;
-        _bulletsCounterIndicator.SetCount(_patronsCount);
-    }
-
-    public void AddPatrons(int patrons)
-    {
-        Debug.Log("Add patrons");
-        _patronsCount += patrons;
-        _bulletsCounterIndicator.SetCount(_patronsCount);
+            }
+            else if (value.GetType() == typeof(int) && value >= 0)
+            {
+                _patronsCount = value;
+                _bulletsCounterIndicator.SetCount(_patronsCount);
+            }
+        }
     }
 }
 

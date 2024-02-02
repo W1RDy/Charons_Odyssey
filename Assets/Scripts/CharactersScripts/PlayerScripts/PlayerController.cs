@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour
             }
             else if ((!isCollideWithLadder && _inputService.ButtonIsPushed(InputButtonType.Climb)) || LadderUseChecker.IsCanThrow(_player, ladder, Input.GetAxis("Vertical")))
             {
-                Debug.Log("Exit");
                 _player.ChangeState(PlayerStateType.Idle);
             }
 

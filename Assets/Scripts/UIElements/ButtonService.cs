@@ -4,19 +4,26 @@ using System.Linq.Expressions;
 using UnityEngine;
 using Zenject;
 
-public class ButtonService : MonoBehaviour
+public class ButtonService : MonoBehaviour, IService
 {
     private WindowActivator _windowActivator;
     private TalkableFinderOnLevel _talkableFinderOnLevel;
     private NPCTrader _trader;
     private LoadSceneManager _loadSceneManager;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel)
+    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController)
     {
         _loadSceneManager = loadSceneManager;
         _windowActivator = windowActivator;
         _talkableFinderOnLevel = talkableFinderOnLevel;
+        _dataController = dataController;
+    }
+
+    public void InitializeService()
+    {
+
     }
 
     private void Start()
@@ -35,7 +42,19 @@ public class ButtonService : MonoBehaviour
 
     public void StartGame()
     {
-        _loadSceneManager.LoadScene(1);
+        _loadSceneManager.LoadScene(_dataController.DataContainer.lastLocationIndex);
+    }
+
+    public void NewGame()
+    {
+        if (_dataController.DataContainer.isHaveSavings) _windowActivator.ActivateWindow(WindowType.ResetDataWindow);
+        else ResetDatasAndStartGame();
+    }
+
+    public void ResetDatasAndStartGame()
+    {
+        _dataController.ResetDatas();
+        StartGame();
     }
 
     public void ActivatePause()
@@ -59,6 +78,12 @@ public class ButtonService : MonoBehaviour
     public void DeactivateSettings()
     {
         _windowActivator.DeactivateWindow(WindowType.SettingsWindow);
+        Time.timeScale = 1;
+    }
+
+    public void DeactivateResetDataWindow()
+    {
+        _windowActivator.DeactivateWindow(WindowType.ResetDataWindow);
         Time.timeScale = 1;
     }
 

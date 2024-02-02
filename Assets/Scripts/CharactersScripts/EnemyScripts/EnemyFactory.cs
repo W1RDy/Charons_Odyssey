@@ -16,7 +16,6 @@ public class EnemyFactory : IEnemyFactory
 
     public Enemy Create(EnemyType enemyType, Direction direction, bool isAvailable, Vector2 position)
     {
-        Debug.Log("SpawnEmemies");
         var enemyObj = _enemyService.GetEnemyPrefab(enemyType).GetComponent<Enemy>();
         var enemy = _instantiator.InstantiatePrefabForComponent<Enemy>(enemyObj, position);
         enemy.InitializeEnemy(direction, isAvailable);

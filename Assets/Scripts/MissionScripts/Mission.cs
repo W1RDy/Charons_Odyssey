@@ -4,14 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public class Mission : MonoBehaviour
 {
     [SerializeField] private BaseTask[] _tasks;
     [SerializeField] private Timer _timer;
-    [SerializeField] private GameService _gameService;
+    private GameLifeController _gameLifeController;
     private BaseTask _currentTask;
     protected CancellationToken _token;
+
+    [Inject]
+    private void Construct(GameLifeController gameLifeController)
+    {
+        _gameLifeController = gameLifeController;
+    }
 
     private async void Start()
     {
@@ -40,7 +47,7 @@ public class Mission : MonoBehaviour
     public void FinishMission()
     {
         if (_timer != null) _timer.StopTimer();
-        _gameService.WinGame();
+        _gameLifeController.WinGame();
     }
 
     public void OnDestroy()

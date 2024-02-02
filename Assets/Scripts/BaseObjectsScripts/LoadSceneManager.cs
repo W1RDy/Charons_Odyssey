@@ -6,22 +6,26 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class LoadSceneManager : MonoBehaviour
 {
     [SerializeField] private Image _image;
     private Action<float> _callback;
     private CancellationToken _token;
+    private DataController _dataController;
 
-    private void Start()
+    [Inject]
+    private void Construct(DataController dataController)
     {
+        _dataController = dataController;
         _callback = value => _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, value);
         _token = this.GetCancellationTokenOnDestroy();
     }
 
     private async UniTask OpenCloseLoadingScreen(bool isOpen)
     {
-        if (_token.IsCancellationRequested) return; 
+        if (_token.IsCancellationRequested) return;
         var (start, end) = isOpen ? (0, 1) : (1, 0);
         if (isOpen) _image.enabled = true;
 
@@ -36,6 +40,11 @@ public class LoadSceneManager : MonoBehaviour
 
     public void LoadScene(int sceneIndex, int delay)
     {
+        if (_dataController.DataContainer.lastLocationIndex < sceneIndex)
+        {
+            _dataController.DataContainer.lastLocationIndex = sceneIndex;
+            _dataController.SaveDatas();
+        }
         AsyncLoading(sceneIndex, delay);
     }
 
@@ -45,7 +54,7 @@ public class LoadSceneManager : MonoBehaviour
         LoadScene(buildIndex, delay);
     }
 
-    public void LoadNextLevel()
+    public void LoadNextScene()
     {
         var buildIndex = SceneManager.GetActiveScene().buildIndex;
         LoadScene(buildIndex + 1);

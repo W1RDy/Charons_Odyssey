@@ -37,7 +37,6 @@ public class PassageToFloor : MonoBehaviour
 
     public void ActivatePassage()
     {
-        Debug.Log("Activate");
         _collider.isTrigger = false;
     }
 }

@@ -46,7 +46,7 @@ public class PlayerStatesInitializer : MonoBehaviour
                 else weapon = _weaponService.GetWeapon(WeaponType.Fist);
 
                 if (state.GetStateType() == PlayerStateType.IdleWithGun) (state as PlayerStayWithGunState).Initialize(_player, weapon, _customCamera);
-                else if (state.GetStateType() == PlayerStateType.AttackWithPistol) (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _customCamera);
+                else if (state.GetStateType() == PlayerStateType.AttackWithPistol) (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _inventory, _customCamera);
                 else (state as PlayerAttackBaseState).Initialize(_player, weapon);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)

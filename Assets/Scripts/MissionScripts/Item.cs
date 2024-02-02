@@ -6,12 +6,11 @@ using Zenject;
 [RequireComponent(typeof(BoxCollider2D))]
 public abstract class Item : MonoBehaviour
 {
-    [SerializeField] private ItemType _type;
+    [SerializeField] protected ItemType _type;
     protected Collider2D _collider;
     public ItemType Type { get => _type; }
 
-
-    private void Awake()
+    protected virtual void Awake()
     {
         _collider = GetComponent<Collider2D>();
     }

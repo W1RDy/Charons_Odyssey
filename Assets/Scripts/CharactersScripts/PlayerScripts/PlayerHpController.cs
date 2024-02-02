@@ -5,13 +5,13 @@ public class PlayerHpController : MonoBehaviour
 {
     private float _maxHp;
     private HpIndicator _hpIndicator;
-    private GameService _gameService;
+    private GameLifeController _gameLifeController;
 
     [Inject]
-    private void Construct(HpIndicator hpIndicator, GameService gameService)
+    private void Construct(HpIndicator hpIndicator, GameLifeController gameLifeController)
     {
         _hpIndicator = hpIndicator;
-        _gameService = gameService;
+        _gameLifeController = gameLifeController;
     }
 
     public void SetMaxHp(float hp)
@@ -36,6 +36,6 @@ public class PlayerHpController : MonoBehaviour
     public void Death()
     {
         Destroy(gameObject);
-        _gameService.LoseGame();
+        _gameLifeController.LoseGame();
     }
 }

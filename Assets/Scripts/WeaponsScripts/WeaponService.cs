@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponService : MonoBehaviour
+public class WeaponService : MonoBehaviour, IService
 {
     [SerializeField] Weapon[] weapons;
     private Dictionary<WeaponType, Weapon> _weaponsDict;
 
-    private void Start()
+    public void InitializeService()
     {
         InitializeWeaponsDictionary();
     }
@@ -26,7 +26,7 @@ public class WeaponService : MonoBehaviour
 
     public void InitializeWeapons(Transform weaponPoint, PistolViewConfig pistolView, BulletsCounterIndicator bulletsCounterIndicator)
     {
-        foreach (var weapon in weapons)
+        foreach (var weapon in _weaponsDict.Values)
         {
             if (weapon.GetWeaponType() == WeaponType.Pistol) (weapon as Pistol).Initialize(weaponPoint, pistolView, bulletsCounterIndicator);
             else weapon.Initialize(weaponPoint);

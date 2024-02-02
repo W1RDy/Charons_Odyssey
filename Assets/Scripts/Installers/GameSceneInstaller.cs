@@ -5,7 +5,7 @@ public class GameSceneInstaller : MonoInstaller
 {
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private Transform _spawnPosition;
-    [SerializeField] private GameService _gameService;
+    [SerializeField] private GameLifeController _gameLifeController;
     [SerializeField] private HpIndicator _hpIndicator;
     [SerializeField] private BulletsCounterIndicator _bulletsCounterIndicator;
     [SerializeField] private DialogCloudService _dialogCloudService;
@@ -33,6 +33,7 @@ public class GameSceneInstaller : MonoInstaller
     {
         BindEssenceSpawner();
         BindWindowActivator();
+        BindGameLifeController();
         BindServices();
         BindHUD();
         BindCustomCamera();
@@ -52,7 +53,6 @@ public class GameSceneInstaller : MonoInstaller
 
     private void BindServices()
     { 
-        BindGameService();
         BindDialogCloudService();
         BindButtonService();
     }
@@ -72,9 +72,9 @@ public class GameSceneInstaller : MonoInstaller
         _talkableFinder.AddTalkable(player);
     }
 
-    private void BindGameService()
+    private void BindGameLifeController()
     {
-        Container.Bind<GameService>().FromInstance(_gameService).AsSingle();
+        Container.Bind<GameLifeController>().FromInstance(_gameLifeController).AsSingle();
     }
 
     private void BindHpIndicator()

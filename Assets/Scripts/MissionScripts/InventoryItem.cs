@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class InventoryItem : Item
+public abstract class InventoryItem : Item
 {
-    private Inventory _inventory;
+    protected Inventory _inventory;
 
     [Inject]
     private void Construct(Inventory inventory)

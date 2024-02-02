@@ -13,13 +13,15 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private Transform _shootPoint;
     private Transform _pistolEnd;
     private CustomCamera _camera;
+    private Inventory _inventory;
 
-    public void Initialize(Player player, Weapon weapon, CustomCamera customCamera)
+    public void Initialize(Player player, Weapon weapon, Inventory inventory, CustomCamera customCamera)
     {
         base.Initialize(player, weapon);
         _camera = customCamera;
         _pistol = _weapon as Pistol;
         _pistolEnd = _pistol.View.pistolEnd;
+        _inventory = inventory;
         try
         {
             _shootPoint = GameObject.Find("ShootPoint").transform;
@@ -53,12 +55,11 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
         if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
         bullet.Initialize(AttackableObjectIndex.Player, _pistol.Distance, _pistol.Damage);
-        _pistol.DisablePatrons(1);
+        _inventory.RemoveItem(ItemType.Patrons, 1);
     }
 
     public override void Update()
     {
-        Debug.Log("AttackWithPistol_Update");
         base.Update();
 
         var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);

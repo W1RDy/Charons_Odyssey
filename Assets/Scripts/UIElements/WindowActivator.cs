@@ -8,6 +8,7 @@ using Zenject;
 public class WindowActivator : MonoBehaviour
 {
     [SerializeField] private WindowService _windowService;
+    [SerializeField] private GameObject _defaultMenuElements;
     private PlayerController _controller;
 
     private void Start()
@@ -24,12 +25,12 @@ public class WindowActivator : MonoBehaviour
         var _window = _windowService.GetWindow(type);
         _window.windowPrefab.SetActive(true);
         if (_controller) _controller.IsControl = false;
+        if (_defaultMenuElements != null && _defaultMenuElements.activeInHierarchy) _defaultMenuElements.SetActive(false);
     }
 
     public async void ActivateWindowWithDelay(WindowType type, float delay)
     {
         if (_controller) _controller.IsControl = false;
-        Debug.Log("all");
         var token = this.GetCancellationTokenOnDestroy();
         await Delayer.Delay(delay, token);
         if (!token.IsCancellationRequested) ActivateWindow(type); 
@@ -40,6 +41,7 @@ public class WindowActivator : MonoBehaviour
         var window = _windowService.GetWindow(type);
         window.windowPrefab.SetActive(false);
         if (_controller) _controller.IsControl = true;
+        if (_defaultMenuElements != null && !_defaultMenuElements.activeInHierarchy) _defaultMenuElements.SetActive(true);
     }
 
     public async void DeactivateWindowWithDelay(WindowType type, float delay)
