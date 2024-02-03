@@ -26,17 +26,9 @@ public class ButtonService : MonoBehaviour, IService
 
     }
 
-    private void Start()
-    {
-        try
-        {
-            _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
-        }
-        catch { }
-    }
-
     public void CloseTrade()
     {
+        if (_trader ==  null) _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
         _trader.CloseTrade();
     }
 
