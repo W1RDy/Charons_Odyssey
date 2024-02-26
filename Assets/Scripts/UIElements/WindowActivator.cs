@@ -5,11 +5,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class WindowActivator : MonoBehaviour
+public class WindowActivator : MonoBehaviour, IPause
 {
     [SerializeField] private WindowService _windowService;
     [SerializeField] private GameObject _defaultMenuElements;
     private PlayerController _controller;
+    private PauseService _pauseService;
+    private bool _isPaused;
+
+    [Inject]
+    private void Construct(PauseService pauseService)
+    {
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
+    }
 
     private void Start()
     {
@@ -24,13 +33,15 @@ public class WindowActivator : MonoBehaviour
     {
         var _window = _windowService.GetWindow(type);
         _window.windowPrefab.SetActive(true);
-        if (_controller) _controller.IsControl = false;
-        if (_defaultMenuElements != null && _defaultMenuElements.activeInHierarchy) _defaultMenuElements.SetActive(false);
+        if (_defaultMenuElements != null && _defaultMenuElements.activeInHierarchy)
+        {
+            if (_controller) _controller.IsControl = false;
+            _defaultMenuElements.SetActive(false);
+        }
     }
 
     public async void ActivateWindowWithDelay(WindowType type, float delay)
     {
-        if (_controller) _controller.IsControl = false;
         var token = this.GetCancellationTokenOnDestroy();
         await Delayer.Delay(delay, token);
         if (!token.IsCancellationRequested) ActivateWindow(type); 
@@ -40,15 +51,34 @@ public class WindowActivator : MonoBehaviour
     {
         var window = _windowService.GetWindow(type);
         window.windowPrefab.SetActive(false);
-        if (_controller) _controller.IsControl = true;
-        if (_defaultMenuElements != null && !_defaultMenuElements.activeInHierarchy) _defaultMenuElements.SetActive(true);
+        if (_defaultMenuElements != null && !_defaultMenuElements.activeInHierarchy)
+        {
+            if (_controller) _controller.IsControl = true;
+            _defaultMenuElements.SetActive(true);
+        }
     }
 
     public async void DeactivateWindowWithDelay(WindowType type, float delay)
     {
-        if (_controller) _controller.IsControl = true;
         var token = this.GetCancellationTokenOnDestroy();
         await Delayer.Delay(delay, token);
         if (!token.IsCancellationRequested) DeactivateWindow(type);
+    }
+
+    public void Pause()
+    {
+        if (!_isPaused) _isPaused = true;
+        ActivateWindow(WindowType.PauseWindow);
+    }
+
+    public void Unpause()
+    {
+        if (_isPaused) _isPaused = false;
+        if (_defaultMenuElements == null) DeactivateWindow(WindowType.PauseWindow);
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

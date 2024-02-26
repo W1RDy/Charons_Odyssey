@@ -14,23 +14,35 @@ public class LoadSceneManager : MonoBehaviour
     private Action<float> _callback;
     private CancellationToken _token;
     private DataController _dataController;
+    private PauseService _pauseService;
 
     [Inject]
-    private void Construct(DataController dataController)
+    private void Construct(DataController dataController, PauseService pauseService)
     {
         _dataController = dataController;
         _callback = value => _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, value);
         _token = this.GetCancellationTokenOnDestroy();
+        _pauseService = pauseService;
     }
 
     private async UniTask OpenCloseLoadingScreen(bool isOpen)
     {
         if (_token.IsCancellationRequested) return;
         var (start, end) = isOpen ? (0, 1) : (1, 0);
-        if (isOpen) _image.enabled = true;
+        if (isOpen)
+        {
+            _image.enabled = true;
+            _pauseService.SetUnpause();
+            _pauseService.ChangePauseAvailable(false);
+        }
 
         await SmoothChanger.SmoothChange(start, end, 2f, _callback, _token);
-        if (!isOpen && !_token.IsCancellationRequested) _image.enabled = false;
+        if (!isOpen && !_token.IsCancellationRequested)
+        {
+            _image.enabled = false;
+            _pauseService.ChangePauseAvailable(true);
+        }
+
     }
 
     public void LoadScene(int sceneIndex)
@@ -77,6 +89,5 @@ public class LoadSceneManager : MonoBehaviour
         asyncOperation.allowSceneActivation = true;
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().buildIndex == sceneIndex, cancellationToken: _token);
         await OpenCloseLoadingScreen(false);
-        Time.timeScale = 1;
     }
 }

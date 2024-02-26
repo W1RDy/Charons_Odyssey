@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class NPCGroup : MonoBehaviour, ITalkable, IAvailable
+public class NPCGroup : MonoBehaviour, ITalkable, IAvailable, IPause
 {
     [SerializeField] private Transform[] _NPCPoints;
     [SerializeField] private Trigger _trigger;
@@ -13,11 +13,13 @@ public class NPCGroup : MonoBehaviour, ITalkable, IAvailable
     [SerializeField] private bool _isAvailable = true;
     private DialogActivator _dialogActivator;
     private NPC[] _NPCs;
+    private PauseService _pauseService;
 
     [Inject]
-    private void Consruct(DialogActivator dialogActivator)
+    private void Consruct(DialogActivator dialogActivator, PauseService pauseService)
     {
         _dialogActivator = dialogActivator;
+        _pauseService = pauseService;
     }
 
     public void InitializeGroup(NPC[] NPCs, string dialogId, bool isAvailable)
@@ -40,8 +42,11 @@ public class NPCGroup : MonoBehaviour, ITalkable, IAvailable
 
     public void StartDialog()
     {
-        _dialogActivator.ActivateDialog(_branchIndex);
-        _trigger.TriggerWorked -= StartDialog;
+        if (_isAvailable)
+        {
+            _dialogActivator.ActivateDialog(_branchIndex);
+            _trigger.TriggerWorked -= StartDialog;
+        }
     }
 
     public void ChangeAvailable(bool isAvailable)
@@ -52,5 +57,20 @@ public class NPCGroup : MonoBehaviour, ITalkable, IAvailable
     public string GetTalkableIndex()
     {
         return _NPCs[0].GetTalkableIndex() + ", " + _NPCs[1].GetTalkableIndex();
+    }
+
+    public void Pause()
+    {
+        if (_isAvailable == true) _isAvailable = false;
+    }
+
+    public void Unpause()
+    {
+        if (_isAvailable == false) _isAvailable = true;
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

@@ -39,4 +39,10 @@ public class NPCTrader : NPC, IInteractable
         await Delayer.Delay(1f, token);
         if (!token.IsCancellationRequested) _spriteRenderer.sprite = _defaultSprite;
     }
+
+    public override void Pause()
+    {
+        CloseTrade();
+        base.Pause();
+    }
 }

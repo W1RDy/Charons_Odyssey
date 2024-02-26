@@ -2,7 +2,7 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
+public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
 {
     [SerializeField] private string _talkableIndex;
     [SerializeField] private Trigger _trigger;
@@ -12,12 +12,15 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     protected DialogCloudService _dialogCloudService; 
     protected SpriteRenderer _spriteRenderer;
     private DialogActivator _dialogActivator;
+    private PauseService _pauseService;
 
     [Inject]
-    private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService)
+    private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService, PauseService pauseService)
     {
         _dialogActivator = dialogActivator;
         _dialogCloudService = dialogCloudService;
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
     }
 
     public virtual void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
@@ -32,8 +35,11 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 
     public void Talk(string message)
     {
-        _dialogCloudService.SpawnDialogCloud(new Vector2(transform.position.x, transform.position.y + _spriteRenderer.sprite.bounds.size.y));
-        _dialogCloudService.UpdateDialogCloud(message);
+        if (_isAvailable)
+        {
+            _dialogCloudService.SpawnDialogCloud(new Vector2(transform.position.x, transform.position.y + _spriteRenderer.sprite.bounds.size.y));
+            _dialogCloudService.UpdateDialogCloud(message);
+        }
     }
 
     public void StartDialog()
@@ -59,5 +65,20 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     public void ChangeAvailable(bool isAvailable)
     {
         _isAvailable = isAvailable;
+    }
+
+    public virtual void Pause()
+    {
+        if (_isAvailable == true) _isAvailable = false;
+    }
+
+    public void Unpause()
+    {
+        if (_isAvailable == false) _isAvailable = true;
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

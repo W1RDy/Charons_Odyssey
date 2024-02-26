@@ -8,7 +8,7 @@ using Zenject;
 [RequireComponent(typeof(PlayerMove))]
 [RequireComponent(typeof(PlayerColliderChecker))]
 [RequireComponent(typeof(PlayerHpController))]
-public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable
+public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable, IPause
 {
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
@@ -22,9 +22,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     private PlayerStatesInitializer _playerStatesInitializator;
     private PlayerColliderChecker _playerColliderChecker;
     private PlayerHpController _playerHpController;
+    private PauseService _pauseService;
 
     [SerializeField] private PistolViewConfig _pistolView;
     [SerializeField] private Transform _weaponPoint;
+    private bool _isPaused;
 
     public PistolViewConfig PistolView { get => _pistolView; }
     public Transform WeaponPoint { get => _weaponPoint; }
@@ -46,10 +48,12 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public PlayerStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator)
+    private void Construct(WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService)
     {
         _weaponService = weaponService;
         _bulletsCounterIndicator = bulletsCounterIndicator;
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
     }
 
     private void Awake()
@@ -134,9 +138,23 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public async void Talk(string message)
     {
-        await UniTask.WaitUntil(() => StateMachine.CurrentState.GetStateType() == PlayerStateType.Talk, cancellationToken: _token);
-        if (!_token.IsCancellationRequested) (StateMachine.CurrentState as PlayerTalkState).Talk(message);
+        if (!_isPaused)
+        {
+            await UniTask.WaitUntil(() => StateMachine.CurrentState.GetStateType() == PlayerStateType.Talk, cancellationToken: _token);
+            await UniTask.WaitWhile(() => _isPaused, cancellationToken: _token); 
+            if (!_token.IsCancellationRequested) (StateMachine.CurrentState as PlayerTalkState).Talk(message);
+        }
     }
 
     public string GetTalkableIndex() => "ñharon";
+
+    public void Pause()
+    {
+        if (!_isPaused) _isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        if (_isPaused) _isPaused = false;
+    }
 }

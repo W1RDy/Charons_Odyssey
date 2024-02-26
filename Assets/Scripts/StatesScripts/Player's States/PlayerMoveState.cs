@@ -9,9 +9,9 @@ public class PlayerMoveState : PlayerState
     private float _horizontalMoveValue = 0;
     private PlayerController _controller;
 
-    public override void Initialize(Player player)
+    public override void Initialize(Player player, PauseService pauseService)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _controller = player.GetComponent<PlayerController>();
@@ -19,23 +19,28 @@ public class PlayerMoveState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
         _player.SetAnimation("Move", true);
     }
 
     public override void Update()
     {
-        if (Input.GetAxis("Horizontal") != _horizontalMoveValue)
+        if (!_isPaused)
         {
-            _horizontalMoveValue = Input.GetAxis("Horizontal");
-
-            if (_horizontalMoveValue == 0 || _controller.IsControl == false)
+            if (Input.GetAxis("Horizontal") != _horizontalMoveValue)
             {
-                IsStateFinished = true;
-                return;
+                _horizontalMoveValue = Input.GetAxis("Horizontal");
+
+                if (_horizontalMoveValue == 0 || _controller.IsControl == false)
+                {
+                    IsStateFinished = true;
+                    return;
+                }
+                else IsStateFinished = false;
+                _playerMove.SetDirection(new Vector2(_horizontalMoveValue, 0));
             }
-            else IsStateFinished = false;
-            _playerMove.SetDirection(new Vector2(_horizontalMoveValue, 0));
         }
+        else if (_horizontalMoveValue != float.MinValue) _horizontalMoveValue = float.MinValue;
     }
 
     public override void Exit()

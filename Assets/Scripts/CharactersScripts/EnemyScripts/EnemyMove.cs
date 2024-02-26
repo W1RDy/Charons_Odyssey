@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
+public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops, IPause
 {
     [SerializeField] private Transform _target;
     private float _speed;
     private bool _isMove;
     private Rigidbody2D _rb;
+    private PauseService _pauseService;
 
     [Inject]
-    private void Construct(Player player)
+    private void Construct(Player player, PauseService pauseService)
     {
         _target = player.transform;
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
     }
 
     private void Awake()
@@ -58,5 +61,20 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops
     public bool IsMoving()
     {
         return _isMove;
+    }
+
+    public void Pause()
+    {
+        StopMove();
+    }
+
+    public void Unpause()
+    {
+        
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

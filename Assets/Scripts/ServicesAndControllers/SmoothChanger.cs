@@ -20,4 +20,21 @@ public static class SmoothChanger
         }
         callback(endValue);
     }
+
+    public async static UniTask SmoothChangeWithPause(float startValue, float endValue, float duration, Action<float> callback, CancellationToken token, PauseToken pauseToken)
+    {
+        float current = 0;
+        float firstValue = startValue;
+
+        while (current < duration)
+        {
+            if (token.IsCancellationRequested) return;
+            await UniTask.WaitWhile(() => pauseToken.IsCancellationRequested);
+            var value = Mathf.Lerp(firstValue, endValue, current / duration);
+            callback(value);
+            current += Time.unscaledDeltaTime;
+            await UniTask.Yield();
+        }
+        callback(endValue);
+    }
 }

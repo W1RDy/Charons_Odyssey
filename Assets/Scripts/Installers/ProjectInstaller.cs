@@ -21,6 +21,7 @@ public class ProjectInstaller : MonoInstaller
 
     private void BindServices()
     {
+        BindPauseService();
         BindInputService();
         BindDialogService();
         BindEnemyService();
@@ -76,6 +77,12 @@ public class ProjectInstaller : MonoInstaller
         var dataController = new DataController();
         dataController.LoadDatas();
         Container.Bind<DataController>().FromInstance(dataController).AsSingle();
+    }
+
+    private void BindPauseService()
+    {
+        var pauseService = new PauseService();
+        BindService(pauseService);
     }
 
     private void BindService<T>(T service) where T : IService

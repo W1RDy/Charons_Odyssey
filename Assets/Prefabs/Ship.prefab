@@ -556,6 +556,7 @@ GameObject:
   - component: {fileID: 2595446202798467791}
   - component: {fileID: 2595446202798467784}
   - component: {fileID: 291709567}
+  - component: {fileID: 5885226927254724451}
   m_Layer: 0
   m_Name: Wheel
   m_TagString: Untagged
@@ -648,6 +649,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5885226927254724451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2595446202798467790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8712e0c0d940244aebceca07eddc4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isRotating: 1
 --- !u!1 &3000617183943727995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1171,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6817126187609085752, guid: a983376973847c34183cb34d18adc1a4, type: 3}
   m_PrefabInstance: {fileID: 24276407369717913}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6831243090318200736 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6817126187609085753, guid: a983376973847c34183cb34d18adc1a4, type: 3}
+  m_PrefabInstance: {fileID: 24276407369717913}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8173081564588525926 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8159010846029517311, guid: a983376973847c34183cb34d18adc1a4, type: 3}
@@ -1168,11 +1187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af22900bb2671ac488d01bfdbf93c839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6831243090318200736 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6817126187609085753, guid: a983376973847c34183cb34d18adc1a4, type: 3}
-  m_PrefabInstance: {fileID: 24276407369717913}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8835970899985534212
 PrefabInstance:
   m_ObjectHideFlags: 0

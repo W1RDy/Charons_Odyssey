@@ -11,14 +11,16 @@ public class ButtonService : MonoBehaviour, IService
     private NPCTrader _trader;
     private LoadSceneManager _loadSceneManager;
     private DataController _dataController;
+    private PauseService _pauseService;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController)
+    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController, PauseService pauseService)
     {
         _loadSceneManager = loadSceneManager;
         _windowActivator = windowActivator;
         _talkableFinderOnLevel = talkableFinderOnLevel;
         _dataController = dataController;
+        _pauseService = pauseService;
     }
 
     public void InitializeService()
@@ -49,34 +51,35 @@ public class ButtonService : MonoBehaviour, IService
         StartGame();
     }
 
-    public void ActivatePause()
+    public void Continue()
     {
-        _windowActivator.ActivateWindow(WindowType.PauseWindow);
-        Time.timeScale = 0;
+        _pauseService.SetUnpause();
+        DeactivatePauseWindow();
     }
 
-    public void DeactivatePause()
+    public void ActivatePauseWindow()
+    {
+        _windowActivator.ActivateWindow(WindowType.PauseWindow);
+    }
+
+    public void DeactivatePauseWindow()
     {
         _windowActivator.DeactivateWindow(WindowType.PauseWindow);
-        Time.timeScale = 1;
     }
 
     public void ActivateSettings()
     {
         _windowActivator.ActivateWindow(WindowType.SettingsWindow);
-        Time.timeScale = 0;
     }
 
     public void DeactivateSettings()
     {
         _windowActivator.DeactivateWindow(WindowType.SettingsWindow);
-        Time.timeScale = 1;
     }
 
     public void DeactivateResetDataWindow()
     {
         _windowActivator.DeactivateWindow(WindowType.ResetDataWindow);
-        Time.timeScale = 1;
     }
 
     public void Menu()

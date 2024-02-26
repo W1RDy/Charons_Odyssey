@@ -15,9 +15,9 @@ public class PlayerClimbState : PlayerState
     private LadderUseChecker _ladderUseChecker;
     private PlayerColliderChecker _playerColliderChecker;
 
-    public override void Initialize(Player player)
+    public override void Initialize(Player player, PauseService pauseService)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _ladderUseChecker = _player.GetComponentInChildren<PlayerController>().LadderUseChecker;
@@ -26,6 +26,7 @@ public class PlayerClimbState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
         _player.SetAnimation("Climb", true);
         IsStateFinished = !_playerColliderChecker.TryGetLadder(out _ladder);
 
@@ -37,20 +38,24 @@ public class PlayerClimbState : PlayerState
 
     public override void Update()
     { 
-        if (Input.GetAxis("Vertical") != _verticalMoveValue)
+        if (!_isPaused)
         {
-            _verticalMoveValue = Input.GetAxis("Vertical");
-            _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
-        }
+            if (Input.GetAxis("Vertical") != _verticalMoveValue)
+            {
+                _verticalMoveValue = Input.GetAxis("Vertical");
+                _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
+            }
 
-        if (!_playerColliderChecker.TryGetLadder(out var ladder) || _ladderUseChecker.IsCanThrow(_player, ladder, _verticalMoveValue))
-        {
-            IsStateFinished = true;
+            if (!_playerColliderChecker.TryGetLadder(out var ladder) || _ladderUseChecker.IsCanThrow(_player, ladder, _verticalMoveValue))
+            {
+                IsStateFinished = true;
+            }
         }
     }
 
     public override void Exit()
     {
+        base.Exit();
         _ladder.ThrowLadder();
         _playerMove.SetDirection(Vector2.zero);
         _player.SetAnimation("Climb", false);

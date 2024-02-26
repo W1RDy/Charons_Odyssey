@@ -2206,7 +2206,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -2844,6 +2844,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3056265743474183912, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5885226927254724451, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
+      propertyPath: _isRotating
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6831243090318200739, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}

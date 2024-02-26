@@ -7,13 +7,9 @@ public class PlayerStayState : PlayerState
 {
     protected PlayerMove _playerMove;
 
-    public override void Initialize(Player player)
+    public override void Initialize(Player player, PauseService pauseService)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
         _playerMove = player.GetComponent<PlayerMove>();
-    }
-
-    public override void Enter()
-    {
     }
 }

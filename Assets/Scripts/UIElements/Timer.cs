@@ -4,12 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Cysharp.Threading.Tasks;
+using Zenject;
 
-public class Timer : MonoBehaviour
+public class Timer : MonoBehaviour, IPause
 {
     private Text _indicator;
     private int _time;
     private bool _isWorked;
+    private PauseService _pauseService;
+    private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
+
+    [Inject]
+    private void Construct(PauseService pauseService)
+    {
+        _pauseService = pauseService;
+        if (gameObject.activeInHierarchy)
+        {
+            _pauseService.AddPauseObj(this);
+            _pauseTokenSource = new PauseTokenSource();
+            _pauseToken = _pauseTokenSource.Token;
+        }
+    }
 
     private void Awake()
     {
@@ -27,7 +43,7 @@ public class Timer : MonoBehaviour
         while (true)
         {
             var token = this.GetCancellationTokenOnDestroy();
-            await Delayer.Delay(1, token);
+            await Delayer.DelayWithPause(1, token, _pauseToken);
             if (token.IsCancellationRequested) StopTimer();
 
             if (!_isWorked) break;
@@ -45,5 +61,22 @@ public class Timer : MonoBehaviour
     {
         _isWorked = true;
         TimerLife();
+    }
+
+    public void Pause()
+    {
+        _pauseTokenSource.Pause();
+        StopTimer();
+    }
+
+    public void Unpause()
+    {
+        _pauseTokenSource.Unpause();
+        StartTimer();
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

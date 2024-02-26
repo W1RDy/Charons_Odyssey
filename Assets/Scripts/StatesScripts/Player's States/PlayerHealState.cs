@@ -8,15 +8,20 @@ using Zenject;
 public class PlayerHealState : PlayerState
 {
     private Inventory _inventory;
+    private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, Inventory inventory)
+    public virtual void Initialize(Player player, PauseService pauseService, Inventory inventory)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
         _inventory = inventory;
+        _pauseTokenSource = new PauseTokenSource();
+        _pauseToken = _pauseTokenSource.Token;
     }
 
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = false;
         _inventory.RemoveItem(ItemType.FirstAidKit);
         _player.TakeHeal(2);
@@ -26,6 +31,7 @@ public class PlayerHealState : PlayerState
 
     public override void Exit()
     {
+        base.Exit();
         _player.SetAnimation("Heal", false);
     }
 
@@ -34,7 +40,7 @@ public class PlayerHealState : PlayerState
         var token = _player.GetCancellationTokenOnDestroy();
         await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Heal"));
         if (token.IsCancellationRequested) return;
-        await Delayer.Delay(_player.GetCurrentAnimationDuration(), token);
+        await Delayer.DelayWithPause(_player.GetCurrentAnimationDuration(), token, _pauseToken);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;

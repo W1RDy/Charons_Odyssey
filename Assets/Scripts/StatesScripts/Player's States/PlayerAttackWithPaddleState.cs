@@ -7,9 +7,9 @@ public class PlayerAttackWithPaddleState : PlayerAttackBaseState
 {
     private Paddle _paddle;
 
-    public override void Initialize(Player player, Weapon weapon)
+    public override void Initialize(Player player, Weapon weapon, PauseService pauseService)
     {
-        base.Initialize(player, weapon);
+        base.Initialize(player, weapon, pauseService);
         _paddle = _weapon as Paddle;
     }
 

@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class Background : MonoBehaviour
+public class Background : MonoBehaviour, IPause
 {
     [SerializeField] private BackgroundLayer[] _layers;
     [Range(0, 2), SerializeField] private int _backgroundSpeed = 1;
     private CustomCamera _customCamera;
+    private PauseService _pauseService;
+    private bool _isPaused;
 
     [Inject]
-    private void Construct(CustomCamera customCamera)
+    private void Construct(CustomCamera customCamera, PauseService pauseService)
     {
         _customCamera = customCamera;
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
     }
 
     private void Awake()
@@ -28,6 +32,24 @@ public class Background : MonoBehaviour
 
     private void Update()
     {
-        foreach (var layer in _layers) layer.Move();
+        if (!_isPaused)
+        {
+            foreach (var layer in _layers) layer.Move();
+        }
+    }
+
+    public void Pause()
+    {
+        if (!_isPaused) _isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        if (_isPaused) _isPaused = false;
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

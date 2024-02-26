@@ -8,6 +8,8 @@ public abstract class PlayerAttackBaseState : PlayerState
 {
     protected Weapon _weapon;
     public bool IsCooldown { get; protected set; }
+    private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
 
     public override void Enter()
     {
@@ -17,10 +19,12 @@ public abstract class PlayerAttackBaseState : PlayerState
         WaitWhileAttack();
     }
 
-    public virtual void Initialize(Player player, Weapon weapon)
+    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
         _weapon = weapon;
+        _pauseTokenSource = new PauseTokenSource();
+        _pauseToken = _pauseTokenSource.Token;
     }
 
     public virtual void Attack()
@@ -40,7 +44,7 @@ public abstract class PlayerAttackBaseState : PlayerState
     private async void WaitCooldown(CancellationToken token)
     {
         IsCooldown = true;
-        await Delayer.Delay(_weapon.Cooldown, token);
+        await Delayer.DelayWithPause(_weapon.Cooldown, token, _pauseToken);
         if (!token.IsCancellationRequested) IsCooldown = false;
     }
 
@@ -49,7 +53,7 @@ public abstract class PlayerAttackBaseState : PlayerState
         var token = _player.GetCancellationTokenOnDestroy();
         await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Hit") || _player.GetCurrentAnimationName().EndsWith("Shot"));
         if (token.IsCancellationRequested) return;
-        await Delayer.Delay(_player.GetCurrentAnimationDuration(), token);
+        await Delayer.DelayWithPause(_player.GetCurrentAnimationDuration(), token, _pauseToken);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;
@@ -60,5 +64,17 @@ public abstract class PlayerAttackBaseState : PlayerState
     public override bool IsStateAvailable()
     {
         return !IsCooldown;
+    }
+
+    public override void Pause()
+    {
+        base.Pause();
+        _pauseTokenSource.Pause();
+    }
+
+    public override void Unpause()
+    {
+        base.Unpause();
+        _pauseTokenSource.Unpause();
     }
 }

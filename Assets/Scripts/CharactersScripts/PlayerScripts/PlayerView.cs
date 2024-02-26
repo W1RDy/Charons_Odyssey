@@ -1,10 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class PlayerView : MonoBehaviour
+public class PlayerView : MonoBehaviour, IPause
 {
     private Animator _animator;
+    private PauseService _pauseService;
+
+    [Inject]
+    private void Construct(PauseService pauseService)
+    {
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
+    }
 
     private void Start()
     {
@@ -40,5 +49,20 @@ public class PlayerView : MonoBehaviour
     public string GetAnimationName()
     {
         return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+    }
+
+    public void Pause()
+    {
+        _animator.speed = 0;
+    }
+
+    public void Unpause()
+    {
+        _animator.speed = 1;
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }

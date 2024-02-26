@@ -5,13 +5,15 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using Zenject;
 
-public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
+public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable, IPause
 {
     public EnemyType EnemyType { get; protected set; }
     [SerializeField] protected float _hp;
     [SerializeField] protected bool _isAvailable;
     protected Animator _animator;
     protected SpriteRenderer _spriteRenderer;
+    private PauseService _pauseService;
+    private bool _isPaused;
 
     #region Enemy's states
 
@@ -24,8 +26,15 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 
     public EnemyStateMachine StateMachine { get; set; }
 
+    [Inject]
+    private void Construct(PauseService pauseService)
+    {
+        _pauseService = pauseService;
+    }
+
     public virtual void InitializeEnemy(Direction direction, bool isAvailable)
     {
+        _pauseService.AddPauseObj(this);
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
@@ -55,23 +64,27 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 
     protected virtual void Update()
     {
-        StateMachine.CurrentState.Update();
+        if (!_isPaused) StateMachine.CurrentState.Update();
     }
 
     public void ChangeState(EnemyStateType stateType)
     {
-        StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
+        if (!_isPaused) StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
     }
 
     public void TakeHit(float damage)
     {
-        StartCoroutine(TakeHit());
-        _hp -= damage;
-        if (_hp <= 0) Death();
+        if (!_isPaused)
+        {
+            StartCoroutine(TakeHit());
+            _hp -= damage;
+            if (_hp <= 0) Death();
+        }
     }
 
     public void Death()
     {
+        _pauseService.RemovePauseObj(this);
         gameObject.SetActive(false);
     }
 
@@ -101,16 +114,22 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
 
     IEnumerator TakeHit() // убрать, когда появится анимация
     {
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.red;
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.white;
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.red;
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.white;
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.red;
+        yield return new WaitWhile(() => _isPaused);
         yield return new WaitForSeconds(0.1f);
         _spriteRenderer.color = Color.white;
     }
@@ -128,5 +147,17 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
     public string GetAnimationName()
     {
         return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+    }
+
+    public void Pause()
+    {
+        _animator.speed = 0;
+        _isPaused = true;
+    }
+
+    public void Unpause()
+    {
+        _animator.speed = 1;
+        _isPaused = false;
     }
 }

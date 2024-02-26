@@ -11,10 +11,12 @@ public class PlayerStayWithGunState : PlayerStayState
     private Transform _shootPoint;
     private int _waitsMethodCount;
     private CustomCamera _camera;
+    private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, Weapon weapon, CustomCamera customCamera)
+    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService, CustomCamera customCamera)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
         _camera = customCamera;
         _pistol = weapon as Pistol;
         try
@@ -25,6 +27,8 @@ public class PlayerStayWithGunState : PlayerStayState
         {
             _shootPoint = new GameObject("ShootPoint").transform;
         }
+        _pauseTokenSource = new PauseTokenSource();
+        _pauseToken = _pauseTokenSource.Token;
     }
 
     public override void Enter()
@@ -38,21 +42,24 @@ public class PlayerStayWithGunState : PlayerStayState
 
     public override void Update()
     {
-        base.Update();
-
-        var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
-        if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
+        if (!_isPaused)
         {
-            _player.Flip();
+            base.Update();
+
+            var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
+            if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
+            {
+                _player.Flip();
+            }
+            RotateGun(rotation);
         }
-        RotateGun(rotation);
     }
 
     private async void WaitSomeTime()
     {
         _waitsMethodCount++;
         var token = _player.GetCancellationTokenOnDestroy();
-        await Delayer.Delay(4f, token);
+        await Delayer.DelayWithPause(4f, token, _pauseToken);
         _waitsMethodCount--;
         if (!token.IsCancellationRequested && _waitsMethodCount == 0)
         {

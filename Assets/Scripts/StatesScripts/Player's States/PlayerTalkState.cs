@@ -11,9 +11,9 @@ public class PlayerTalkState : PlayerState
     private DialogCloudService _dialogCloudService;
     private DialogLifeController _dialogLifeController;
 
-    public virtual void Initialize(Player player, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService)
+    public virtual void Initialize(Player player, PauseService pauseService, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService)
     {
-        base.Initialize(player);
+        base.Initialize(player, pauseService);
         _spriteRenderer = player.transform.GetChild(0).GetComponent<SpriteRenderer>();
         _playerController = player.GetComponent<PlayerController>();
         _dialogCloudService = dialogCloudService;
@@ -22,6 +22,7 @@ public class PlayerTalkState : PlayerState
 
     public override void Enter()
     {
+        base.Enter();
         _playerController.IsControl = false;
         IsStateFinished = false;
     }
@@ -39,6 +40,7 @@ public class PlayerTalkState : PlayerState
 
     public override void Exit()
     {
+        base.Exit();
         _playerController.IsControl = true;
     }
 }

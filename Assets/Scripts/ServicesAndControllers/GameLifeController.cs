@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class GameLifeController : MonoBehaviour
+public class GameLifeController : MonoBehaviour, IPause
 {
     private WindowActivator _windowActivator;
     private LoadSceneManager _loadSceneManager;
@@ -11,9 +11,12 @@ public class GameLifeController : MonoBehaviour
     private IInputService _inputService;
     private ButtonService _buttonService;
     private LevelInitializer _levelInitializer;
+    private PauseService _pauseService;
+    private bool _isPaused;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService, LevelInitializer levelInitializer, WindowActivator windowActivator)
+    private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService,
+        LevelInitializer levelInitializer, WindowActivator windowActivator, PauseService pauseService)
     {
         _loadSceneManager = loadSceneManager;
         _inventory = inventory;
@@ -21,6 +24,8 @@ public class GameLifeController : MonoBehaviour
         _buttonService = buttonService;
         _levelInitializer = levelInitializer;
         _windowActivator = windowActivator;
+        _pauseService = pauseService;
+        _pauseService.AddPauseObj(this);
     }
 
     private void Start()
@@ -34,7 +39,14 @@ public class GameLifeController : MonoBehaviour
     {
         if (_inputService.ButtonIsPushed(InputButtonType.Pause))
         {
-            _buttonService.ActivatePause();
+            if (!_isPaused)
+            {
+                _pauseService.SetPause();
+            }
+            else
+            {
+                _buttonService.Continue();
+            }
         }
     }
 
@@ -48,5 +60,26 @@ public class GameLifeController : MonoBehaviour
     {
         _inventory.SaveInventory();
         _loadSceneManager.LoadNextScene();
+    }
+
+    public void Pause()
+    {
+        if (!_isPaused)
+        {
+            _isPaused = true;
+        }
+    }
+
+    public void Unpause()
+    {
+        if (_isPaused)
+        {
+            _isPaused = false;
+        }
+    }
+
+    public void OnDestroy()
+    {
+        _pauseService.RemovePauseObj(this);
     }
 }
