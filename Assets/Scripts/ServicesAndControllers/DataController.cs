@@ -19,6 +19,7 @@ public class DataController
         {
             if (field.FieldType == typeof(int)) PlayerPrefs.SetInt(field.Name, (int)field.GetValue(DataContainer));
             else if (field.FieldType == typeof(bool)) PlayerPrefs.SetString(field.Name, field.GetValue(DataContainer).ToString());
+            else if (field.FieldType == typeof(float)) PlayerPrefs.SetFloat(field.Name, (float)field.GetValue(DataContainer));
         }
     }
 
@@ -35,6 +36,10 @@ public class DataController
             {
                 var value = System.Convert.ToBoolean(PlayerPrefs.GetString(field.Name));
                 field.SetValue(DataContainer, value);
+            }
+            else if (field.FieldType == typeof(float))
+            {
+                field.SetValue(DataContainer, PlayerPrefs.GetFloat(field.Name));
             }
         }
     }

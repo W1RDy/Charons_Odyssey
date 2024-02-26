@@ -3598,16 +3598,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 4837806794706279947, guid: 964d89af69a27cd479e3686bed1c33f3, type: 3}
   _spawnPosition: {fileID: 59579216}
-  _gameLifeController: {fileID: 640974283}
   _hpIndicator: {fileID: 1005683729}
   _bulletsCounterIndicator: {fileID: 1005683733}
-  _dialogCloudService: {fileID: 1832383326}
   _customCamera: {fileID: 519420034}
-  _buttonService: {fileID: 1005683734}
-  _dialogUpdater: {fileID: 1712993653}
-  _levelInitializer: {fileID: 318491549}
   _npcGroupPrefab: {fileID: 6374726999237428764, guid: d44e4434900fbd34989c25b45864a075, type: 3}
+  _dialogCloudService: {fileID: 1832383326}
+  _dialogUpdater: {fileID: 1712993653}
+  _gameLifeController: {fileID: 640974283}
+  _levelInitializer: {fileID: 318491549}
+  _buttonService: {fileID: 1005683734}
   _windowActivator: {fileID: 1702011550}
+  _settings: {fileID: 1005683737}
 --- !u!114 &843038724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4363,6 +4364,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 467316966, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
   m_PrefabInstance: {fileID: 1005683726}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1005683737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7566188389601663893, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
+  m_PrefabInstance: {fileID: 1005683726}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005683735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870038f8542907743b4428778d8ed783, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1026361270
 GameObject:
   m_ObjectHideFlags: 0
@@ -7560,6 +7572,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 50357974}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1701179633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1701179635}
+  - component: {fileID: 1701179634}
+  m_Layer: 0
+  m_Name: AudioInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1701179634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701179633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c87b3f155679543ae55c0d2110fb0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioIndex: 
+--- !u!4 &1701179635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701179633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 85.428986, y: 25.507093, z: -46.900776}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1702011549
 GameObject:

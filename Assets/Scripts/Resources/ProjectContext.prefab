@@ -75,5 +75,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneManagerPrefab: {fileID: 3952632642850667068, guid: 84bc7f2ca621c714091935f4cf3608f4, type: 3}
   _inventoryPrefab: {fileID: 5270569449420541728, guid: 6cf9056f42cff0f43a7c1511fc4ec77e, type: 3}
-  _dialogManager: {fileID: 9129767443890524005, guid: 33747ddb98c71a64b91b99f6b2c59c9a, type: 3}
   _weaponService: {fileID: 5816838902946549779, guid: 537fe6562cd31ef4da11f5ec4db032b6, type: 3}
+  _audioServicePrefab: {fileID: 502940307126520794, guid: 2f24f0c96ef508243ab7ef4034858498, type: 3}

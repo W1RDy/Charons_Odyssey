@@ -3,44 +3,87 @@ using Zenject;
 
 public class GameSceneInstaller : MonoInstaller
 {
+    #region Player
+
     [SerializeField] private Player _playerPrefab;
     [SerializeField] private Transform _spawnPosition;
-    [SerializeField] private GameLifeController _gameLifeController;
+
+    #endregion
+
+    #region HUD
+
     [SerializeField] private HpIndicator _hpIndicator;
     [SerializeField] private BulletsCounterIndicator _bulletsCounterIndicator;
-    [SerializeField] private DialogCloudService _dialogCloudService;
     [SerializeField] private CustomCamera _customCamera;
-    [SerializeField] private ButtonService _buttonService;
-    [SerializeField] private DialogUpdater _dialogUpdater;
-    [SerializeField] private LevelInitializer _levelInitializer;
+
+    #endregion
+
+    #region EnemiesAndNPCs
+
     [SerializeField] private NPCGroup _npcGroupPrefab;
-    [SerializeField] private WindowActivator _windowActivator;
-    private EnemyService _enemyService;
     private NPCService _npcService;
     private NPCFactory _npcFactory;
-    private ItemService _itemService;
+    private EnemyService _enemyService;
+
+    #endregion
+
+    #region Dialog
+
+    [SerializeField] private DialogCloudService _dialogCloudService;
+    [SerializeField] private DialogUpdater _dialogUpdater;
     private TalkableFinderOnLevel _talkableFinder;
 
+    #endregion
+
+    #region Game
+
+    [SerializeField] private GameLifeController _gameLifeController;
+    [SerializeField] private LevelInitializer _levelInitializer;
+
+    #endregion
+
+    #region OtherServices
+
+    [SerializeField] private ButtonService _buttonService;
+    [SerializeField] private WindowActivator _windowActivator;
+    [SerializeField] private Settings _settings;
+    private AudioService _audioService;
+    private ItemService _itemService;
+
+    #endregion
+
+
     [Inject]
-    private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService)
+    private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService, AudioService audioService)
     {
         _enemyService = enemyService;
         _npcService = npcService;
         _itemService = itemService;
+        _audioService = audioService;
     }
 
     public override void InstallBindings()
     {
         BindEssenceSpawner();
+
         BindWindowActivator();
+
+        BindSettings();
+        BindAudioPlayer();
+
         BindGameLifeController();
+
         BindServices();
+
         BindHUD();
         BindCustomCamera();
+
         BindDialogLifeController();
         BindDialogActivator();
         BindDialogUpdater();
+
         BindTalkableFinder();
+
         BindFactories();
         BindPlayer();
     }
@@ -155,5 +198,16 @@ public class GameSceneInstaller : MonoInstaller
     private void BindWindowActivator()
     {
         Container.Bind<WindowActivator>().FromInstance(_windowActivator).AsSingle();
+    }
+
+    private void BindAudioPlayer()
+    {
+        var audioPlayer = new AudioPlayer(_audioService, _settings);
+        Container.Bind<AudioPlayer>().FromInstance(audioPlayer).AsSingle();
+    }
+
+    private void BindSettings()
+    {
+        Container.Bind<Settings>().FromInstance(_settings).AsSingle();
     }
 }

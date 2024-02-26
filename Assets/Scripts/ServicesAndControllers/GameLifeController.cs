@@ -12,11 +12,12 @@ public class GameLifeController : MonoBehaviour, IPause
     private ButtonService _buttonService;
     private LevelInitializer _levelInitializer;
     private PauseService _pauseService;
+    private AudioPlayer _audioPlayer;
     private bool _isPaused;
 
     [Inject]
     private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService,
-        LevelInitializer levelInitializer, WindowActivator windowActivator, PauseService pauseService)
+        LevelInitializer levelInitializer, WindowActivator windowActivator, PauseService pauseService, AudioPlayer audioPlayer)
     {
         _loadSceneManager = loadSceneManager;
         _inventory = inventory;
@@ -24,6 +25,7 @@ public class GameLifeController : MonoBehaviour, IPause
         _buttonService = buttonService;
         _levelInitializer = levelInitializer;
         _windowActivator = windowActivator;
+        _audioPlayer = audioPlayer;
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
     }
@@ -54,12 +56,14 @@ public class GameLifeController : MonoBehaviour, IPause
     {
         _windowActivator.ActivateWindow(WindowType.LoseWindow);
         _loadSceneManager.ReloadScene(2 * 1000);
+        _audioPlayer.Unsubscribe();
     }
 
     public void WinGame()
     {
         _inventory.SaveInventory();
         _loadSceneManager.LoadNextScene();
+        _audioPlayer.Unsubscribe();
     }
 
     public void Pause()

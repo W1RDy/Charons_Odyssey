@@ -10,6 +10,7 @@ public class ProjectInstaller : MonoInstaller
     [SerializeField] private LoadSceneManager _sceneManagerPrefab;
     [SerializeField] private Inventory _inventoryPrefab;
     [SerializeField] private WeaponService _weaponService;
+    [SerializeField] private AudioService _audioServicePrefab;
 
     public override void InstallBindings()
     {
@@ -22,6 +23,7 @@ public class ProjectInstaller : MonoInstaller
     private void BindServices()
     {
         BindPauseService();
+        BindAudioService();
         BindInputService();
         BindDialogService();
         BindEnemyService();
@@ -83,6 +85,11 @@ public class ProjectInstaller : MonoInstaller
     {
         var pauseService = new PauseService();
         BindService(pauseService);
+    }
+
+    private void BindAudioService()
+    {
+        BindService(Container.InstantiatePrefabForComponent<AudioService>(_audioServicePrefab));
     }
 
     private void BindService<T>(T service) where T : IService

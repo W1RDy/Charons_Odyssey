@@ -127,6 +127,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         return _playerView.GetAnimationDuration();
     }
 
+    public void SetAnimationSpeed(float speed)
+    {
+        _playerView.SetAnimatorSpeed(speed);
+    }
+
     public void Flip() => _playerMove.Flip();
 
     public bool OnGround() => _playerColliderChecker.IsCollideWithGround();

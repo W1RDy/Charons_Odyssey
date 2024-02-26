@@ -14,12 +14,16 @@ public class PlayerClimbState : PlayerState
     private Ladder _ladder;
     private LadderUseChecker _ladderUseChecker;
     private PlayerColliderChecker _playerColliderChecker;
+    private Rigidbody2D _rigidbody;
+    private float _gravityScale;
 
     public override void Initialize(Player player, PauseService pauseService)
     {
         base.Initialize(player, pauseService);
 
         _playerMove = player.GetComponent<PlayerMove>();
+        _rigidbody = player.GetComponent<Rigidbody2D>();
+        _gravityScale = _rigidbody.gravityScale;
         _ladderUseChecker = _player.GetComponentInChildren<PlayerController>().LadderUseChecker;
         _playerColliderChecker = _player.GetComponent<PlayerColliderChecker>();
     }
@@ -29,6 +33,7 @@ public class PlayerClimbState : PlayerState
         base.Enter();
         _player.SetAnimation("Climb", true);
         IsStateFinished = !_playerColliderChecker.TryGetLadder(out _ladder);
+        _rigidbody.gravityScale = 0;
 
         if (_ladder)
         {
@@ -43,6 +48,8 @@ public class PlayerClimbState : PlayerState
             if (Input.GetAxis("Vertical") != _verticalMoveValue)
             {
                 _verticalMoveValue = Input.GetAxis("Vertical");
+                if (_verticalMoveValue != 0) _player.SetAnimationSpeed(1);
+                else _player.SetAnimationSpeed(0);
                 _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
             }
 
@@ -59,5 +66,12 @@ public class PlayerClimbState : PlayerState
         _ladder.ThrowLadder();
         _playerMove.SetDirection(Vector2.zero);
         _player.SetAnimation("Climb", false);
+    }
+
+    public override void ResetValues()
+    {
+        base.ResetValues();
+        _rigidbody.gravityScale = _gravityScale;
+        _player.SetAnimationSpeed(1);
     }
 }

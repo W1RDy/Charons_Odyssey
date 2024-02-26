@@ -7,6 +7,7 @@ public class PlayerView : MonoBehaviour, IPause
 {
     private Animator _animator;
     private PauseService _pauseService;
+    private float _animatorSpeed;
 
     [Inject]
     private void Construct(PauseService pauseService)
@@ -51,14 +52,20 @@ public class PlayerView : MonoBehaviour, IPause
         return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
     }
 
+    public void SetAnimatorSpeed(float speed)
+    {
+        _animator.speed = speed;
+    }
+
     public void Pause()
     {
-        _animator.speed = 0;
+        _animatorSpeed = _animator.speed;
+        SetAnimatorSpeed(0);
     }
 
     public void Unpause()
     {
-        _animator.speed = 1;
+        SetAnimatorSpeed(_animatorSpeed);
     }
 
     public void OnDestroy()
