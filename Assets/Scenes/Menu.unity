@@ -4012,7 +4012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c87b3f155679543ae55c0d2110fb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioIndex: 
+  _audioIndex: MainTheme
 --- !u!4 &1264906476
 Transform:
   m_ObjectHideFlags: 0

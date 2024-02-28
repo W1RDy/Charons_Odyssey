@@ -927,9 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9f40b33e819dc45b39ae395537e151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _windows:
-  - type: 4
-    windowPrefab: {fileID: 0}
+  _windows: []
 --- !u!4 &822055694
 Transform:
   m_ObjectHideFlags: 0
@@ -974,6 +972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _windowService: {fileID: 822055693}
+  _defaultMenuElements: {fileID: 981155230}
 --- !u!4 &867357148
 Transform:
   m_ObjectHideFlags: 0
@@ -1364,11 +1363,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1336411553}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b3aedf3749b07b45b400fbc4fd9be5f, type: 3}
+  m_Script: {fileID: 11500000, guid: cb008bd4ba74a9b41a79a6703cbe9ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonService: {fileID: 163439099}
-  _windowActivator: {fileID: 0}
+  _windowActivator: {fileID: 867357147}
 --- !u!114 &1336411555
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,6 @@ public class AudioInitializer : MonoBehaviour
 
     private void Start()
     {
-        if (_audioIndex != "") _audioPlayer.PlayMusic(_audioIndex);
+        _audioPlayer.PlayMusic(_audioIndex);
     }
 }

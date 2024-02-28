@@ -46,11 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioGroups:
   - _audioConfigs:
-    - _index: FreeMe
-      _audioClip: {fileID: 8300000, guid: c5d26a30754502d4692888963b678311, type: 3}
-      _volume: 0.5
-    - _index: Tough
-      _audioClip: {fileID: 8300000, guid: a5a1e4265034e7744b5b4f3e6824fad2, type: 3}
+    - _index: MainTheme
+      _audioClip: {fileID: 8300000, guid: 69663c58aab5c664a98aaec6b136b1fe, type: 3}
       _volume: 0.5
     _groupIndex: music
   - _audioConfigs: []

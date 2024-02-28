@@ -32,7 +32,8 @@ public class AudioPlayer
     public void PlayMusic(string index)
     {
         _rememberedIndex = index;
-        if ((_audioService.CurrentAudioConfig == null || _audioService.CurrentAudioConfig.Index != index) && _settings.MusicVolume > 0)
+        if (index == "") StopMusic();
+        else if ((_audioService.CurrentAudioConfig == null || _audioService.CurrentAudioConfig.Index != index) && _settings.MusicVolume > 0)
         {
             var audio = _audioService.GetMusic(index);
             StopMusic();
