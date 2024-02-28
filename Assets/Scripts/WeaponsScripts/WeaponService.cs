@@ -7,6 +7,11 @@ public class WeaponService : MonoBehaviour, IService
     [SerializeField] Weapon[] weapons;
     private Dictionary<WeaponType, Weapon> _weaponsDict;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void InitializeService()
     {
         InitializeWeaponsDictionary();

@@ -599,6 +599,7 @@ MonoBehaviour:
   _buttonService: {fileID: 2313524752092892272}
   _windowActivator: {fileID: 1137998389}
   _settings: {fileID: 2313524752092892273}
+  text: {fileID: 0}
 --- !u!1001 &477268698
 PrefabInstance:
   m_ObjectHideFlags: 0

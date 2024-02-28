@@ -9,6 +9,11 @@ public class AudioService : MonoBehaviour, IService
     private Dictionary<string, Dictionary<string, AudioConfig>> _audios = new Dictionary<string, Dictionary<string, AudioConfig>>();
     public AudioConfig CurrentAudioConfig { get; set; }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void InitializeService()
     {
         foreach (var audioGroup in _audioGroups)

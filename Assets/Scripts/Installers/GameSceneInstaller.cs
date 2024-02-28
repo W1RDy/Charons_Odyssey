@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class GameSceneInstaller : MonoInstaller
@@ -52,6 +53,7 @@ public class GameSceneInstaller : MonoInstaller
 
     #endregion
 
+    [SerializeField] Text text;
 
     [Inject]
     private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService, AudioService audioService)
