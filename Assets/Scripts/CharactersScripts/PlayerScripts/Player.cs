@@ -8,10 +8,11 @@ using Zenject;
 [RequireComponent(typeof(PlayerMove))]
 [RequireComponent(typeof(PlayerColliderChecker))]
 [RequireComponent(typeof(PlayerHpController))]
-public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable, IPause
+public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable, IPause, IHasStamina
 {
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
+    [SerializeField] private float _staminaValue = 100f;
 
     private PlayerMove _playerMove;
     private PlayerView _playerView;
@@ -22,7 +23,10 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     private PlayerStatesInitializer _playerStatesInitializator;
     private PlayerColliderChecker _playerColliderChecker;
     private PlayerHpController _playerHpController;
+    private PlayerStaminaController _playerStamineController;
     private PauseService _pauseService;
+    private StaminaRefiller _playerStaminaRefiller;
+    private StaminaIndicator _playerStaminaIndicator;
 
     [SerializeField] private PistolViewConfig _pistolView;
     [SerializeField] private Transform _weaponPoint;
@@ -32,6 +36,8 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public Transform WeaponPoint { get => _weaponPoint; }
 
     #region Player's States
+
+    [Header("Playr's States")]
 
     [SerializeField] private PlayerStayState _stayState;
     [SerializeField] private PlayerMoveState _moveState;
@@ -48,8 +54,9 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public PlayerStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService)
+    private void Construct(WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService, StaminaIndicator staminaIndicator)
     {
+        _playerStaminaIndicator = staminaIndicator;
         _weaponService = weaponService;
         _bulletsCounterIndicator = bulletsCounterIndicator;
         _pauseService = pauseService;
@@ -65,17 +72,25 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         StateMachine = new PlayerStateMachine();
         _playerStatesInitializator = GetComponent<PlayerStatesInitializer>();
         _playerColliderChecker = GetComponent<PlayerColliderChecker>();
-        _playerHpController = GetComponent<PlayerHpController>();
-        _playerHpController.SetMaxHp(_hp);
+        _playerStaminaRefiller = new StaminaRefiller(_staminaValue, this.GetCancellationTokenOnDestroy(), this, _pauseService);
+
+        InitializeControllers();
 
         _token = this.GetCancellationTokenOnDestroy();
         _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState, _attackWithPistolState, _stayWithGunState, _talkState);
         _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator); // перенести, если появится больше оружия
     }
 
+    private void InitializeControllers()
+    {
+        _playerHpController = GetComponent<PlayerHpController>();
+        _playerStamineController = new PlayerStaminaController(_staminaValue, _playerStaminaIndicator);
+        _playerHpController.SetMaxHp(_hp);
+    }
+
     private void Start()
     {
-        _playerStatesInitializator.InitializeStates();
+        _playerStatesInitializator.InitializeStates(_playerStaminaRefiller);
     }
 
     private void Update()
@@ -110,6 +125,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void Death()
     {
         _playerHpController.Death();
+        _playerStaminaRefiller.Unsubscribe();
     }
 
     public void SetAnimation(string animationIndex, bool isActivate)
@@ -161,5 +177,20 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void Unpause()
     {
         if (_isPaused) _isPaused = false;
+    }
+
+    public void UseStamina(float value)
+    {
+        _playerStamineController.UseStamine(value, ref _staminaValue);
+    }
+
+    public void RefillStamina(float value)
+    {
+        _playerStamineController.RefillStamine(value, ref _staminaValue);
+    }
+
+    public float GetStamina()
+    {
+        return _staminaValue;
     }
 }

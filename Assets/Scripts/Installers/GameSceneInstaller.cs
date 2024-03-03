@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,6 +17,7 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private HpIndicator _hpIndicator;
     [SerializeField] private BulletsCounterIndicator _bulletsCounterIndicator;
     [SerializeField] private CustomCamera _customCamera;
+    [SerializeField] private StaminaIndicator _staminaIndicator;
 
     #endregion
 
@@ -52,8 +54,6 @@ public class GameSceneInstaller : MonoInstaller
     private ItemService _itemService;
 
     #endregion
-
-    [SerializeField] Text text;
 
     [Inject]
     private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService, AudioService audioService)
@@ -94,6 +94,7 @@ public class GameSceneInstaller : MonoInstaller
     {
         BindHpIndicator();
         BindBulletsCounterIndicator();
+        BindStaminaIndicator();
     }
 
     private void BindServices()
@@ -108,6 +109,11 @@ public class GameSceneInstaller : MonoInstaller
         BindNPCFactory();
         BindNPCGroupFactory();
         BindItemFactory();
+    }
+
+    private void BindStaminaIndicator()
+    {
+        Container.Bind<StaminaIndicator>().FromInstance(_staminaIndicator).AsSingle();
     }
 
     private void BindPlayer()

@@ -37,7 +37,7 @@ public class PlayerStatesInitializer : MonoBehaviour
         _player.StateMachine.InitializeStatesDictionary(_statesInstances);
     }
 
-    public void InitializeStates()
+    public void InitializeStates(StaminaRefiller staminaRefiller)
     {
         foreach (var state in _statesInstances)
         {
@@ -50,7 +50,7 @@ public class PlayerStatesInitializer : MonoBehaviour
 
                 if (state.GetStateType() == PlayerStateType.IdleWithGun) (state as PlayerStayWithGunState).Initialize(_player, weapon, _pauseService, _customCamera);
                 else if (state.GetStateType() == PlayerStateType.AttackWithPistol) (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera);
-                else (state as PlayerAttackBaseState).Initialize(_player, weapon, _pauseService);
+                else (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaRefiller);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
                 (state as PlayerTalkState).Initialize(_player, _pauseService, _dialogLifeController, _dialogCloudService);

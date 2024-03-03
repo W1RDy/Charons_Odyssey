@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Attack With Fist State", menuName = "Player's State/Attack With Fist State")]
-public class PlayerAttackWithFistState : PlayerAttackBaseState
+public class PlayerAttackWithFistState : PlayerAttackWithStamina
 {
     public override void Enter()
     {
@@ -14,9 +14,10 @@ public class PlayerAttackWithFistState : PlayerAttackBaseState
 
     public override void Attack()
     {
-        if (!IsCooldown)
+        if (!IsCooldown && _player.GetStamina() >= _neededStamina)
         {
             base.Attack();
+            _player.UseStamina(_neededStamina);
             var hittables = FinderObjects.FindHittableObjectByCircle(_weapon.Distance, _weapon.WeaponPoint.position, AttackableObjectIndex.Player);
             if (hittables != null) ApplyDamage(hittables);
         }

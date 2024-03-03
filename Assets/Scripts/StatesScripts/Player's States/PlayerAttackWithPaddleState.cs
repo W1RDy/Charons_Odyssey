@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Attack With Paddle State", menuName = "Player's State/Attack With Paddle State")]
-public class PlayerAttackWithPaddleState : PlayerAttackBaseState
+public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
 {
     private Paddle _paddle;
 
-    public override void Initialize(Player player, Weapon weapon, PauseService pauseService)
+    public override void Initialize(Player player, Weapon weapon, PauseService pauseService, StaminaRefiller staminaRefiller)
     {
-        base.Initialize(player, weapon, pauseService);
+        base.Initialize(player, weapon, pauseService, staminaRefiller);
         _paddle = _weapon as Paddle;
     }
 
@@ -21,9 +21,10 @@ public class PlayerAttackWithPaddleState : PlayerAttackBaseState
 
     public override void Attack()
     {
-        if (!IsCooldown)
+        if (!IsCooldown && _player.GetStamina() >= _neededStamina)
         {
             base.Attack();
+            _player.UseStamina(_neededStamina);
             var hittables = FinderObjects.FindHittableObjectByCircle(_weapon.Distance, _weapon.WeaponPoint.position, AttackableObjectIndex.Player);
             if (hittables != null) ApplyDamage(hittables);
         }

@@ -17,5 +17,3 @@ public enum AttackableObjectIndex
     Player = 7,
     Enemy = 6
 }
-
-

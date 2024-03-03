@@ -3609,6 +3609,7 @@ MonoBehaviour:
   _buttonService: {fileID: 1005683734}
   _windowActivator: {fileID: 1702011550}
   _settings: {fileID: 1005683737}
+  text: {fileID: 0}
 --- !u!114 &843038724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4622,7 +4623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1099209627
 MonoBehaviour:
   m_ObjectHideFlags: 0

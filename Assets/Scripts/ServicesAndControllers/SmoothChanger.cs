@@ -30,6 +30,7 @@ public static class SmoothChanger
         {
             if (token.IsCancellationRequested) return;
             await UniTask.WaitWhile(() => pauseToken.IsCancellationRequested);
+            if (token.IsCancellationRequested) return;
             var value = Mathf.Lerp(firstValue, endValue, current / duration);
             callback(value);
             current += Time.unscaledDeltaTime;
