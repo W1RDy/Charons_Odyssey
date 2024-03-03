@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b662d379c14e0b14aa0b10acfc21c737, type: 3}
   m_Name: Talk State
   m_EditorClassIdentifier: 
-  _priorityIndex: 7
+  _priorityIndex: 6
   _stateType: 8

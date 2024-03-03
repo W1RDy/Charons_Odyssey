@@ -7,7 +7,7 @@ using Zenject;
 
 [RequireComponent(typeof(PlayerMove))]
 [RequireComponent(typeof(PlayerColliderChecker))]
-[RequireComponent(typeof(PlayerHpController))]
+[RequireComponent(typeof(PlayerHpHandler))]
 public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable, IPause, IHasStamina
 {
     [SerializeField] private float _hp;
@@ -19,19 +19,24 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private CancellationToken _token;
     private WeaponService _weaponService;
+    private ArmorItemsService _armorItemsService;
     private BulletsCounterIndicator _bulletsCounterIndicator;
+
     private PlayerStatesInitializer _playerStatesInitializator;
     private PlayerColliderChecker _playerColliderChecker;
-    private PlayerHpController _playerHpController;
-    private PlayerStaminaController _playerStamineController;
+    private PlayerHpHandler _playerHpHandler;
+    private PlayerStaminaHandler _playerStaminaHandler;
+
     private PauseService _pauseService;
-    private StaminaRefiller _playerStaminaRefiller;
+
+    private StaminaController _playerStaminaController;
     private StaminaIndicator _playerStaminaIndicator;
 
     [SerializeField] private PistolViewConfig _pistolView;
     [SerializeField] private Transform _weaponPoint;
     private bool _isPaused;
 
+    private Shield _shield;
     public PistolViewConfig PistolView { get => _pistolView; }
     public Transform WeaponPoint { get => _weaponPoint; }
 
@@ -48,16 +53,18 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     [SerializeField] private PlayerAttackWithPaddleState _attackWithPaddleState;
     [SerializeField] private PlayerAttackWithPistolState _attackWithPistolState;
     [SerializeField] private PlayerTalkState _talkState;
+    [SerializeField] private PlayerShieldState _shieldState;
 
     #endregion
 
     public PlayerStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(WeaponService weaponService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService, StaminaIndicator staminaIndicator)
+    private void Construct(WeaponService weaponService, ArmorItemsService armorItemsService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService, StaminaIndicator staminaIndicator)
     {
         _playerStaminaIndicator = staminaIndicator;
         _weaponService = weaponService;
+        _armorItemsService = armorItemsService;
         _bulletsCounterIndicator = bulletsCounterIndicator;
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
@@ -72,25 +79,28 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         StateMachine = new PlayerStateMachine();
         _playerStatesInitializator = GetComponent<PlayerStatesInitializer>();
         _playerColliderChecker = GetComponent<PlayerColliderChecker>();
-        _playerStaminaRefiller = new StaminaRefiller(_staminaValue, this.GetCancellationTokenOnDestroy(), this, _pauseService);
+        _playerStaminaController = new StaminaController(_staminaValue, this.GetCancellationTokenOnDestroy(), this, _pauseService);
 
-        InitializeControllers();
+        _shield = _armorItemsService.GetShield();
+
+        InitializeHandlers();
 
         _token = this.GetCancellationTokenOnDestroy();
-        _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState, _attackWithPistolState, _stayWithGunState, _talkState);
+        _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState, _attackWithPistolState, _stayWithGunState, _talkState, _shieldState);
+        
         _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator); // перенести, если появится больше оружия
     }
 
-    private void InitializeControllers()
+    private void InitializeHandlers()
     {
-        _playerHpController = GetComponent<PlayerHpController>();
-        _playerStamineController = new PlayerStaminaController(_staminaValue, _playerStaminaIndicator);
-        _playerHpController.SetMaxHp(_hp);
+        _playerHpHandler = GetComponent<PlayerHpHandler>();
+        _playerStaminaHandler = new PlayerStaminaHandler(_staminaValue, _playerStaminaIndicator);
+        _playerHpHandler.Initialize(_hp, _shield);
     }
 
     private void Start()
     {
-        _playerStatesInitializator.InitializeStates(_playerStaminaRefiller);
+        _playerStatesInitializator.InitializeStates(_playerStaminaController, _shield);
     }
 
     private void Update()
@@ -111,21 +121,26 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         else throw new TypeAccessException(weaponType + "is incorrect WeaponType!");
     }
 
+    public void UseShield()
+    {
+        ChangeState(PlayerStateType.Shield);
+    }
+
     public void TakeHeal(float healValue)
     {
-        _playerHpController.TakeHeal(healValue, ref _hp);
+        _playerHpHandler.TakeHeal(healValue, ref _hp);
     }
 
     public void TakeHit(float damage)
     {
-        _playerHpController.TakeHit(damage, ref _hp);
+        _playerHpHandler.TakeHit(damage, ref _hp);
         if (_hp <= 0) Death();
     }
 
     public void Death()
     {
-        _playerHpController.Death();
-        _playerStaminaRefiller.Unsubscribe();
+        _playerHpHandler.Death();
+        _playerStaminaController.Unsubscribe();
     }
 
     public void SetAnimation(string animationIndex, bool isActivate)
@@ -181,12 +196,17 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public void UseStamina(float value)
     {
-        _playerStamineController.UseStamine(value, ref _staminaValue);
+        _playerStaminaHandler.UseStamina(value, ref _staminaValue);
+    }
+
+    public void ChangeStaminaTo(float value)
+    {
+        _playerStaminaHandler.ChangeStaminaTo(value, ref _staminaValue);
     }
 
     public void RefillStamina(float value)
     {
-        _playerStamineController.RefillStamine(value, ref _staminaValue);
+        _playerStaminaHandler.RefillStamina(value, ref _staminaValue);
     }
 
     public float GetStamina()

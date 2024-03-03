@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 782cda150cc39d0409889df20c931673, type: 3}
-  m_Name: Attack With Fist State
+  m_Script: {fileID: 11500000, guid: e3074f8a3804d5549ab6c2ae72639c4f, type: 3}
+  m_Name: ShieldState
   m_EditorClassIdentifier: 
-  _priorityIndex: 5
-  _stateType: 5
-  _neededStamina: 17
+  _priorityIndex: 4
+  _stateType: 9
+  _staminaPerSecond: 7

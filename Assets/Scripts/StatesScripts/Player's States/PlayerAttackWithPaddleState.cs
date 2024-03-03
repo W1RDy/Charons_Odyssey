@@ -7,7 +7,7 @@ public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
 {
     private Paddle _paddle;
 
-    public override void Initialize(Player player, Weapon weapon, PauseService pauseService, StaminaRefiller staminaRefiller)
+    public override void Initialize(Player player, Weapon weapon, PauseService pauseService, StaminaController staminaRefiller)
     {
         base.Initialize(player, weapon, pauseService, staminaRefiller);
         _paddle = _weapon as Paddle;

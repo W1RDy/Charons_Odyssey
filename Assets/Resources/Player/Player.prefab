@@ -340,6 +340,8 @@ GameObject:
   - component: {fileID: 658090648391339950}
   - component: {fileID: 2856952150755059379}
   - component: {fileID: 1862564325723425854}
+  - component: {fileID: 2858289496476003929}
+  - component: {fileID: 552891670796227578}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -409,6 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hp: 10
   _speed: 5
+  _staminaValue: 100
   _pistolView:
     pistolEnd: {fileID: 991589543}
     pistolView: {fileID: 1057895811}
@@ -422,6 +425,7 @@ MonoBehaviour:
   _attackWithPaddleState: {fileID: 11400000, guid: 4d9babe01305a7c42b35f69dc424615a, type: 2}
   _attackWithPistolState: {fileID: 11400000, guid: dc63c7a4e4033bd4bb9a4ddf936c010b, type: 2}
   _talkState: {fileID: 11400000, guid: ad90b79f1ff6f824e897eabd909ad0d7, type: 2}
+  _shieldState: {fileID: 11400000, guid: ab5fb9e111e69644fbdf96878bd579f5, type: 2}
 --- !u!114 &658090648391339950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +464,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae017da6e8ff755419100744a06c6fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2858289496476003929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4837806794706279946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6793cc9f8d12694fb9914d3bc6d0d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &552891670796227578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4837806794706279946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ee7bf32d25ec844f98f881b6464c867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9065180678561044064

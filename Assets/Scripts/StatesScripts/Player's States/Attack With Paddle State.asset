@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9e383374e23d14398315702f955882, type: 3}
   m_Name: Attack With Paddle State
   m_EditorClassIdentifier: 
-  _priorityIndex: 6
+  _priorityIndex: 5
   _stateType: 6
   _neededStamina: 34

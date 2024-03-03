@@ -84,10 +84,15 @@ public class PCInputService : IInputService, IService
         {
             ActivateButton(InputButtonType.Heal);
         }
+        else if (Input.GetKeyDown(KeyCode.H))
+        {
+            ActivateButton(InputButtonType.Shield);
+        }
         else
         {
             DeactivateButton(InputButtonType.Interact);
             DeactivateButton(InputButtonType.Heal);
+            DeactivateButton(InputButtonType.Shield);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) ActivateButton(InputButtonType.Pause);

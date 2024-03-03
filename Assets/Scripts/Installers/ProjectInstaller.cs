@@ -10,6 +10,7 @@ public class ProjectInstaller : MonoInstaller
     [SerializeField] private LoadSceneManager _sceneManagerPrefab;
     [SerializeField] private Inventory _inventoryPrefab;
     [SerializeField] private WeaponService _weaponService;
+    [SerializeField] private ArmorItemsService _armorItemsService;
     [SerializeField] private AudioService _audioServicePrefab;
 
     public override void InstallBindings()
@@ -30,6 +31,12 @@ public class ProjectInstaller : MonoInstaller
         BindNPCService();
         BindItemService();
         BindWeaponService();
+        BindArmorItemService();
+    }
+
+    private void BindArmorItemService()
+    {
+        Container.Bind<ArmorItemsService>().FromComponentInNewPrefab(_armorItemsService).AsSingle();
     }
 
     private void BindLoadSceneManager()

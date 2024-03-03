@@ -13,10 +13,11 @@ public class PlayerStatesInitializer : MonoBehaviour
     private List<PlayerState> _statesInstances;
     private CustomCamera _customCamera;
     private PauseService _pauseService;
+    private IInputService _inputService;
 
     [Inject]
     private void Construct(Inventory inventory, WeaponService weaponService, DialogLifeController dialogLifeController,
-        DialogCloudService dialogCloudService, CustomCamera customCamera, PauseService pauseService)
+        DialogCloudService dialogCloudService, CustomCamera customCamera, PauseService pauseService, IInputService inputService)
     {
         _weaponService = weaponService;
         _dialogLifeController = dialogLifeController;
@@ -24,6 +25,7 @@ public class PlayerStatesInitializer : MonoBehaviour
         _inventory = inventory;
         _customCamera = customCamera;
         _pauseService = pauseService;
+        _inputService = inputService;
         _player = GetComponent<Player>();
     }
 
@@ -37,7 +39,7 @@ public class PlayerStatesInitializer : MonoBehaviour
         _player.StateMachine.InitializeStatesDictionary(_statesInstances);
     }
 
-    public void InitializeStates(StaminaRefiller staminaRefiller)
+    public void InitializeStates(StaminaController staminaController, Shield shield)
     {
         foreach (var state in _statesInstances)
         {
@@ -50,12 +52,14 @@ public class PlayerStatesInitializer : MonoBehaviour
 
                 if (state.GetStateType() == PlayerStateType.IdleWithGun) (state as PlayerStayWithGunState).Initialize(_player, weapon, _pauseService, _customCamera);
                 else if (state.GetStateType() == PlayerStateType.AttackWithPistol) (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera);
-                else (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaRefiller);
+                else (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaController);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
                 (state as PlayerTalkState).Initialize(_player, _pauseService, _dialogLifeController, _dialogCloudService);
             else if (state.GetStateType() == PlayerStateType.Heal)
                 (state as PlayerHealState).Initialize(_player, _pauseService, _inventory);
+            else if (state.GetStateType() == PlayerStateType.Shield)
+                (state as PlayerShieldState).Initialize(_player, _pauseService, shield, staminaController, _inputService);
             else state.Initialize(_player, _pauseService);
         }
     }
