@@ -27,8 +27,13 @@ public interface IHittableWithShield : IHittable
     public void TakeHit(float damage, Vector2 damageDirection);
 }
 
-public interface IParryingHittable: IHittable
+public interface IParryingHittable : IHittable
 {
     public bool IsReadyForParrying { get; set; }
     public void ApplyParrying();
+}
+
+public interface IStunable : IHittable
+{
+    public void ApplyStun();
 }

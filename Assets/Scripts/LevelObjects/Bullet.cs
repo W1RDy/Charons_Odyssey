@@ -49,7 +49,9 @@ public class Bullet : MonoBehaviour, IPause
     {
         if (_layer == collision.gameObject.layer)
         {
-            collision.gameObject.GetComponent<IHittable>().TakeHit(_damage);
+            var hittable = collision.gameObject.GetComponent<IHittable>();
+            hittable.TakeHit(_damage);
+            if (hittable is IStunable stunable) stunable.ApplyStun();
             Destroy(gameObject);
         }
     }

@@ -69,21 +69,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198946efe15a4d348baef17ea6cee881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 10
+  _hp: 100
   _isAvailable: 0
   _parryingWindowDuration: 0.8
   _damageTimeBeforeAnimationEnd: 0.1
-  _stunningTime: 0.3
+  _stunningTime: 2
   _idleState: {fileID: 11400000, guid: 903e47412f90b1545b951cf20adf3951, type: 2}
   _moveState: {fileID: 11400000, guid: c13ec59d31a44e0459d0098854e1bfd0, type: 2}
   _attackState: {fileID: 11400000, guid: 51b644d0c7e6ceb47806a384af21c808, type: 2}
   _reclineState: {fileID: 11400000, guid: c40f8acbcfaea224da8a0e776710a5da, type: 2}
   _stunState: {fileID: 11400000, guid: 432d43ff838340346961aed9c7c06a7f, type: 2}
   _trigger: {fileID: 2517521349137554264}
-  _speed: 3
-  _hitDistance: 1
-  _damage: 2
-  _cooldown: 1.5
+  _speed: 2.5
+  _hitDistance: 1.5
+  _damage: 35
+  _cooldown: 3
 --- !u!114 &1982464441771453197
 MonoBehaviour:
   m_ObjectHideFlags: 0

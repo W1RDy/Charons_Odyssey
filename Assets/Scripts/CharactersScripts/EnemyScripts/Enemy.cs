@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 using Zenject;
 using Cysharp.Threading.Tasks;
 
-public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IAttackable, IAvailable, IPause
+public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStunable, IAttackable, IAvailable, IPause
 {
     public EnemyType EnemyType { get; protected set; }
     [SerializeField] protected float _hp;
@@ -103,17 +103,13 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IAtt
 
     public void ApplyParrying()
     {
-        ChangeState(EnemyStateType.Stun);
+        ApplyStun();
     }
 
-    //private async void WaitStunning()
-    //{
-    //    var token = this.GetCancellationTokenOnDestroy();
-    //    _isAvailable = false;
-    //    await Delayer.DelayWithPause(_stunningTime, token, _pauseTokenSource.Token);
-    //    if (token.IsCancellationRequested) return;
-    //    _isAvailable = true;
-    //}
+    public void ApplyStun()
+    {
+        ChangeState(EnemyStateType.Stun);
+    }
 
     public virtual void Attack()
     {
