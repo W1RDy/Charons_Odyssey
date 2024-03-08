@@ -125,13 +125,6 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         else throw new TypeAccessException(weaponType + "is incorrect WeaponType!");
     }
 
-    public void UseProtection()
-    {
-        Debug.Log("Protection");
-        ChangeState(PlayerStateType.Parrying);
-        if (StateMachine.CurrentState.GetStateType() != PlayerStateType.Parrying) ChangeState(PlayerStateType.Shield);
-    }
-
     public void TakeHeal(float healValue)
     {
         _playerHpHandler.TakeHeal(healValue, ref _hp);

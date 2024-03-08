@@ -77,6 +77,15 @@ public class PlayerController : MonoBehaviour, IPause
                 else if (_inputService.ButtonIsPushed(InputButtonType.HeavyAttack)) _player.Attack(WeaponType.Paddle);
                 else if (_inputService.ButtonIsPushed(InputButtonType.Attack)) _player.Attack(WeaponType.Fist);
 
+                if (_inputService.ButtonIsPushed(InputButtonType.Parrying))
+                {
+                    _player.ChangeState(PlayerStateType.Parrying);
+                }
+                else if (_inputService.ButtonIsPushed(InputButtonType.Shield))
+                {
+                    _player.ChangeState(PlayerStateType.Shield);
+                }
+
                 if (_inputService.ButtonIsPushed(InputButtonType.Interact))
                 {
                     var interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);
@@ -85,10 +94,6 @@ public class PlayerController : MonoBehaviour, IPause
                 else if (_inputService.ButtonIsPushed(InputButtonType.Heal) && _inventory.HasItem(ItemType.FirstAidKit))
                 {
                     _player.ChangeState(PlayerStateType.Heal);
-                }
-                else if (_inputService.ButtonIsPushed(InputButtonType.Protection))
-                {
-                    _player.UseProtection();
                 }
             }
             else

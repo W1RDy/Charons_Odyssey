@@ -6,7 +6,8 @@ using UnityEngine;
 public class PCInputService : IInputService, IService
 {
     private Dictionary<InputButtonType, InputButton> _buttons;
-    private TimeCounter _timeCounter;
+    private TimeCounter _timeCounterForAttack;
+    private TimeCounter _timeCounterForProtect;
 
     public void InitializeService()
     {
@@ -15,7 +16,8 @@ public class PCInputService : IInputService, IService
         {
             _buttons.Add(buttonType, new InputButton(buttonType));
         }
-        _timeCounter = new TimeCounter();
+        _timeCounterForAttack = new TimeCounter();
+        _timeCounterForProtect = new TimeCounter();
     }
 
     public bool ButtonIsPushed(InputButtonType buttonType)
@@ -61,10 +63,10 @@ public class PCInputService : IInputService, IService
         if (Input.GetKeyDown(KeyCode.Mouse0)) ActivateButton(InputButtonType.Shot);
         else if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.Mouse1))
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1)) _timeCounter.StartCounter();
+            if (Input.GetKeyDown(KeyCode.Mouse1)) _timeCounterForAttack.StartCounter();
             else
             {
-                var holdingTime = _timeCounter.StopCounter();
+                var holdingTime = _timeCounterForAttack.StopCounter();
                 if (holdingTime > 0.3f) ActivateButton(InputButtonType.HeavyAttack);
                 else ActivateButton(InputButtonType.Attack);
             }
@@ -76,6 +78,27 @@ public class PCInputService : IInputService, IService
             DeactivateButton(InputButtonType.HeavyAttack);
         }
 
+        if (Input.GetKey(KeyCode.H) || Input.GetKeyUp(KeyCode.H))
+        {
+            if (Input.GetKeyDown(KeyCode.H)) _timeCounterForProtect.StartCounter();
+
+            float holdingTime = _timeCounterForProtect.GetTime();
+
+            if (Input.GetKeyUp(KeyCode.H))
+            {
+                holdingTime = _timeCounterForProtect.StopCounter();
+
+                if (holdingTime <= 0.2f) ActivateButton(InputButtonType.Parrying);
+            }
+
+            if (holdingTime > 0.2f) ActivateButton(InputButtonType.Shield);
+        }
+        else
+        {
+            DeactivateButton(InputButtonType.Shield);
+            DeactivateButton(InputButtonType.Parrying);
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             ActivateButton(InputButtonType.Interact);
@@ -84,15 +107,10 @@ public class PCInputService : IInputService, IService
         {
             ActivateButton(InputButtonType.Heal);
         }
-        else if (Input.GetKeyDown(KeyCode.H))
-        {
-            ActivateButton(InputButtonType.Protection);
-        }
         else
         {
             DeactivateButton(InputButtonType.Interact);
             DeactivateButton(InputButtonType.Heal);
-            DeactivateButton(InputButtonType.Protection);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) ActivateButton(InputButtonType.Pause);
