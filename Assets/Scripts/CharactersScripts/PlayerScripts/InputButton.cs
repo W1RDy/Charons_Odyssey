@@ -31,5 +31,5 @@ public enum InputButtonType
     Interact,
     Pause,
     Heal,
-    Shield
+    Protection
 }

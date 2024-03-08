@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _priorityIndex: 4
   _stateType: 9
-  _staminaPerSecond: 7
+  _staminaPerSecond: 8

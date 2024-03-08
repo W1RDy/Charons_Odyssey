@@ -28,5 +28,6 @@ public enum EnemyStateType
     Idle,
     Move,
     Recline,
-    Attack
+    Attack,
+    Stun
 }

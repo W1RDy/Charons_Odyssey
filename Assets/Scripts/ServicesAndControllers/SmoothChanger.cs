@@ -17,6 +17,7 @@ public static class SmoothChanger
             callback(value);
             current += Time.unscaledDeltaTime;
             await UniTask.Yield();
+            if (token.IsCancellationRequested) return;
         }
         callback(endValue);
     }

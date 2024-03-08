@@ -86,9 +86,9 @@ public class PlayerController : MonoBehaviour, IPause
                 {
                     _player.ChangeState(PlayerStateType.Heal);
                 }
-                else if (_inputService.ButtonIsPushed(InputButtonType.Shield))
+                else if (_inputService.ButtonIsPushed(InputButtonType.Protection))
                 {
-                    _player.ChangeState(PlayerStateType.Shield);
+                    _player.UseProtection();
                 }
             }
             else

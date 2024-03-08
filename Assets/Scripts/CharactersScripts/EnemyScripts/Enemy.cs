@@ -4,16 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using Zenject;
+using Cysharp.Threading.Tasks;
 
-public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable, IPause
+public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IAttackable, IAvailable, IPause
 {
     public EnemyType EnemyType { get; protected set; }
     [SerializeField] protected float _hp;
     [SerializeField] protected bool _isAvailable;
+    [SerializeField] protected float _parryingWindowDuration;
+    [SerializeField] protected float _damageTimeBeforeAnimationEnd = 0.1f;
+    [SerializeField] protected float _stunningTime;
     protected Animator _animator;
     protected SpriteRenderer _spriteRenderer;
     private PauseService _pauseService;
+    //private PauseTokenSource _pauseTokenSource;
+
+
     private bool _isPaused;
+    public bool IsReadyForParrying { get; set; }
+    public float ParryingWindowDuration => _parryingWindowDuration;
+    public float DamageTimeBeforeAnimationEnd => _damageTimeBeforeAnimationEnd;
 
     #region Enemy's states
 
@@ -21,6 +31,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
     [SerializeField] private EnemyMoveState _moveState;
     [SerializeField] private EnemyAttackState _attackState;
     [SerializeField] private EnemyReclineState _reclineState;
+    [SerializeField] private EnemyStunState _stunState;
 
     #endregion
 
@@ -37,6 +48,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
         _pauseService.AddPauseObj(this);
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //_pauseTokenSource = new PauseTokenSource();
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
@@ -50,7 +62,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
            Instantiate(_idleState),
            Instantiate(_moveState),
            Instantiate(_attackState),
-           Instantiate(_reclineState)
+           Instantiate(_reclineState),
+           Instantiate(_stunState)
         };
 
         StateMachine.InitializeStatesDictionary(stateInstances);
@@ -87,6 +100,20 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IAttackable, IAvailable
         _pauseService.RemovePauseObj(this);
         gameObject.SetActive(false);
     }
+
+    public void ApplyParrying()
+    {
+        ChangeState(EnemyStateType.Stun);
+    }
+
+    //private async void WaitStunning()
+    //{
+    //    var token = this.GetCancellationTokenOnDestroy();
+    //    _isAvailable = false;
+    //    await Delayer.DelayWithPause(_stunningTime, token, _pauseTokenSource.Token);
+    //    if (token.IsCancellationRequested) return;
+    //    _isAvailable = true;
+    //}
 
     public virtual void Attack()
     {

@@ -30,10 +30,18 @@ public class PlayerHpHandler : MonoBehaviour
 
     public void TakeHit(float damage, ref float hp)
     {
-        if (_shield.IsActivated) _shield.AbsorbDamage(ref damage);
         hp -= damage;
         if (hp < 0) hp = 0;
         _hpIndicator.SetHp(hp);
+    }
+
+    public void TakeHit(float damage, Vector2 damageDirection, ref float hp)
+    {
+        if (_shield.IsActivated && (_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0))
+        {
+            _shield.AbsorbDamage(ref damage);
+        }
+        TakeHit(damage, ref hp);
     }
 
     public void Death()

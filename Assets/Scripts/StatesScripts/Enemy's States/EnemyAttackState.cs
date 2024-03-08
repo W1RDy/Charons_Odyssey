@@ -19,25 +19,41 @@ public class EnemyAttackState : EnemyState
 
     public override void Enter()
     {
+        IsStateFinished = false;
         _enemy.SetAnimation("Attack", true);
         Attack();
     }
 
     private async void Attack()
     {
-        await WaitWhileAttack();
+        await WaitUntilAttack();
+        _enemy.IsReadyForParrying = false;
         if (_token.IsCancellationRequested) return;
-        var player = FinderObjects.FindHittableObjectByCircle(_enemyDefault.HitDistance, _enemyDefault.transform.position, AttackableObjectIndex.Enemy);
-        if (player != null) player[0].TakeHit(_enemyDefault.Damage);
-        IsStateFinished = true;
+
+        if (!IsStateFinished)
+        {
+            var player = FinderObjects.FindHittableObjectByCircle(_enemyDefault.HitDistance, _enemyDefault.transform.position, AttackableObjectIndex.Enemy);
+
+            if (player != null && player[0] is IHittableWithShield playerWithShield)
+                playerWithShield.TakeHit(_enemyDefault.Damage, new Vector2(_enemyDefault.transform.localScale.x, 0).normalized);
+            else if (player != null)
+                player[0].TakeHit(_enemyDefault.Damage);
+            IsStateFinished = true;
+        }
+
         WaitWhileCooldown();
     }
 
-    private async UniTask WaitWhileAttack()
+    private async UniTask WaitUntilAttack()
     {
         await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Attack"));
         if (_token.IsCancellationRequested) return;
-        await Delayer.Delay(_enemy.GetAnimationDuration() - 0.1f, _token);
+        Debug.Log(_enemy.GetAnimationDuration());
+        Debug.Log((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration);
+        await Delayer.Delay((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token);
+        _enemy.IsReadyForParrying = true;
+        if (_token.IsCancellationRequested) return;
+        await Delayer.Delay(_enemy.ParryingWindowDuration, _token);
     }
 
     private async void WaitWhileCooldown()
@@ -50,7 +66,9 @@ public class EnemyAttackState : EnemyState
     public override void Exit()
     {
         base.Exit();
+        Debug.Log("FinishAttack");
         _enemy.SetAnimation("Attack", false);
+        IsStateFinished = true;
     }
 
     public override bool IsStateAvailable()

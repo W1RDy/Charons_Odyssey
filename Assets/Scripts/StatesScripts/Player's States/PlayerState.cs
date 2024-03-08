@@ -62,5 +62,7 @@ public enum PlayerStateType
     AttackWithPaddle,
     IdleWithGun,
     Talk,
-    Shield
+    Shield,
+    Parrying,
+    Dodge
 }

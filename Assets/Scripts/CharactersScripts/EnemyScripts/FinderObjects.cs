@@ -16,30 +16,43 @@ public static class FinderObjects
     public static List<IHittable> FindHittableObjectByCircle(float radius, Vector2 circlePosition, AttackableObjectIndex attackableIndex)
     {
         var hittableObjLayer = attackableIndex == AttackableObjectIndex.Player ? (int)AttackableObjectIndex.Enemy : (int)AttackableObjectIndex.Player;
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << hittableObjLayer);
-        List<IHittable> result = new List<IHittable>();
-        if (colliders != null)
-        {
-            foreach (var collider in colliders)
-            {
-                if (collider.TryGetComponent<IHittable>(out var hittable)) result.Add(hittable);
-            }
-            if (result.Count > 0) return result;
-        }
-        return null;
+        return FindByCircle<IHittable>(radius, circlePosition, hittableObjLayer);
     }
 
     public static IInteractable FindInteractableObjectByCircle(float radius, Vector2 circlePosition)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << 0);
-        List<IInteractable> result = new List<IInteractable>();
+        var result = FindByCircle<IInteractable>(radius, circlePosition, 0);
+        if (result != null) return result[0];
+        return null;
+    }
+
+    public static IParryingHittable FindParryingHittableByCircle(float radius, Vector2 circlePosition)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << (int)AttackableObjectIndex.Enemy);
         if (colliders != null)
         {
             foreach (var collider in colliders)
             {
-                if (collider.TryGetComponent<IInteractable>(out var interactable)) result.Add(interactable);
+                if (collider.TryGetComponent<IParryingHittable>(out var hittable))
+                {
+                    if (hittable.IsReadyForParrying) return hittable;
+                }
             }
-            if (result.Count > 0) return result[0];
+        }
+        return null;
+    }
+
+    private static List<T> FindByCircle<T>(float radius, Vector2 circlePosition, int layer)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << layer);
+        List<T> result = new List<T>();
+        if (colliders != null)
+        {
+            foreach (var collider in colliders)
+            {
+                if (collider.TryGetComponent<T>(out var neededObj)) result.Add(neededObj);
+            }
+            if (result.Count > 0) return result;
         }
         return null;
     }

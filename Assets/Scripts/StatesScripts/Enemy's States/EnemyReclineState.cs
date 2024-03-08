@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using System.Collections;
 using UnityEngine;
 
@@ -25,18 +24,12 @@ public class EnemyReclineState : EnemyState
     {
         IsStateFinished = false;
         GetRecline();
-        WaitWhileRecline();
+        IsStateFinished = true;
+        _enemy.ChangeState(EnemyStateType.Stun);
     }
 
     private void GetRecline()
     {
         _rb.AddForce((_enemy.transform.position - _recliner.position).normalized * _reclineForce, ForceMode2D.Impulse);
-    }
-
-    private async void WaitWhileRecline()
-    {
-        var token = _enemy.GetCancellationTokenOnDestroy();
-        await Delayer.Delay(1, token);
-        if (!token.IsCancellationRequested) IsStateFinished = true;
     }
 }

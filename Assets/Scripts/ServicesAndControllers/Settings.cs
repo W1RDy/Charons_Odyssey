@@ -22,7 +22,6 @@ public class Settings : MonoBehaviour
 
         _musicSlider.value = MusicVolume;
         _soundSlider.value = SoundVolume;
-        Debug.Log(_musicSlider.value);
     }
 
     public void ChangeMusicSetting()

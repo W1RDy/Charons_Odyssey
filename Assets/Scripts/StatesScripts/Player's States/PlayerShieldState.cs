@@ -27,6 +27,9 @@ public class PlayerShieldState : PlayerState
             base.Enter();
             _staminaController.StartUsingStamina(_staminaPerSecond);
             _shield.ActivateShield();
+
+            if (_player.transform.localScale.x > 0) _shield.IsTurnedRight = true;
+            else _shield.IsTurnedRight = false;
         }
     }
 
@@ -35,12 +38,17 @@ public class PlayerShieldState : PlayerState
         base.Update();
         if (!_isPushedAndUp)
         {
-            _isPushedAndUp = !_inputService.ButtonIsPushed(InputButtonType.Shield);
+            _isPushedAndUp = !_inputService.ButtonIsPushed(InputButtonType.Protection);
         }
 
-        if (_staminaPerSecond > _player.GetStamina() || (_inputService.ButtonIsPushed(InputButtonType.Shield) && _isPushedAndUp)) IsStateFinished = true;
+        if (_staminaPerSecond > _player.GetStamina() || (_inputService.ButtonIsPushed(InputButtonType.Protection) && _isPushedAndUp)) IsStateFinished = true;
         var horizontalInput = Input.GetAxis("Horizontal");
-        if ((horizontalInput < 0 && _player.transform.localScale.x > 0) || (horizontalInput > 0 && _player.transform.localScale.x < 0)) _player.Flip();
+        if ((horizontalInput < 0 && _player.transform.localScale.x > 0) || (horizontalInput > 0 && _player.transform.localScale.x < 0))
+        { 
+            _player.Flip();
+            if (_player.transform.localScale.x > 0) _shield.IsTurnedRight = true;
+            else _shield.IsTurnedRight = false;
+        }
     }
 
     public override void Exit()

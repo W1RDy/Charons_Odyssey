@@ -8,11 +8,12 @@ using Zenject;
 [RequireComponent(typeof(PlayerMove))]
 [RequireComponent(typeof(PlayerColliderChecker))]
 [RequireComponent(typeof(PlayerHpHandler))]
-public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, ITalkable, IPause, IHasStamina
+public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, IHittableWithShield, ITalkable, IPause, IHasStamina
 {
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
     [SerializeField] private float _staminaValue = 100f;
+    [SerializeField] private float _parryingDistance = 1f;
 
     private PlayerMove _playerMove;
     private PlayerView _playerView;
@@ -54,6 +55,8 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     [SerializeField] private PlayerAttackWithPistolState _attackWithPistolState;
     [SerializeField] private PlayerTalkState _talkState;
     [SerializeField] private PlayerShieldState _shieldState;
+    [SerializeField] private PlayerParryingState _parryingState;
+    [SerializeField] private PlayerDodgeState _dodgeState;
 
     #endregion
 
@@ -86,7 +89,8 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         InitializeHandlers();
 
         _token = this.GetCancellationTokenOnDestroy();
-        _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState, _attackWithPistolState, _stayWithGunState, _talkState, _shieldState);
+        _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState,
+            _attackWithPistolState, _stayWithGunState, _talkState, _shieldState, _parryingState, _dodgeState);
         
         _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator); // перенести, если появится больше оружия
     }
@@ -100,7 +104,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private void Start()
     {
-        _playerStatesInitializator.InitializeStates(_playerStaminaController, _shield);
+        _playerStatesInitializator.InitializeStates(_playerStaminaController, _shield, _parryingDistance);
     }
 
     private void Update()
@@ -121,9 +125,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         else throw new TypeAccessException(weaponType + "is incorrect WeaponType!");
     }
 
-    public void UseShield()
+    public void UseProtection()
     {
-        ChangeState(PlayerStateType.Shield);
+        Debug.Log("Protection");
+        ChangeState(PlayerStateType.Parrying);
+        if (StateMachine.CurrentState.GetStateType() != PlayerStateType.Parrying) ChangeState(PlayerStateType.Shield);
     }
 
     public void TakeHeal(float healValue)
@@ -134,6 +140,12 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void TakeHit(float damage)
     {
         _playerHpHandler.TakeHit(damage, ref _hp);
+        if (_hp <= 0) Death();
+    }
+
+    public void TakeHit(float damage, Vector2 damageDirection)
+    {
+        _playerHpHandler.TakeHit(damage, damageDirection, ref _hp);
         if (_hp <= 0) Death();
     }
 

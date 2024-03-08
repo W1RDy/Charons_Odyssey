@@ -86,13 +86,13 @@ public class PCInputService : IInputService, IService
         }
         else if (Input.GetKeyDown(KeyCode.H))
         {
-            ActivateButton(InputButtonType.Shield);
+            ActivateButton(InputButtonType.Protection);
         }
         else
         {
             DeactivateButton(InputButtonType.Interact);
             DeactivateButton(InputButtonType.Heal);
-            DeactivateButton(InputButtonType.Shield);
+            DeactivateButton(InputButtonType.Protection);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) ActivateButton(InputButtonType.Pause);
