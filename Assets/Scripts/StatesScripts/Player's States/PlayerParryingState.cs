@@ -5,28 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerParryingState", menuName = "Player's State/ParryingState")]
 public class PlayerParryingState : PlayerState
 {
+    [SerializeField] private float _parryingDistance;
     [SerializeField] private int _neededStamina;
     [SerializeField] private float _cooldown;
-    private float _parryingDistance;
     private IParryingHittable _parryingHittable;
 
     private CancellationToken _token;
     private PauseTokenSource _pauseTokenSource;
+    private StaminaController _staminaRefiller;
 
     private bool _isCooldown;
 
-    public void Initialize(Player player, PauseService pauseService, float parryingDistance)
+    public void Initialize(Player player, PauseService pauseService, StaminaController staminaRefiller)
     {
         base.Initialize(player, pauseService);
-        _parryingDistance = parryingDistance;
         _token = player.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
+        _staminaRefiller = staminaRefiller;
     }
 
     public override void Enter()
     {
         IsStateFinished = false;
         _isCooldown = true;
+        _staminaRefiller.StopRefillStamina();
         _player.UseStamina(_neededStamina);
 
         Debug.Log("Parrying");
@@ -36,6 +38,12 @@ public class PlayerParryingState : PlayerState
 
         WaitCooldown();
         base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _staminaRefiller.StartRefillStamina();
     }
 
     private async void WaitCooldown()

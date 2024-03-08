@@ -409,10 +409,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f32a24ac95eae1b46a39fd2e2bb368ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 10
+  _hp: 100
   _speed: 5
   _staminaValue: 100
-  _parryingDistance: 10
   _pistolView:
     pistolEnd: {fileID: 991589543}
     pistolView: {fileID: 1057895811}

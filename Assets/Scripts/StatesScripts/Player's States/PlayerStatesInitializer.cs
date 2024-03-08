@@ -39,7 +39,7 @@ public class PlayerStatesInitializer : MonoBehaviour
         _player.StateMachine.InitializeStatesDictionary(_statesInstances);
     }
 
-    public void InitializeStates(StaminaController staminaController, Shield shield, float parryingDistance)
+    public void InitializeStates(StaminaController staminaController, Shield shield)
     {
         foreach (var state in _statesInstances)
         {
@@ -61,7 +61,9 @@ public class PlayerStatesInitializer : MonoBehaviour
             else if (state.GetStateType() == PlayerStateType.Shield)
                 (state as PlayerShieldState).Initialize(_player, _pauseService, shield, staminaController, _inputService);
             else if (state.GetStateType() == PlayerStateType.Parrying)
-                (state as PlayerParryingState).Initialize(_player, _pauseService, parryingDistance);
+                (state as PlayerParryingState).Initialize(_player, _pauseService, staminaController);
+            else if (state.GetStateType() == PlayerStateType.Dodge)
+                (state as PlayerDodgeState).Initialize(_player, _pauseService, staminaController);
             else state.Initialize(_player, _pauseService);
         }
     }

@@ -86,6 +86,11 @@ public class PlayerController : MonoBehaviour, IPause
                     _player.ChangeState(PlayerStateType.Shield);
                 }
 
+                if (_inputService.ButtonIsPushed(InputButtonType.Dodge))
+                {
+                    _player.ChangeState(PlayerStateType.Dodge);
+                }
+
                 if (_inputService.ButtonIsPushed(InputButtonType.Interact))
                 {
                     var interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);

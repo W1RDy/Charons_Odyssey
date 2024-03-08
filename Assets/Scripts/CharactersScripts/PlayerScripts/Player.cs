@@ -13,7 +13,9 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
     [SerializeField] private float _staminaValue = 100f;
-    [SerializeField] private float _parryingDistance = 1f;
+
+    private bool _isImmortal = false;
+    public bool IsImmortal { get => _isImmortal; set => _isImmortal = value; }
 
     private PlayerMove _playerMove;
     private PlayerView _playerView;
@@ -104,7 +106,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private void Start()
     {
-        _playerStatesInitializator.InitializeStates(_playerStaminaController, _shield, _parryingDistance);
+        _playerStatesInitializator.InitializeStates(_playerStaminaController, _shield);
     }
 
     private void Update()
@@ -127,18 +129,27 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public void TakeHeal(float healValue)
     {
-        _playerHpHandler.TakeHeal(healValue, ref _hp);
+        if (!_isImmortal)
+        {
+            _playerHpHandler.TakeHeal(healValue, ref _hp);
+        }
     }
 
     public void TakeHit(float damage)
     {
-        _playerHpHandler.TakeHit(damage, ref _hp);
+        if (!_isImmortal)
+        {
+            _playerHpHandler.TakeHit(damage, ref _hp);
+        }
         if (_hp <= 0) Death();
     }
 
     public void TakeHit(float damage, Vector2 damageDirection)
     {
-        _playerHpHandler.TakeHit(damage, damageDirection, ref _hp);
+        if (!_isImmortal)
+        {
+            _playerHpHandler.TakeHit(damage, damageDirection, ref _hp);
+        }
         if (_hp <= 0) Death();
     }
 

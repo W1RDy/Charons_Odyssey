@@ -99,6 +99,15 @@ public class PCInputService : IInputService, IService
             DeactivateButton(InputButtonType.Parrying);
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            ActivateButton(InputButtonType.Dodge);
+        }
+        else
+        {
+            DeactivateButton(InputButtonType.Dodge);
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             ActivateButton(InputButtonType.Interact);

@@ -32,5 +32,6 @@ public enum InputButtonType
     Pause,
     Heal,
     Shield,
-    Parrying
+    Parrying,
+    Dodge
 }
