@@ -36,7 +36,13 @@ public class PlayerShieldState : PlayerState
     {
         base.Update();
 
-        if (_staminaPerSecond > _player.GetStamina() || !_inputService.ButtonIsPushed(InputButtonType.Shield)) IsStateFinished = true;
+        if (_staminaPerSecond > _player.GetStamina())
+        {
+            IsStateFinished = true;
+            _player.ChangeState(PlayerStateType.Stun);
+        }
+
+        if (!_inputService.ButtonIsPushed(InputButtonType.Shield)) IsStateFinished = true;
         var horizontalInput = Input.GetAxis("Horizontal");
         if ((horizontalInput < 0 && _player.transform.localScale.x > 0) || (horizontalInput > 0 && _player.transform.localScale.x < 0))
         { 

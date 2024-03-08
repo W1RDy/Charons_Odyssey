@@ -59,6 +59,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     [SerializeField] private PlayerShieldState _shieldState;
     [SerializeField] private PlayerParryingState _parryingState;
     [SerializeField] private PlayerDodgeState _dodgeState;
+    [SerializeField] private PlayerStunState _stunState;
 
     #endregion
 
@@ -92,7 +93,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
         _token = this.GetCancellationTokenOnDestroy();
         _playerStatesInitializator.InitializeStatesInstances(_stayState, _moveState, _climbState, _healState, _attackWithFistState, _attackWithPaddleState,
-            _attackWithPistolState, _stayWithGunState, _talkState, _shieldState, _parryingState, _dodgeState);
+            _attackWithPistolState, _stayWithGunState, _talkState, _shieldState, _parryingState, _dodgeState, _stunState);
         
         _weaponService.InitializeWeapons(WeaponPoint, PistolView, _bulletsCounterIndicator); // перенести, если появится больше оружия
     }

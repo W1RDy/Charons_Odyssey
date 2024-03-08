@@ -64,5 +64,6 @@ public enum PlayerStateType
     Talk,
     Shield,
     Parrying,
-    Dodge
+    Dodge,
+    Stun
 }

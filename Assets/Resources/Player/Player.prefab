@@ -428,6 +428,7 @@ MonoBehaviour:
   _shieldState: {fileID: 11400000, guid: ab5fb9e111e69644fbdf96878bd579f5, type: 2}
   _parryingState: {fileID: 11400000, guid: 7cfe6c782746b39499149f7865f4bba7, type: 2}
   _dodgeState: {fileID: 11400000, guid: b884a21d2fb8b624889a08d8cf10db9a, type: 2}
+  _stunState: {fileID: 11400000, guid: 368dbf12427d338479e03f16d430c6b6, type: 2}
 --- !u!114 &658090648391339950
 MonoBehaviour:
   m_ObjectHideFlags: 0
