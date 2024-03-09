@@ -217,6 +217,8 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void UseStamina(float value)
     {
         _playerStaminaHandler.UseStamina(value, ref _staminaValue);
+        _playerStaminaController.StopRefillStamina();
+        _playerStaminaController.ActivateRefillingStaminaCycle();
     }
 
     public void ChangeStaminaTo(float value)

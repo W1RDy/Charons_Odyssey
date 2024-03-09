@@ -56,6 +56,6 @@ public class PlayerShieldState : PlayerState
     {
         base.Exit();
         _shield.DeactivateShield();
-        _staminaController.StartRefillStamina();
+        _staminaController.StopUsingStamina();
     }
 }

@@ -9,7 +9,6 @@ public class PlayerDodgeState : PlayerState
     [SerializeField] private float _neededStamina;
     [SerializeField] private float _dodgeTime;
     [SerializeField] private float _dodgeDistance;
-    private StaminaController _staminaRefiller;
     private Rigidbody2D _rb;
     private float _speed;
 
@@ -19,7 +18,7 @@ public class PlayerDodgeState : PlayerState
     private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
 
-    public void Initialize(Player player, PauseService pauseService, StaminaController staminaRefiller)
+    public override void Initialize(Player player, PauseService pauseService)
     {
         base.Initialize(player, pauseService);
         _rb = player.GetComponent<Rigidbody2D>();
@@ -27,14 +26,11 @@ public class PlayerDodgeState : PlayerState
         _token = player.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
         _pauseToken = _pauseTokenSource.Token;
-
-        _staminaRefiller = staminaRefiller;
     }
 
     public override void Enter()
     {
         base.Enter();
-        _staminaRefiller.StopRefillStamina();
         _player.UseStamina(_neededStamina);
         IsStateFinished = false;
         _player.IsImmortal = true;
@@ -70,7 +66,6 @@ public class PlayerDodgeState : PlayerState
     public override void Exit()
     {
         _player.IsImmortal = false;
-        _staminaRefiller.StartRefillStamina();
         base.Exit();
     }
 

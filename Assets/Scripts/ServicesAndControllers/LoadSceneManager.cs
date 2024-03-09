@@ -25,10 +25,6 @@ public class LoadSceneManager : MonoBehaviour
         _pauseService = pauseService;
     }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
 
     private async UniTask OpenCloseLoadingScreen(bool isOpen)
     {
@@ -79,7 +75,7 @@ public class LoadSceneManager : MonoBehaviour
 
     private async void AsyncLoading(int sceneIndex, int delay)
     {
-        await UniTask.Delay(delay, cancellationToken: _token);
+        await UniTask.Delay(delay, cancellationToken: _token).SuppressCancellationThrow();
         await OpenCloseLoadingScreen(true);
         if (_token.IsCancellationRequested) return;
 
@@ -92,7 +88,7 @@ public class LoadSceneManager : MonoBehaviour
             if (_token.IsCancellationRequested) return;
         }
         asyncOperation.allowSceneActivation = true;
-        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().buildIndex == sceneIndex, cancellationToken: _token);
+        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().buildIndex == sceneIndex, cancellationToken: _token).SuppressCancellationThrow();
         await OpenCloseLoadingScreen(false);
     }
 }

@@ -54,13 +54,13 @@ public class EnemyDefault : Enemy, IReclinable
             if (_target && Vector3.Distance(_target.position, transform.position) < _hitDistance)
             {
                 if (StateMachine.GetState(EnemyStateType.Attack).IsStateAvailable()) Attack();
+                else ChangeState(EnemyStateType.Cooldown);
             }
             else if (_trigger.PlayerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
             {
                 ChangeState(EnemyStateType.Chase);
             }
-
-            if (StateMachine.CurrentState.IsStateFinished) ChangeState(EnemyStateType.Idle);
+            else ChangeState(EnemyStateType.Idle);
         }
         else ChangeState(EnemyStateType.Idle);
     }

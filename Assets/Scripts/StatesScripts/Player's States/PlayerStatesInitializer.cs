@@ -60,7 +60,7 @@ public class PlayerStatesInitializer : MonoBehaviour
                 else if (state.GetStateType() == PlayerStateType.AttackWithPistol)
                     (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera, _noiseEventHandler);
                 else 
-                    (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaController);
+                    (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
                 (state as PlayerTalkState).Initialize(_player, _pauseService, _dialogLifeController, _dialogCloudService);
@@ -69,9 +69,9 @@ public class PlayerStatesInitializer : MonoBehaviour
             else if (state.GetStateType() == PlayerStateType.Shield)
                 (state as PlayerShieldState).Initialize(_player, _pauseService, shield, staminaController, _inputService);
             else if (state.GetStateType() == PlayerStateType.Parrying)
-                (state as PlayerParryingState).Initialize(_player, _pauseService, staminaController);
+                (state as PlayerParryingState).Initialize(_player, _pauseService);
             else if (state.GetStateType() == PlayerStateType.Dodge)
-                (state as PlayerDodgeState).Initialize(_player, _pauseService, staminaController);
+                (state as PlayerDodgeState).Initialize(_player, _pauseService);
             else state.Initialize(_player, _pauseService);
         }
     }

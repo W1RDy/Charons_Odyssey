@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class StaminaController : IPause
     private float _maxStaminaValue;
     private float _lastStaminaValue;
 
-    private CancellationTokenSource _tokenSource;
+    private CancellationTokenSource _staminaTokenSource;
     private CancellationToken _destroyToken;
     private IHasStamina _objWithStamina;
 
@@ -20,7 +21,7 @@ public class StaminaController : IPause
 
     public StaminaController(float maxStaminaValue, CancellationToken destroyToken, IHasStamina objWithStamina, PauseService pauseService)
     {
-        _tokenSource = new CancellationTokenSource();
+        _staminaTokenSource = new CancellationTokenSource();
         _destroyToken = destroyToken;
 
         _objWithStamina = objWithStamina;
@@ -34,8 +35,15 @@ public class StaminaController : IPause
         StaminaCallback = staminaValue => _objWithStamina.ChangeStaminaTo(staminaValue);
     }
 
-    public void StartRefillStamina()
+    public async void ActivateRefillingStaminaCycle()
     {
+        _staminaTokenSource = new CancellationTokenSource();
+        var waitingToken = _staminaTokenSource.Token;
+
+        await WaitUntilStartingRefillStamina(waitingToken);
+
+        if (waitingToken.IsCancellationRequested) return;
+
         StartControlStamina(true, StaminaRefillingSpeedPerSecond);
     }
 
@@ -44,12 +52,19 @@ public class StaminaController : IPause
         StartControlStamina(false, staminaUsingSpeedPerSeconds);
     }
 
+    private async UniTask WaitUntilStartingRefillStamina(CancellationToken waitingToken)
+    {
+        var token = CancellationTokenSource.CreateLinkedTokenSource(_destroyToken, waitingToken).Token;
+        await Delayer.DelayWithPause(5, token, _pauseToken);
+        if (waitingToken.IsCancellationRequested) Debug.Log("Interrupted");
+    }
+
     private void StartControlStamina(bool isRefill, float staminaSpeedPerSeconds)
     {
         StopControlStamina();
-        _tokenSource = new CancellationTokenSource();
-        if (isRefill) RefillStamina();
-        else UseStamina(staminaSpeedPerSeconds);
+        _staminaTokenSource = new CancellationTokenSource();
+        if (isRefill) RefillStaminaCycle(_staminaTokenSource.Token);
+        else UseStaminaCycle(staminaSpeedPerSeconds, _staminaTokenSource.Token);
     }
 
     public void StopRefillStamina()
@@ -60,30 +75,36 @@ public class StaminaController : IPause
     public void StopUsingStamina()
     {
         StopControlStamina();
+        ActivateRefillingStaminaCycle();
     }
 
     private void StopControlStamina()
     {
-        _tokenSource.Cancel();
+        _staminaTokenSource.Cancel();
     }
 
-    private async void UseStamina(float staminaUsingSpeedPerSeconds)
+    public void UseStamina(float value)
+    {
+        _objWithStamina.UseStamina(value);
+    }
+
+    private async void UseStaminaCycle(float staminaUsingSpeedPerSeconds, CancellationToken usingToken)
     {
         while (_objWithStamina.GetStamina() > 0)
         {
             _lastStaminaValue = _objWithStamina.GetStamina();
-            var token = CancellationTokenSource.CreateLinkedTokenSource(_destroyToken, _tokenSource.Token).Token;
+            var token = CancellationTokenSource.CreateLinkedTokenSource(_destroyToken, usingToken).Token;
             await SmoothChanger.SmoothChangeWithPause(_lastStaminaValue, _lastStaminaValue - staminaUsingSpeedPerSeconds, 1f, StaminaCallback, token, _pauseToken);
             if (token.IsCancellationRequested) break;
         }
     }
 
-    private async void RefillStamina()
+    private async void RefillStaminaCycle(CancellationToken refillingToken)
     {
         while (_objWithStamina.GetStamina() < _maxStaminaValue)
         {
             _lastStaminaValue = _objWithStamina.GetStamina();
-            var token = CancellationTokenSource.CreateLinkedTokenSource(_destroyToken, _tokenSource.Token).Token;
+            var token = CancellationTokenSource.CreateLinkedTokenSource(_destroyToken, refillingToken).Token;
             await SmoothChanger.SmoothChangeWithPause(_lastStaminaValue, _lastStaminaValue + StaminaRefillingSpeedPerSecond, 1f, StaminaCallback, token, _pauseToken);
             if (token.IsCancellationRequested) break;
         }

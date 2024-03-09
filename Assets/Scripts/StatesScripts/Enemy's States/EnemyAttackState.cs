@@ -39,7 +39,8 @@ public class EnemyAttackState : EnemyState
     {
         await WaitUntilAttack();
         _enemy.IsReadyForParrying = false;
-        if (_token.IsCancellationRequested) return;
+
+        if (_token.IsCancellationRequested || !_enemy.gameObject.activeInHierarchy) return;
 
         if (!IsStateFinished)
         {

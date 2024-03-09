@@ -55,5 +55,6 @@ public enum EnemyStateType
     Recline,
     Attack,
     Stun,
-    Move
+    Move,
+    Cooldown
 }

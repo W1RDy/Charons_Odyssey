@@ -32,6 +32,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     #region Enemy's states
 
     [SerializeField] private EnemyIdleState _idleState;
+    [SerializeField] private EnemyIdleState _cooldownState;
     [SerializeField] private EnemyChaseState _chaseState;
     [SerializeField] private EnemyAttackState _attackState;
     [SerializeField] private EnemyReclineState _reclineState;
@@ -71,7 +72,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
            Instantiate(_attackState),
            Instantiate(_reclineState),
            Instantiate(_stunState),
-           Instantiate(_moveState)
+           Instantiate(_moveState),
+           Instantiate(_cooldownState)
         };
 
         StateMachine.InitializeStatesDictionary(stateInstances);

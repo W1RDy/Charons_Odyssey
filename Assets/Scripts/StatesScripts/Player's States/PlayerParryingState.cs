@@ -12,23 +12,20 @@ public class PlayerParryingState : PlayerState
 
     private CancellationToken _token;
     private PauseTokenSource _pauseTokenSource;
-    private StaminaController _staminaRefiller;
 
     private bool _isCooldown;
 
-    public void Initialize(Player player, PauseService pauseService, StaminaController staminaRefiller)
+    public override void Initialize(Player player, PauseService pauseService)
     {
         base.Initialize(player, pauseService);
         _token = player.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
-        _staminaRefiller = staminaRefiller;
     }
 
     public override void Enter()
     {
         IsStateFinished = false;
         _isCooldown = true;
-        _staminaRefiller.StopRefillStamina();
         _player.UseStamina(_neededStamina);
 
         Debug.Log("Parrying");
@@ -38,12 +35,6 @@ public class PlayerParryingState : PlayerState
 
         WaitCooldown();
         base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        _staminaRefiller.StartRefillStamina();
     }
 
     private async void WaitCooldown()
