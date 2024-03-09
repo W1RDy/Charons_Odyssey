@@ -74,8 +74,8 @@ MonoBehaviour:
   _parryingWindowDuration: 0.8
   _damageTimeBeforeAnimationEnd: 0.1
   _stunningTime: 2
-  _hearNoiseDistance: 10
-  _idleState: {fileID: 11400000, guid: 903e47412f90b1545b951cf20adf3951, type: 2}
+  _hearNoiseDistance: 13.35
+  _idleState: {fileID: 11400000, guid: fb78b85cbafb6c648aa96f948d8f168e, type: 2}
   _chaseState: {fileID: 11400000, guid: c13ec59d31a44e0459d0098854e1bfd0, type: 2}
   _attackState: {fileID: 11400000, guid: 51b644d0c7e6ceb47806a384af21c808, type: 2}
   _reclineState: {fileID: 11400000, guid: c40f8acbcfaea224da8a0e776710a5da, type: 2}
@@ -273,7 +273,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.51, y: 0}
+  m_Offset: {x: 2.14, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -284,7 +284,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.39, y: 1}
+  m_Size: {x: 7.4, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2517521349137554264
 MonoBehaviour:
