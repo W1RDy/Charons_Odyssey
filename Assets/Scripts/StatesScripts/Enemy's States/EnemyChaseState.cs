@@ -19,6 +19,7 @@ public class EnemyChaseState : EnemyState
 
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = false;
         _enemy.SetAnimation("Move", true);
         _movable.StartMove();
@@ -31,6 +32,7 @@ public class EnemyChaseState : EnemyState
 
     public override void Exit()
     {
+        base.Exit();
         _enemy.SetAnimation("Move", false);
         _movable.StopMove();
     }

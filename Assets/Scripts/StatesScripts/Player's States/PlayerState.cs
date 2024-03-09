@@ -15,19 +15,16 @@ public abstract class PlayerState : ScriptableObject, IPause
     public virtual void Initialize(Player player, PauseService pauseService)
     {
         _player = player;
-        _pauseService = pauseService;
-    }
+        _player.OnDeath += OnPlayerDeath;
 
-    public virtual void Enter() 
-    {
+        _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
     }
+
+    public virtual void Enter() { }
     public virtual void Exit() { ResetValues(); }
     public virtual void Update() { }
-    public virtual void ResetValues() 
-    {
-        _pauseService.RemovePauseObj(this);
-    }
+    public virtual void ResetValues() { }
 
     public int GetPriorityIndex() => _priorityIndex;
 
@@ -48,6 +45,12 @@ public abstract class PlayerState : ScriptableObject, IPause
     public virtual void Unpause()
     {
         if (_isPaused) _isPaused = false;
+    }
+
+    public virtual void OnPlayerDeath()
+    {
+        _pauseService.RemovePauseObj(this);
+        _player.OnDeath -= OnPlayerDeath;
     }
 }
 

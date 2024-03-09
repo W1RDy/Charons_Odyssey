@@ -22,6 +22,7 @@ public class EnemyReclineState : EnemyState
 
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = false;
         GetRecline();
         IsStateFinished = true;

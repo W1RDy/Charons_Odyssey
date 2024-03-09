@@ -25,6 +25,11 @@ public class LoadSceneManager : MonoBehaviour
         _pauseService = pauseService;
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     private async UniTask OpenCloseLoadingScreen(bool isOpen)
     {
         if (_token.IsCancellationRequested) return;
@@ -74,7 +79,7 @@ public class LoadSceneManager : MonoBehaviour
 
     private async void AsyncLoading(int sceneIndex, int delay)
     {
-        await Delayer.Delay(delay, _token);
+        await UniTask.Delay(delay, cancellationToken: _token);
         await OpenCloseLoadingScreen(true);
         if (_token.IsCancellationRequested) return;
 

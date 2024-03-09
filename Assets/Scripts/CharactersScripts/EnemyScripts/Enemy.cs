@@ -20,7 +20,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     private PauseService _pauseService;
 
     protected NoiseEventHandler _noiseEventHandler;
-
+    public event Action OnDeath;
 
     protected Transform _target;
 
@@ -111,6 +111,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public void Death()
     {
         _pauseService.RemovePauseObj(this);
+        OnDeath?.Invoke();
         gameObject.SetActive(false);
     }
 

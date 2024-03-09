@@ -16,20 +16,17 @@ public abstract class EnemyState : ScriptableObject, IPause
     public virtual void Initialize(Enemy enemy, PauseService pauseService)
     {
         _enemy = enemy;
-        _pauseService = pauseService;
-    }
+        _enemy.OnDeath += OnEnemyDeath;
 
-    public virtual void Enter() 
-    {
+        _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
     }
+
+    public virtual void Enter() { }
     public virtual void Exit() { ResetValues(); }
     public virtual void Update() { }
     public virtual void FixedUpdate() { }
-    public virtual void ResetValues() 
-    {
-        _pauseService.RemovePauseObj(this);
-    }
+    public virtual void ResetValues() { }
     public int GetPriorityIndex() => _priorityIndex;
     public EnemyStateType GetStateType() => _stateType;
     public virtual bool IsStateAvailable() => true;
@@ -42,6 +39,12 @@ public abstract class EnemyState : ScriptableObject, IPause
     public virtual void Unpause()
     {
         if (_isPaused) _isPaused = false;
+    }
+
+    public virtual void OnEnemyDeath()
+    {
+        _pauseService.RemovePauseObj(this);
+        _enemy.OnDeath -= OnEnemyDeath;
     }
 }
 

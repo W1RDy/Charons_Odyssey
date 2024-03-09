@@ -7,6 +7,7 @@ public class EnemyIdleState : EnemyState
 {
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = true;
     }
 }

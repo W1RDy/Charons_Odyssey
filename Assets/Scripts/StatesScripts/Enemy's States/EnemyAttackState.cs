@@ -11,6 +11,7 @@ public class EnemyAttackState : EnemyState
 
     private CancellationToken _token;
     private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
 
     public bool IsCooldown { get; private set; }
 
@@ -20,11 +21,13 @@ public class EnemyAttackState : EnemyState
         _enemyDefault = enemy as EnemyDefault;
         _token = _enemy.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
+        _pauseToken = _pauseTokenSource.Token;
         _target = target;
     }
 
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = false;
         var flipDirection = _target.position.x < _enemyDefault.transform.position.x ? Vector2.left : Vector2.right;
         _enemy.Flip(flipDirection);
@@ -46,7 +49,7 @@ public class EnemyAttackState : EnemyState
                 playerWithShield.TakeHit(_enemyDefault.Damage, new Vector2(_enemyDefault.transform.localScale.x, 0).normalized);
             else if (player != null)
                 player[0].TakeHit(_enemyDefault.Damage);
-            await Delayer.DelayWithPause(_enemy.DamageTimeBeforeAnimationEnd, _token, _pauseTokenSource.Token);
+            await Delayer.DelayWithPause(_enemy.DamageTimeBeforeAnimationEnd, _token, _pauseToken);
             if (_token.IsCancellationRequested) return;
             IsStateFinished = true;
         }
@@ -58,16 +61,16 @@ public class EnemyAttackState : EnemyState
     {
         await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Attack"));
         if (_token.IsCancellationRequested) return;
-        await Delayer.DelayWithPause((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token, _pauseTokenSource.Token);
+        await Delayer.DelayWithPause((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token, _pauseToken);
         _enemy.IsReadyForParrying = true;
         if (_token.IsCancellationRequested) return;
-        await Delayer.DelayWithPause(_enemy.ParryingWindowDuration, _token, _pauseTokenSource.Token);
+        await Delayer.DelayWithPause(_enemy.ParryingWindowDuration, _token, _pauseToken);
     }
 
     private async void WaitWhileCooldown()
     {
         IsCooldown = true;
-        await Delayer.DelayWithPause(_enemyDefault.AttackCooldown, _token, _pauseTokenSource.Token);
+        await Delayer.DelayWithPause(_enemyDefault.AttackCooldown, _token, _pauseToken);
         if (!_token.IsCancellationRequested) IsCooldown = false;
     }
 
