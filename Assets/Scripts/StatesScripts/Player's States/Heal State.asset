@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _priorityIndex: 7
   _stateType: 3
+  _healValue: 25

@@ -78,13 +78,13 @@ public class PCInputService : IInputService, IService
             DeactivateButton(InputButtonType.HeavyAttack);
         }
 
-        if (Input.GetKey(KeyCode.H) || Input.GetKeyUp(KeyCode.H))
+        if (Input.GetKey(KeyCode.F) || Input.GetKeyUp(KeyCode.F))
         {
-            if (Input.GetKeyDown(KeyCode.H)) _timeCounterForProtect.StartCounter();
+            if (Input.GetKeyDown(KeyCode.F)) _timeCounterForProtect.StartCounter();
 
             float holdingTime = _timeCounterForProtect.GetTime();
 
-            if (Input.GetKeyUp(KeyCode.H))
+            if (Input.GetKeyUp(KeyCode.F))
             {
                 holdingTime = _timeCounterForProtect.StopCounter();
 

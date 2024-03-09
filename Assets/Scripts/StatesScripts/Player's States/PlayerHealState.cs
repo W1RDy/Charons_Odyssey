@@ -7,6 +7,7 @@ using Zenject;
 [CreateAssetMenu(fileName = "Heal State", menuName = "Player's State/Heal State")]
 public class PlayerHealState : PlayerState
 {
+    [SerializeField] private int _healValue;
     private Inventory _inventory;
     private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
@@ -24,7 +25,7 @@ public class PlayerHealState : PlayerState
         base.Enter();
         IsStateFinished = false;
         _inventory.RemoveItem(ItemType.FirstAidKit);
-        _player.TakeHeal(2);
+        _player.TakeHeal(_healValue);
         _player.SetAnimation("Heal", true);
         WaitWhileHeal();
     }

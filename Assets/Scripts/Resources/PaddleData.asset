@@ -16,4 +16,4 @@ MonoBehaviour:
   _cooldown: 0.8
   _type: 2
   _distance: 2
-  _recliningForce: 4
+  _recliningForce: 6
