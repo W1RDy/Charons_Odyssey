@@ -17,9 +17,14 @@ public class EnemyStateMachine
         }
     }
 
-    public void InitializeStates(Enemy enemy)
+    public void InitializeStates(Enemy enemy, PauseService pauseService, Transform target)
     {
-        foreach (var state in _statesDictionary.Values) state.Initialize(enemy);
+        foreach (var state in _statesDictionary.Values)
+        {
+            if (state.GetStateType() == EnemyStateType.Attack) (state as EnemyAttackState).Initialize(enemy, pauseService, target);
+            else if (state.GetStateType() == EnemyStateType.Chase) (state as EnemyChaseState).Initialize(enemy, pauseService, target);
+            else state.Initialize(enemy, pauseService);
+        }
     }
 
     public EnemyState GetState(EnemyStateType stateType) => _statesDictionary[stateType];

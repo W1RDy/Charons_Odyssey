@@ -8,9 +8,9 @@ public class EnemyReclineState : EnemyState
     protected Transform _recliner;
     protected float _reclineForce;
 
-    public override void Initialize(Enemy enemy)
+    public override void Initialize(Enemy enemy, PauseService pauseService)
     {
-        base.Initialize(enemy);
+        base.Initialize(enemy, pauseService);
         _rb = enemy.GetComponent<Rigidbody2D>();
     }
 

@@ -9,32 +9,41 @@ public class EnemyDefault : Enemy, IReclinable
 {
     [SerializeField] private Trigger _trigger;
     [SerializeField] private float _speed;
-    [SerializeField] private float _hitDistance;
+    [SerializeField] protected float _hitDistance;
     [SerializeField] private float _damage;
     [SerializeField] private float _cooldown;
-    private Transform _target;
+
     private IMovableWithStops _movable;
     public float HitDistance { get => _hitDistance; }
     public float Damage { get => _damage; }
     public float AttackCooldown { get => _cooldown; }
 
-    [Inject]
-    private void Construct(Player player)
-    {
-        _target = player.transform;
-    }
+    private Action<Vector2> MoveToNoise;
+
 
     public override void InitializeEnemy(Direction direction, bool isAvailable)
     {
         base.InitializeEnemy(direction, isAvailable);
         _movable = GetComponent<IMovableWithStops>();
 
-        if (direction == Direction.Left) (_movable as IMovableWithFlips).Flip();
+        if (direction == Direction.Left) (_movable as IMovableWithFlips).Flip(Vector2.left);
         _movable.SetSpeed(_speed);
-        _trigger.TriggerWorked += StartMove;
-        _trigger.TriggerTurnedOff += _movable.StopMove;
 
         EnemyType = EnemyType.Default;
+
+        MoveToNoise = noisePos =>
+        {
+            if (_isAvailable)
+            {
+                if (Vector2.Distance(new Vector2(noisePos.x, 0), new Vector2(transform.position.x, 0)) <= _hearNoiseDistance && !_trigger.PlayerInTrigger)
+                {
+                    ChangeState(EnemyStateType.Move);
+                    if (StateMachine.CurrentState is EnemyMoveState moveState) moveState.SetMovePosition(noisePos);
+                }
+            }
+        };
+
+        _noiseEventHandler.Noise += MoveToNoise;
     }
 
     protected override void Update()
@@ -45,21 +54,15 @@ public class EnemyDefault : Enemy, IReclinable
             if (_target && Vector3.Distance(_target.position, transform.position) < _hitDistance)
             {
                 if (StateMachine.GetState(EnemyStateType.Attack).IsStateAvailable()) Attack();
-                else ChangeState(EnemyStateType.Idle);
             }
             else if (_trigger.PlayerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
             {
-                ChangeState(EnemyStateType.Move);
+                ChangeState(EnemyStateType.Chase);
             }
 
             if (StateMachine.CurrentState.IsStateFinished) ChangeState(EnemyStateType.Idle);
         }
         else ChangeState(EnemyStateType.Idle);
-    }
-
-    private void StartMove()
-    {
-        if (_isAvailable) _movable.StartMove();
     }
 
     public override void Attack()
@@ -76,9 +79,8 @@ public class EnemyDefault : Enemy, IReclinable
         }
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
-        _trigger.TriggerWorked -= StartMove;
-        _trigger.TriggerTurnedOff -= _movable.StopMove;
+        _noiseEventHandler.Noise -= MoveToNoise;
     }
 }

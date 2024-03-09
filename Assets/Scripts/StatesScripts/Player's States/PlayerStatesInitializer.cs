@@ -14,10 +14,11 @@ public class PlayerStatesInitializer : MonoBehaviour
     private CustomCamera _customCamera;
     private PauseService _pauseService;
     private IInputService _inputService;
+    private NoiseEventHandler _noiseEventHandler;
 
     [Inject]
     private void Construct(Inventory inventory, WeaponService weaponService, DialogLifeController dialogLifeController,
-        DialogCloudService dialogCloudService, CustomCamera customCamera, PauseService pauseService, IInputService inputService)
+        DialogCloudService dialogCloudService, CustomCamera customCamera, PauseService pauseService, IInputService inputService, NoiseEventHandler noiseEventHandler)
     {
         _weaponService = weaponService;
         _dialogLifeController = dialogLifeController;
@@ -26,6 +27,7 @@ public class PlayerStatesInitializer : MonoBehaviour
         _customCamera = customCamera;
         _pauseService = pauseService;
         _inputService = inputService;
+        _noiseEventHandler = noiseEventHandler;
         _player = GetComponent<Player>();
     }
 
@@ -46,13 +48,19 @@ public class PlayerStatesInitializer : MonoBehaviour
             if (state.GetStateType() == PlayerStateType.AttackWithPistol || state.GetStateType() == PlayerStateType.AttackWithPaddle || state.GetStateType() == PlayerStateType.AttackWithFist || state.GetStateType() == PlayerStateType.IdleWithGun)
             {
                 Weapon weapon;
-                if (state.GetStateType() == PlayerStateType.AttackWithPistol || state.GetStateType() == PlayerStateType.IdleWithGun) weapon = _weaponService.GetWeapon(WeaponType.Pistol);
-                else if (state.GetStateType() == PlayerStateType.AttackWithPaddle) weapon = _weaponService.GetWeapon(WeaponType.Paddle);
-                else weapon = _weaponService.GetWeapon(WeaponType.Fist);
+                if (state.GetStateType() == PlayerStateType.AttackWithPistol || state.GetStateType() == PlayerStateType.IdleWithGun) 
+                    weapon = _weaponService.GetWeapon(WeaponType.Pistol);
+                else if (state.GetStateType() == PlayerStateType.AttackWithPaddle)
+                    weapon = _weaponService.GetWeapon(WeaponType.Paddle);
+                else 
+                    weapon = _weaponService.GetWeapon(WeaponType.Fist);
 
-                if (state.GetStateType() == PlayerStateType.IdleWithGun) (state as PlayerStayWithGunState).Initialize(_player, weapon, _pauseService, _customCamera);
-                else if (state.GetStateType() == PlayerStateType.AttackWithPistol) (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera);
-                else (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaController);
+                if (state.GetStateType() == PlayerStateType.IdleWithGun)
+                    (state as PlayerStayWithGunState).Initialize(_player, weapon, _pauseService, _customCamera);
+                else if (state.GetStateType() == PlayerStateType.AttackWithPistol)
+                    (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera, _noiseEventHandler);
+                else 
+                    (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, staminaController);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
                 (state as PlayerTalkState).Initialize(_player, _pauseService, _dialogLifeController, _dialogCloudService);

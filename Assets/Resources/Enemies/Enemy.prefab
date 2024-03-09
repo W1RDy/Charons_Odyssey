@@ -74,11 +74,13 @@ MonoBehaviour:
   _parryingWindowDuration: 0.8
   _damageTimeBeforeAnimationEnd: 0.1
   _stunningTime: 2
+  _hearNoiseDistance: 10
   _idleState: {fileID: 11400000, guid: 903e47412f90b1545b951cf20adf3951, type: 2}
-  _moveState: {fileID: 11400000, guid: c13ec59d31a44e0459d0098854e1bfd0, type: 2}
+  _chaseState: {fileID: 11400000, guid: c13ec59d31a44e0459d0098854e1bfd0, type: 2}
   _attackState: {fileID: 11400000, guid: 51b644d0c7e6ceb47806a384af21c808, type: 2}
   _reclineState: {fileID: 11400000, guid: c40f8acbcfaea224da8a0e776710a5da, type: 2}
   _stunState: {fileID: 11400000, guid: 432d43ff838340346961aed9c7c06a7f, type: 2}
+  _moveState: {fileID: 11400000, guid: 5ec4dfe5a79f9a24bbee44469cc41bb5, type: 2}
   _trigger: {fileID: 2517521349137554264}
   _speed: 2.5
   _hitDistance: 1.5

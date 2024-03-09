@@ -55,12 +55,13 @@ public class PlayerMove : MonoBehaviour, IMovableWithFlips
     public void Move()
     {
         _rb.velocity = _direction * _speed;
-        if ((_direction.x > 0 && transform.localScale.x < 0) || (_direction.x < 0 && transform.localScale.x > 0)) Flip();
+        Flip(_direction);
     }
 
-    public void Flip()
+    public void Flip(Vector2 direction)
     {
-        transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        if ((direction.x > 0 && transform.localScale.x < 0) || (direction.x < 0 && transform.localScale.x > 0))
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
     }
 
     public bool IsMoving() => _isMove;

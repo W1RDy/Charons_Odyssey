@@ -180,7 +180,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         _playerView.SetAnimatorSpeed(speed);
     }
 
-    public void Flip() => _playerMove.Flip();
+    public void Flip(Vector2 direction) => _playerMove.Flip(direction);
 
     public bool OnGround() => _playerColliderChecker.IsCollideWithGround();
 

@@ -14,6 +14,6 @@ public class HpIndicator : MonoBehaviour
 
     public void SetHp(float hp)
     {
-        _hpIndicator.fillAmount = hp / 10;
+        _hpIndicator.fillAmount = hp / 100;
     }
 }

@@ -10,7 +10,7 @@ public interface IMovable
 
 public interface IMovableWithFlips : IMovable
 {
-    public void Flip();
+    public void Flip(Vector2 direction);
 }
 
 public interface IMovableWithStops : IMovable

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32377764b2c99424c8e636e11869785c, type: 3}
   m_Name: FistData
   m_EditorClassIdentifier: 
-  _damage: 1
-  _cooldown: 0
+  _damage: 10
+  _cooldown: 0.3
   _type: 0
   _distance: 0.5

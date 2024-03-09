@@ -14,11 +14,15 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     [SerializeField] protected float _parryingWindowDuration;
     [SerializeField] protected float _damageTimeBeforeAnimationEnd = 0.1f;
     [SerializeField] protected float _stunningTime;
+    [SerializeField] protected float _hearNoiseDistance;
     protected Animator _animator;
     protected SpriteRenderer _spriteRenderer;
     private PauseService _pauseService;
-    //private PauseTokenSource _pauseTokenSource;
 
+    protected NoiseEventHandler _noiseEventHandler;
+
+
+    protected Transform _target;
 
     private bool _isPaused;
     public bool IsReadyForParrying { get; set; }
@@ -28,19 +32,23 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     #region Enemy's states
 
     [SerializeField] private EnemyIdleState _idleState;
-    [SerializeField] private EnemyMoveState _moveState;
+    [SerializeField] private EnemyChaseState _chaseState;
     [SerializeField] private EnemyAttackState _attackState;
     [SerializeField] private EnemyReclineState _reclineState;
     [SerializeField] private EnemyStunState _stunState;
+    [SerializeField] private EnemyMoveState _moveState;
 
     #endregion
 
     public EnemyStateMachine StateMachine { get; set; }
 
     [Inject]
-    private void Construct(PauseService pauseService)
+    private void Construct(PauseService pauseService, NoiseEventHandler noiseEventHandler, Player player)
     {
         _pauseService = pauseService;
+        _noiseEventHandler = noiseEventHandler;
+
+        _target = player.transform;
     }
 
     public virtual void InitializeEnemy(Direction direction, bool isAvailable)
@@ -48,7 +56,6 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         _pauseService.AddPauseObj(this);
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        //_pauseTokenSource = new PauseTokenSource();
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
@@ -60,10 +67,11 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         var stateInstances = new List<EnemyState>()
         {
            Instantiate(_idleState),
-           Instantiate(_moveState),
+           Instantiate(_chaseState),
            Instantiate(_attackState),
            Instantiate(_reclineState),
-           Instantiate(_stunState)
+           Instantiate(_stunState),
+           Instantiate(_moveState)
         };
 
         StateMachine.InitializeStatesDictionary(stateInstances);
@@ -71,13 +79,18 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     private void Start()
     {
-        StateMachine.InitializeStates(this);
+        StateMachine.InitializeStates(this, _pauseService, _target);
         StateMachine.InitializeCurrentState(StateMachine.GetState(EnemyStateType.Idle));
     }
 
     protected virtual void Update()
     {
         if (!_isPaused) StateMachine.CurrentState.Update();
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (!_isPaused) StateMachine.CurrentState.FixedUpdate();
     }
 
     public void ChangeState(EnemyStateType stateType)
@@ -108,7 +121,9 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public void ApplyStun()
     {
+        var interruptedState = StateMachine.CurrentState;
         ChangeState(EnemyStateType.Stun);
+        (StateMachine.CurrentState as EnemyStunState).SetInterruptedState(interruptedState);
     }
 
     public virtual void Attack()
@@ -170,6 +185,14 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public string GetAnimationName()
     {
         return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+    }
+
+    public void Flip(Vector2 direction)
+    {
+        if (direction.x < 0 && transform.localScale.x > 0 || direction.x > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        }
     }
 
     public void Pause()

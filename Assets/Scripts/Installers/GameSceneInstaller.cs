@@ -86,6 +86,8 @@ public class GameSceneInstaller : MonoInstaller
 
         BindTalkableFinder();
 
+        BindNoiseEventHandler();
+
         BindFactories();
         BindPlayer();
     }
@@ -109,6 +111,12 @@ public class GameSceneInstaller : MonoInstaller
         BindNPCFactory();
         BindNPCGroupFactory();
         BindItemFactory();
+    }
+
+    private void BindNoiseEventHandler()
+    {
+        var noiseEventHandler = new NoiseEventHandler();
+        Container.Bind<NoiseEventHandler>().FromInstance(noiseEventHandler).AsSingle();
     }
 
     private void BindStaminaIndicator()

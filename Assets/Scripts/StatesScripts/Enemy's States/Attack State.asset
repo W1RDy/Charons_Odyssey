@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a10f0e73b25ef47b9d5ac05057d447, type: 3}
   m_Name: Attack State
   m_EditorClassIdentifier: 
-  _priorityIndex: 2
+  _priorityIndex: 3
   _stateType: 3

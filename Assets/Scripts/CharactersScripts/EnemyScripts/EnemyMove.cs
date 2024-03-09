@@ -31,13 +31,20 @@ public class EnemyMove : MonoBehaviour, IMovableWithFlips, IMovableWithStops, IP
 
     public void Move()
     {
-        _rb.velocity = -(transform.position - _target.position).normalized * _speed;
-        Flip();
+        var direction = -(transform.position - _target.position).normalized;
+        _rb.velocity = direction * _speed;
+        Flip(direction);
     }
 
-    public void Flip()
+    public void Move(Vector2 direction)
     {
-        if (_target.position.x > transform.position.x && transform.localScale.x < 0 || _target.position.x < transform.position.x && transform.localScale.x > 0)
+        _rb.velocity = direction * _speed ;
+        Flip(direction);
+    }
+
+    public void Flip(Vector2 direction)
+    {
+        if (direction.x > 0 && transform.localScale.x < 0 || direction.x < 0 && transform.localScale.x > 0)
             transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y);
     }
 

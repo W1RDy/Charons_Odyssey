@@ -1,39 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Move State", menuName = "Enemy's State/Move State")]
 public class EnemyMoveState : EnemyState
 {
-    protected EnemyMove _enemyMove;
     protected EnemyMove _movable;
+    private Vector2 _movePosition;
+    private bool _isMoving;
 
-    public override void Initialize(Enemy enemy)
+    public override void Initialize(Enemy enemy, PauseService pauseService)
     {
-        base.Initialize(enemy);
+        base.Initialize(enemy, pauseService);
         _movable = enemy.GetComponent<EnemyMove>();
     }
 
     public override void Enter()
     {
+        base.Enter();
         IsStateFinished = false;
         _enemy.SetAnimation("Move", true);
-        _movable.StartMove();
+        _isMoving = true;
     }
 
-    public override void Update()
+    public void SetMovePosition(Vector2 movePosition)
     {
-        if (!_movable.IsMoving()) IsStateFinished = true;
+        _movePosition = movePosition;
+        _isMoving = true;
+    }
+
+    public override void FixedUpdate()
+    {
+        if (_isMoving)
+        {
+            var direction = new Vector2(_movePosition.x - _enemy.transform.position.x, 0).normalized;
+            if (Mathf.Abs(_movePosition.x - _enemy.transform.position.x) < 0.1f) IsStateFinished = true;
+            _movable.Move(direction);
+            base.FixedUpdate();
+        }
     }
 
     public override void Exit()
     {
+        base.Exit();
+        IsStateFinished = true;
         _enemy.SetAnimation("Move", false);
-        _movable.StopMove();
     }
 
-    public override bool IsStateAvailable()
+    public override void ResetValues()
     {
-        return base.IsStateAvailable();
+        base.ResetValues();
+        _isMoving = false;
     }
 }

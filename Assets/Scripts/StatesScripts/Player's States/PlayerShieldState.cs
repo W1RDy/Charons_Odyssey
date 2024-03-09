@@ -44,9 +44,9 @@ public class PlayerShieldState : PlayerState
 
         if (!_inputService.ButtonIsPushed(InputButtonType.Shield)) IsStateFinished = true;
         var horizontalInput = Input.GetAxis("Horizontal");
-        if ((horizontalInput < 0 && _player.transform.localScale.x > 0) || (horizontalInput > 0 && _player.transform.localScale.x < 0))
+        if (horizontalInput != 0)
         { 
-            _player.Flip();
+            _player.Flip(new Vector2(horizontalInput, 0));
             if (_player.transform.localScale.x > 0) _shield.IsTurnedRight = true;
             else _shield.IsTurnedRight = false;
         }

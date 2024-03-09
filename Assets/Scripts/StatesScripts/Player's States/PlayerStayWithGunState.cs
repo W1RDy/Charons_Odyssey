@@ -47,10 +47,8 @@ public class PlayerStayWithGunState : PlayerStayState
             base.Update();
 
             var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
-            if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
-            {
-                _player.Flip();
-            }
+            var flipDirection = rotation.eulerAngles.z > 180 ? Vector2.left : Vector2.right;
+            _player.Flip(flipDirection);
             RotateGun(rotation);
         }
     }

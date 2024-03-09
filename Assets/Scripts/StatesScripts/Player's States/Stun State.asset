@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f413580c021df54aad6f9c1fd03a592, type: 3}
   m_Name: Stun State
   m_EditorClassIdentifier: 
-  _priorityIndex: 0
-  _stateType: 0
+  _priorityIndex: 8
+  _stateType: 12

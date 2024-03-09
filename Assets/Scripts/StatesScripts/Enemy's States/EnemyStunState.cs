@@ -5,11 +5,18 @@ using UnityEngine;
 public class EnemyStunState : EnemyState
 {
     private PauseTokenSource _pauseTokenSource;
+    private EnemyState _interruptedState;
 
-    public override void Initialize(Enemy enemy)
+    public override void Initialize(Enemy enemy, PauseService pauseService)
     {
-        base.Initialize(enemy);
+        base.Initialize(enemy, pauseService);
         _pauseTokenSource = new PauseTokenSource();
+    }
+
+    public void SetInterruptedState(EnemyState interruptedState)
+    {
+        _interruptedState = interruptedState;
+        Debug.Log(interruptedState.GetStateType());
     }
 
     public override void Enter()
@@ -25,7 +32,11 @@ public class EnemyStunState : EnemyState
     {
         var token = _enemy.GetCancellationTokenOnDestroy();
         await Delayer.DelayWithPause(1, token, _pauseTokenSource.Token);
-        if (!token.IsCancellationRequested) IsStateFinished = true;
+        if (!token.IsCancellationRequested)
+        {
+            IsStateFinished = true;
+            if (_interruptedState) _enemy.ChangeState(_interruptedState.GetStateType());
+        }
     }
 
     public override void Exit()

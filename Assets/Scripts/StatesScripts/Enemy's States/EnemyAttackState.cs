@@ -7,19 +7,27 @@ using UnityEngine;
 public class EnemyAttackState : EnemyState
 {
     protected EnemyDefault _enemyDefault;
+    private Transform _target;
+
     private CancellationToken _token;
+    private PauseTokenSource _pauseTokenSource;
+
     public bool IsCooldown { get; private set; }
 
-    public override void Initialize(Enemy enemy)
+    public void Initialize(Enemy enemy, PauseService pauseService, Transform target)
     {
-        base.Initialize(enemy);
+        base.Initialize(enemy, pauseService);
         _enemyDefault = enemy as EnemyDefault;
         _token = _enemy.GetCancellationTokenOnDestroy();
+        _pauseTokenSource = new PauseTokenSource();
+        _target = target;
     }
 
     public override void Enter()
     {
         IsStateFinished = false;
+        var flipDirection = _target.position.x < _enemyDefault.transform.position.x ? Vector2.left : Vector2.right;
+        _enemy.Flip(flipDirection);
         _enemy.SetAnimation("Attack", true);
         Attack();
     }
@@ -38,6 +46,8 @@ public class EnemyAttackState : EnemyState
                 playerWithShield.TakeHit(_enemyDefault.Damage, new Vector2(_enemyDefault.transform.localScale.x, 0).normalized);
             else if (player != null)
                 player[0].TakeHit(_enemyDefault.Damage);
+            await Delayer.DelayWithPause(_enemy.DamageTimeBeforeAnimationEnd, _token, _pauseTokenSource.Token);
+            if (_token.IsCancellationRequested) return;
             IsStateFinished = true;
         }
 
@@ -48,25 +58,22 @@ public class EnemyAttackState : EnemyState
     {
         await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Attack"));
         if (_token.IsCancellationRequested) return;
-        Debug.Log(_enemy.GetAnimationDuration());
-        Debug.Log((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration);
-        await Delayer.Delay((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token);
+        await Delayer.DelayWithPause((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token, _pauseTokenSource.Token);
         _enemy.IsReadyForParrying = true;
         if (_token.IsCancellationRequested) return;
-        await Delayer.Delay(_enemy.ParryingWindowDuration, _token);
+        await Delayer.DelayWithPause(_enemy.ParryingWindowDuration, _token, _pauseTokenSource.Token);
     }
 
     private async void WaitWhileCooldown()
     {
         IsCooldown = true;
-        await Delayer.Delay(_enemyDefault.AttackCooldown, _token);
+        await Delayer.DelayWithPause(_enemyDefault.AttackCooldown, _token, _pauseTokenSource.Token);
         if (!_token.IsCancellationRequested) IsCooldown = false;
     }
 
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("FinishAttack");
         _enemy.SetAnimation("Attack", false);
         IsStateFinished = true;
     }
@@ -76,8 +83,15 @@ public class EnemyAttackState : EnemyState
         return !IsCooldown;
     }
 
-    public override void ResetValues()
+    public override void Pause()
     {
-        IsStateFinished = false;
+        _pauseTokenSource.Pause();
+        base.Pause();
+    }
+
+    public override void Unpause()
+    {
+        _pauseTokenSource.Unpause();
+        base.Unpause();
     }
 }

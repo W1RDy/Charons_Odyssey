@@ -74,7 +74,7 @@ public class LoadSceneManager : MonoBehaviour
 
     private async void AsyncLoading(int sceneIndex, int delay)
     {
-        await UniTask.Delay(delay, cancellationToken: _token);
+        await Delayer.Delay(delay, _token);
         await OpenCloseLoadingScreen(true);
         if (_token.IsCancellationRequested) return;
 

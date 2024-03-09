@@ -12,11 +12,13 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private Pistol _pistol;
     private Transform _shootPoint;
     private Transform _pistolEnd;
+
     private CustomCamera _camera;
     private Inventory _inventory;
     private PauseService _pauseService;
+    private NoiseEventHandler _noiseEventHandler;
 
-    public void Initialize(Player player, Weapon weapon, PauseService pauseService, Inventory inventory, CustomCamera customCamera)
+    public void Initialize(Player player, Weapon weapon, PauseService pauseService, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler)
     {
         base.Initialize(player, weapon, pauseService);
         _camera = customCamera;
@@ -32,6 +34,8 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         {
             _shootPoint = new GameObject("ShootPoint").transform;
         }
+
+        _noiseEventHandler = noiseEventHandler;
     }
 
     public override void Enter()
@@ -58,6 +62,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
         bullet.Initialize(AttackableObjectIndex.Player, _pauseService, _pistol.Distance, _pistol.Damage);
         _inventory.RemoveItem(ItemType.Patrons, 1);
+        _noiseEventHandler.MakeNoise(_pistolEnd.position);
     }
 
     public override void Update()
@@ -67,10 +72,8 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
             base.Update();
 
             var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
-            if ((rotation.eulerAngles.z > 180 && _player.transform.localScale.x > 0) || (rotation.eulerAngles.z < 180 && _player.transform.localScale.x < 0))
-            {
-                _player.Flip();
-            }
+            var flipDirection = rotation.eulerAngles.z > 180 ? Vector2.left : Vector2.right;
+            _player.Flip(flipDirection);
             RotateGun(rotation);
         }
     }
