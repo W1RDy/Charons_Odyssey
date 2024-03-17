@@ -28,10 +28,11 @@ public class PlayerParryingState : PlayerState
         _isCooldown = true;
         _player.UseStamina(_neededStamina);
 
-        Debug.Log("Parrying");
         _parryingHittable.IsReadyForParrying = false;
         _parryingHittable.ApplyParrying();
         IsStateFinished = true;
+
+        _player.SetAnimation("Parrying", true);
 
         WaitCooldown();
         base.Enter();

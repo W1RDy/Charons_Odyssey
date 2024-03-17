@@ -27,6 +27,8 @@ public class PlayerShieldState : PlayerState
             _staminaController.StartUsingStamina(_staminaPerSecond);
             _shield.ActivateShield();
 
+            _player.SetAnimation("Shield", true);
+
             if (_player.transform.localScale.x > 0) _shield.IsTurnedRight = true;
             else _shield.IsTurnedRight = false;
         }
@@ -57,5 +59,7 @@ public class PlayerShieldState : PlayerState
         base.Exit();
         _shield.DeactivateShield();
         _staminaController.StopUsingStamina();
+
+        _player.SetAnimation("Shield", false);
     }
 }

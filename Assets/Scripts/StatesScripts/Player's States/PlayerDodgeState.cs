@@ -36,6 +36,8 @@ public class PlayerDodgeState : PlayerState
         _player.IsImmortal = true;
         _direction = new Vector2(_player.transform.localScale.x, 0).normalized;
 
+        _player.SetAnimation("Dodge", true);
+
         ChangeDodgeSpeed();
     }
 
