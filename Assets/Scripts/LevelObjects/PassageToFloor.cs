@@ -4,21 +4,15 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(BoxCollider2D))]
-[RequireComponent(typeof(Rigidbody2D))]
 public class PassageToFloor : MonoBehaviour
 {
-    private Collider2D _collider;
+    [SerializeField] private BoxCollider2D _groundCollider;
     private PlayerColliderChecker _playerColliderChecker;
 
     [Inject]
     private void Construct(Player player)
     {
         _playerColliderChecker = player.GetComponent<PlayerColliderChecker>();
-    }
-
-    private void Awake()
-    {
-        _collider = GetComponent<BoxCollider2D>();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -31,12 +25,12 @@ public class PassageToFloor : MonoBehaviour
 
     public void DeactivatePassage()
     {
-        _collider.isTrigger = true;
-        _playerColliderChecker.RemoveGround(_collider);
+        _groundCollider.gameObject.layer = LayerMask.NameToLayer("IgnorePlayer");
+        _playerColliderChecker.RemoveGround(_groundCollider);
     }
 
     public void ActivatePassage()
     {
-        _collider.isTrigger = false;
+        _groundCollider.gameObject.layer = LayerMask.NameToLayer("Ground");
     }
 }

@@ -12,7 +12,7 @@ public class LadderUseChecker
 
         var playerCollider = player.GetComponent<Collider2D>();
         var normalizedDirection = direction > 0 ? 1 : -1;
-        var predictedPos = playerCollider.bounds.center.y + normalizedDirection * playerCollider.bounds.size.y;
+        var predictedPos = playerCollider.bounds.center.y + normalizedDirection * (playerCollider.bounds.extents.y + 0.1f);
 
         return ladder.IsColliderOnLaddersCenter(playerCollider) && ladder.IsHaveLadderOnHeight(predictedPos);
     }
