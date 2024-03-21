@@ -54,6 +54,7 @@ public class ButtonService : MonoBehaviour, IService
     public void Continue()
     {
         _pauseService.SetUnpause();
+        DeactivateSettings();
         DeactivatePauseWindow();
     }
 

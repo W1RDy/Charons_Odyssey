@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public PlayerStateMachine StateMachine { get; set; }
 
-    public event Action OnDeath;
+    public event Action OnPlayerDisable;
 
     [Inject]
     private void Construct(WeaponService weaponService, ArmorItemsService armorItemsService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService, StaminaIndicator staminaIndicator)
@@ -159,8 +159,6 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void Death()
     {
         _playerHpHandler.Death();
-        OnDeath?.Invoke();
-        _playerStaminaController.Unsubscribe();
     }
 
     public void SetAnimation(string animationIndex, bool isActivate)
@@ -234,5 +232,12 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public float GetStamina()
     {
         return _staminaValue;
+    }
+
+    public void OnDisable()
+    {
+        OnPlayerDisable?.Invoke();
+        _pauseService.RemovePauseObj(this);
+        _playerStaminaController.Unsubscribe();
     }
 }

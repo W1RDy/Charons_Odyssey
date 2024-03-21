@@ -15,7 +15,7 @@ public abstract class PlayerState : ScriptableObject, IPause
     public virtual void Initialize(Player player, PauseService pauseService)
     {
         _player = player;
-        _player.OnDeath += OnPlayerDeath;
+        _player.OnPlayerDisable += OnPlayerDisable;
 
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
@@ -47,10 +47,10 @@ public abstract class PlayerState : ScriptableObject, IPause
         if (_isPaused) _isPaused = false;
     }
 
-    public virtual void OnPlayerDeath()
+    public virtual void OnPlayerDisable()
     {
         _pauseService.RemovePauseObj(this);
-        _player.OnDeath -= OnPlayerDeath;
+        _player.OnPlayerDisable -= OnPlayerDisable;
     }
 }
 

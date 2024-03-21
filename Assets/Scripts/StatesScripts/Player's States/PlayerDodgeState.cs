@@ -18,6 +18,8 @@ public class PlayerDodgeState : PlayerState
     private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
 
+    private Vector2 _pausedVelocity;
+
     public override void Initialize(Player player, PauseService pauseService)
     {
         base.Initialize(player, pauseService);
@@ -43,8 +45,11 @@ public class PlayerDodgeState : PlayerState
 
     public override void Update()
     {
-        _rb.velocity = _direction * _speed;
-        base.Update();
+        if (!_isPaused)
+        {
+            _rb.velocity = _direction * _speed;
+            base.Update();
+        }
     }
 
     private async void ChangeDodgeSpeed()
@@ -74,12 +79,19 @@ public class PlayerDodgeState : PlayerState
     public override void Pause()
     {
         _pauseTokenSource.Pause();
+
+        _pausedVelocity = _rb.velocity;
+        _rb.velocity = Vector2.zero;
+
         base.Pause();
     }
 
     public override void Unpause()
     {
         _pauseTokenSource.Unpause();
+
+        _rb.velocity = _pausedVelocity;
+
         base.Unpause();
     }
 

@@ -33,9 +33,11 @@ public class WindowActivator : MonoBehaviour, IPause
     {
         var _window = _windowService.GetWindow(type);
         _window.windowPrefab.SetActive(true);
+
+        if (_controller) _controller.IsControl = false;
+
         if (_defaultMenuElements != null && _defaultMenuElements.activeInHierarchy)
         {
-            if (_controller) _controller.IsControl = false;
             _defaultMenuElements.SetActive(false);
         }
     }
@@ -51,9 +53,11 @@ public class WindowActivator : MonoBehaviour, IPause
     {
         var window = _windowService.GetWindow(type);
         window.windowPrefab.SetActive(false);
+
+        if (_controller) _controller.IsControl = true;
+
         if (_defaultMenuElements != null && !_defaultMenuElements.activeInHierarchy)
         {
-            if (_controller) _controller.IsControl = true;
             _defaultMenuElements.SetActive(true);
         }
     }

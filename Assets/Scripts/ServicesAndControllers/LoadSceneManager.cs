@@ -16,6 +16,8 @@ public class LoadSceneManager : MonoBehaviour
     private DataController _dataController;
     private PauseService _pauseService;
 
+    private bool _sceneIsLoading;
+
     [Inject]
     private void Construct(DataController dataController, PauseService pauseService)
     {
@@ -42,13 +44,18 @@ public class LoadSceneManager : MonoBehaviour
         {
             _image.enabled = false;
             _pauseService.ChangePauseAvailable(true);
+            _sceneIsLoading = false;
         }
 
     }
 
     public void LoadScene(int sceneIndex)
     {
-        LoadScene(sceneIndex, 0);
+        if (!_sceneIsLoading)
+        {
+            _sceneIsLoading = true;
+            LoadScene(sceneIndex, 0);
+        }
     }
 
     public void LoadScene(int sceneIndex, int delay)

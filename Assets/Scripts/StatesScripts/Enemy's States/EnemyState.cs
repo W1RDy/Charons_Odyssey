@@ -16,7 +16,7 @@ public abstract class EnemyState : ScriptableObject, IPause
     public virtual void Initialize(Enemy enemy, PauseService pauseService)
     {
         _enemy = enemy;
-        _enemy.OnDeath += OnEnemyDeath;
+        _enemy.OnEnemyDisable += OnEnemyDisable;
 
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
@@ -41,10 +41,10 @@ public abstract class EnemyState : ScriptableObject, IPause
         if (_isPaused) _isPaused = false;
     }
 
-    public virtual void OnEnemyDeath()
+    public virtual void OnEnemyDisable()
     {
         _pauseService.RemovePauseObj(this);
-        _enemy.OnDeath -= OnEnemyDeath;
+        _enemy.OnEnemyDisable -= OnEnemyDisable;
     }
 }
 

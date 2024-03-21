@@ -46,7 +46,13 @@ public class DataController
 
     public void ResetDatas()
     {
-        if (DataContainer.isHaveSavings) DataContainer = new DataContainer();
+        if (DataContainer.isHaveSavings)
+        {
+            var musicVolume = DataContainer.musicVolume;
+            var soundsVolume = DataContainer.soundsVolume;
+            
+            DataContainer = new DataContainer() { musicVolume = musicVolume, soundsVolume = soundsVolume};
+        }
         SaveDatas();
     }
 }
