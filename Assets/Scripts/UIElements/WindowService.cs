@@ -29,5 +29,6 @@ public enum WindowType
     PauseWindow,
     MenuWindow,
     SettingsWindow,
-    ResetDataWindow
+    ResetDataWindow,
+    MapWindow
 }

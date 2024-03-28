@@ -7,6 +7,7 @@ TagManager:
   - Ground
   - Ladder
   - Enemy
+  - CancelClick
   layers:
   - Default
   - TransparentFX
