@@ -5,8 +5,13 @@ using Zenject;
 public class ClickHandler : MonoBehaviour, IPointerDownHandler
 {
     [SerializeField] Canvas _canvas;
-    [SerializeField] GameObject _clickView;
+
+    [SerializeField] GoodClickView _goodClickView;
+    [SerializeField] BadClickView _badClickView;
+
     private CustomCamera _customCamera;
+
+    private ClickView _currentClickView;
 
     [Inject]
     private void Construct(CustomCamera camera)
@@ -27,13 +32,12 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
 
         if (hit.collider != null)
         {
-            var cube = Instantiate(_clickView, hit.point, Quaternion.identity, _canvas.transform);
-            if (hit.collider.CompareTag("CancelClick"))
-            {
-                Debug.Log("Click cancelled");
-                return;
-            }
-            Debug.Log("Click on " + hit.collider.gameObject.name);
+            if (_currentClickView != null) _currentClickView.InteraptClick();
+
+            _currentClickView = !hit.collider.CompareTag("CancelClick") ? _goodClickView : _badClickView as ClickView;
+            
+            _currentClickView.transform.position = new Vector3(hit.point.x, hit.point.y, _currentClickView.transform.position.z);
+            _currentClickView.ShowClick();
         }
     }
 }
