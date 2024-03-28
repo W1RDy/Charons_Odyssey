@@ -5,8 +5,8 @@ using System;
 
 public class WindowService : MonoBehaviour
 {
-    [SerializeField] private WindowConfig[] _windows;
-    private Dictionary<WindowType, WindowConfig> _windowsDictionary;
+    [SerializeField] private Window[] _windows;
+    private Dictionary<WindowType, Window> _windowsDictionary;
 
     private void Awake()
     {
@@ -15,18 +15,11 @@ public class WindowService : MonoBehaviour
 
     private void InitializeDictionary()
     {
-        _windowsDictionary = new Dictionary<WindowType, WindowConfig>();
-        foreach (var window in _windows) _windowsDictionary[window.type] = window; 
+        _windowsDictionary = new Dictionary<WindowType, Window>();
+        foreach (var window in _windows) _windowsDictionary[window.Type] = window; 
     }
 
-    public WindowConfig GetWindow(WindowType type) => _windowsDictionary[type];
-}
-
-[Serializable]
-public class WindowConfig
-{
-    public WindowType type;
-    public GameObject windowPrefab;
+    public Window GetWindow(WindowType type) => _windowsDictionary[type];
 }
 
 public enum WindowType

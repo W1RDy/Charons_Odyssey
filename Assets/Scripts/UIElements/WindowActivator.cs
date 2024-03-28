@@ -32,7 +32,7 @@ public class WindowActivator : MonoBehaviour, IPause
     public void ActivateWindow(WindowType type)
     {
         var _window = _windowService.GetWindow(type);
-        _window.windowPrefab.SetActive(true);
+        _window.ActivateWindow();
 
         if (_controller) _controller.IsControl = false;
 
@@ -52,7 +52,7 @@ public class WindowActivator : MonoBehaviour, IPause
     public void DeactivateWindow(WindowType type)
     {
         var window = _windowService.GetWindow(type);
-        window.windowPrefab.SetActive(false);
+        window.DeactivateWindow();
 
         if (_controller) _controller.IsControl = true;
 
