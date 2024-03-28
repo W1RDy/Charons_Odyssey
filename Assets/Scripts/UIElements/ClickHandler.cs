@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
@@ -12,6 +13,8 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
     private CustomCamera _customCamera;
 
     private ClickView _currentClickView;
+
+    public event Action<Vector2> OnGoodClick;
 
     [Inject]
     private void Construct(CustomCamera camera)
@@ -34,10 +37,14 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
         {
             if (_currentClickView != null) _currentClickView.InteraptClick();
 
-            _currentClickView = !hit.collider.CompareTag("CancelClick") ? _goodClickView : _badClickView as ClickView;
+            var isGoodClick = !hit.collider.CompareTag("CancelClick");
+
+            _currentClickView = isGoodClick ? _goodClickView : _badClickView as ClickView;
             
             _currentClickView.transform.position = new Vector3(hit.point.x, hit.point.y, _currentClickView.transform.position.z);
             _currentClickView.ShowClick();
+
+            if (isGoodClick) OnGoodClick?.Invoke(hit.point);
         }
     }
 }

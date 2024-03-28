@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public interface IMovable 
 {
@@ -17,4 +18,9 @@ public interface IMovableWithStops : IMovable
 {
     public void StartMove();
     public void StopMove();
+}
+
+public interface INavMeshMovable
+{
+    public void Move(NavMeshPath path);
 }
