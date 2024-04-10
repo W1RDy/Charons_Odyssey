@@ -56,5 +56,6 @@ public enum EnemyStateType
     Attack,
     Stun,
     Move,
-    Cooldown
+    Cooldown,
+    Death
 }

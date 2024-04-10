@@ -38,6 +38,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     [SerializeField] private EnemyReclineState _reclineState;
     [SerializeField] private EnemyStunState _stunState;
     [SerializeField] private EnemyMoveState _moveState;
+    [SerializeField] private EnemyDeathState _deathState;
 
     #endregion
 
@@ -73,7 +74,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
            Instantiate(_reclineState),
            Instantiate(_stunState),
            Instantiate(_moveState),
-           Instantiate(_cooldownState)
+           Instantiate(_cooldownState),
+           Instantiate(_deathState),
         };
 
         StateMachine.InitializeStatesDictionary(stateInstances);
@@ -106,7 +108,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         {
             StartCoroutine(TakeHit());
             _hp -= damage;
-            if (_hp <= 0) Death();
+            if (_hp <= 0) ChangeState(EnemyStateType.Death);
         }
     }
 
@@ -124,7 +126,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     {
         var interruptedState = StateMachine.CurrentState;
         ChangeState(EnemyStateType.Stun);
-        (StateMachine.CurrentState as EnemyStunState).SetInterruptedState(interruptedState);
+        if (StateMachine.CurrentState is EnemyStunState enemyStunState) enemyStunState.SetInterruptedState(interruptedState);
     }
 
     public virtual void Attack()

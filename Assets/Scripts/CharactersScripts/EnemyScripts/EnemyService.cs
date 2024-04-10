@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EnemyService : IService
 {
-    private const string DefaultEnemy = "Enemy";
+    private const string DefaultEnemyPath = "Enemies/Enemy";
+    private const string MinotaurPath = "Enemies/Minotaur";
 
     private GameObject _defaultEnemyPrefab;
+    private GameObject _minotaurPrefab;
 
     public void InitializeService()
     {
@@ -15,7 +17,8 @@ public class EnemyService : IService
 
     private void LoadResources()
     {
-        _defaultEnemyPrefab = Resources.Load<Enemy>("Enemies/" + DefaultEnemy).gameObject;
+        _defaultEnemyPrefab = Resources.Load<Enemy>(DefaultEnemyPath).gameObject;
+        _minotaurPrefab = Resources.Load<Enemy>(MinotaurPath).gameObject;
     }
 
     public GameObject GetEnemyPrefab(EnemyType enemyType)
@@ -24,6 +27,8 @@ public class EnemyService : IService
         {
             case EnemyType.Default:
                 return _defaultEnemyPrefab;
+            case EnemyType.Minotaur:
+                return _minotaurPrefab;
         }
         throw new System.InvalidOperationException("Enemy with type " + enemyType + " doesn't exist!");
     }

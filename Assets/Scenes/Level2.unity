@@ -4610,6 +4610,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2008508897}
     m_Modifications:
+    - target: {fileID: 4799046729963767371, guid: d0714dad92da36540b8697df92886bbe, type: 3}
+      propertyPath: _enemyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680474625088252959, guid: d0714dad92da36540b8697df92886bbe, type: 3}
       propertyPath: m_Icon
       value: 
@@ -5098,6 +5102,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2008508897}
     m_Modifications:
+    - target: {fileID: 4799046729963767371, guid: d0714dad92da36540b8697df92886bbe, type: 3}
+      propertyPath: _enemyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680474625088252959, guid: d0714dad92da36540b8697df92886bbe, type: 3}
       propertyPath: m_Icon
       value: 
@@ -6388,6 +6396,10 @@ PrefabInstance:
     - target: {fileID: 4799046729963767371, guid: d0714dad92da36540b8697df92886bbe, type: 3}
       propertyPath: _direction
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4799046729963767371, guid: d0714dad92da36540b8697df92886bbe, type: 3}
+      propertyPath: _enemyType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7680474625088252959, guid: d0714dad92da36540b8697df92886bbe, type: 3}
       propertyPath: m_Icon
@@ -9582,6 +9594,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2008508897}
     m_Modifications:
+    - target: {fileID: 4799046729963767371, guid: d0714dad92da36540b8697df92886bbe, type: 3}
+      propertyPath: _enemyType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7680474625088252959, guid: d0714dad92da36540b8697df92886bbe, type: 3}
       propertyPath: m_Icon
       value: 
