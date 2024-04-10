@@ -31,11 +31,13 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
     public void HandleClick()
     {
         Ray ray = _customCamera.MainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 100, 1 << 5);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 100, 1 << 5);
 
-        if (hit.collider != null)
+        if (hits.Length > 0)
         {
             if (_currentClickView != null) _currentClickView.InteraptClick();
+
+            var hit = GetPrioritetHit(hits);
 
             var isGoodClick = !hit.collider.CompareTag("CancelClick");
 
@@ -46,5 +48,14 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
 
             if (isGoodClick) OnGoodClick?.Invoke(hit.point);
         }
+    }
+
+    private RaycastHit2D GetPrioritetHit(RaycastHit2D[] hits)
+    {
+        foreach (var hit in hits)
+        {
+            if (hit.collider.CompareTag("CancelClick")) return hit;
+        }
+        return hits[0];
     }
 }
