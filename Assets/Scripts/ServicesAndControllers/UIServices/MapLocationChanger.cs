@@ -5,7 +5,7 @@ using Zenject;
 
 public class MapLocationChanger : SubscribableClass
 {
-    [SerializeField] private LocationIndicator _locationIndicator;
+    private LocationIndicator _locationIndicator;
 
     private MapShip _mapShip;
     private LoadSceneManager _loadSceneManager;
@@ -13,10 +13,15 @@ public class MapLocationChanger : SubscribableClass
     private Action<MapLocation> ChangeLocationDelegate;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, MapShip mapShip)
+    private void Construct(LoadSceneManager loadSceneManager)
     {
         _loadSceneManager = loadSceneManager;
+    }
+
+    public MapLocationChanger(MapShip mapShip, LocationIndicator locationIndicator)
+    {
         _mapShip = mapShip;
+        _locationIndicator = locationIndicator;
 
         Subscribe();
     }

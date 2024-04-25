@@ -51,6 +51,7 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private ButtonService _buttonService;
     [SerializeField] private WindowActivator _windowActivator;
     [SerializeField] private Settings _settings;
+    [SerializeField] private SubscribeController _subscribeController;
     private AudioService _audioService;
     private ItemService _itemService;
 
@@ -67,6 +68,7 @@ public class GameSceneInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        BindSubscribeController();
         BindEssenceSpawner();
 
         BindWindowActivator();
@@ -112,6 +114,11 @@ public class GameSceneInstaller : MonoInstaller
         BindNPCFactory();
         BindNPCGroupFactory();
         BindItemFactory();
+    }
+
+    private void BindSubscribeController()
+    {
+        Container.Bind<SubscribeController>().FromInstance(_subscribeController).AsSingle();
     }
 
     private void BindNoiseEventHandler()
@@ -226,32 +233,5 @@ public class GameSceneInstaller : MonoInstaller
     private void BindSettings()
     {
         Container.Bind<Settings>().FromInstance(_settings).AsSingle();
-    }
-}
-
-public class MapInstaller : MonoInstaller
-{
-    [SerializeField] private MapShip _ship;
-
-    [SerializeField] private WayView _wayView;
-    [SerializeField] private ClickHandler _clickHandler;
-
-    [SerializeField] private MapWayMovementController _wayMovementController;
-
-    public override void InstallBindings()
-    {
-        BindShip();
-        BindMapMovementController();
-    }
-
-    private void BindShip()
-    {
-        Container.Bind<MapShip>().FromInstance(_ship).AsSingle();
-    }
-
-    private void BindMapMovementController()
-    {
-        _wayMovementController.Init(_ship, _clickHandler, _wayView);
-        Container.Bind<MapWayMovementController>().FromInstance(_wayMovementController).AsSingle();
     }
 }

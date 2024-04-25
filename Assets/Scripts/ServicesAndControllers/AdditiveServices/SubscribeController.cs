@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SubscribeController : MonoBehaviour
 {
-    private List<ISubscribable> _subscribables;
+    private List<ISubscribable> _subscribables = new List<ISubscribable>();
 
     public void AddSubscribable(ISubscribable subscribable)
     {
