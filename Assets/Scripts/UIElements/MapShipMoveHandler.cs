@@ -18,6 +18,7 @@ public class MapShipMoveHandler : INavMeshMovable
 
     public void Move(NavMeshPath path)
     {
+        Debug.Log(path);
         _agent.SetPath(path);
     }
 }

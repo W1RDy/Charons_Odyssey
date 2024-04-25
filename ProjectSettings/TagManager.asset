@@ -8,6 +8,9 @@ TagManager:
   - Ladder
   - Enemy
   - CancelClick
+  - Ship
+  - MapGoalLocation
+  - MapLocation
   layers:
   - Default
   - TransparentFX

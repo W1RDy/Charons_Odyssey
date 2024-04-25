@@ -18,7 +18,7 @@ public class WayView : MonoBehaviour
 
     private void Update()
     {
-        ChangeWay();
+        ChangeWayView();
     }
 
     public void CalculateAndShowWay(NavMeshAgent agent, NavMeshPath path, Vector2 destination)
@@ -43,7 +43,7 @@ public class WayView : MonoBehaviour
         }
     }
 
-    private void ChangeWay()
+    public void ChangeWayView()
     {
         if (_agent != null )
         {
