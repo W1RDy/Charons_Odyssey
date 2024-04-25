@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -225,5 +226,32 @@ public class GameSceneInstaller : MonoInstaller
     private void BindSettings()
     {
         Container.Bind<Settings>().FromInstance(_settings).AsSingle();
+    }
+}
+
+public class MapInstaller : MonoInstaller
+{
+    [SerializeField] private MapShip _ship;
+
+    [SerializeField] private WayView _wayView;
+    [SerializeField] private ClickHandler _clickHandler;
+
+    [SerializeField] private MapWayMovementController _wayMovementController;
+
+    public override void InstallBindings()
+    {
+        BindShip();
+        BindMapMovementController();
+    }
+
+    private void BindShip()
+    {
+        Container.Bind<MapShip>().FromInstance(_ship).AsSingle();
+    }
+
+    private void BindMapMovementController()
+    {
+        _wayMovementController.Init(_ship, _clickHandler, _wayView);
+        Container.Bind<MapWayMovementController>().FromInstance(_wayMovementController).AsSingle();
     }
 }

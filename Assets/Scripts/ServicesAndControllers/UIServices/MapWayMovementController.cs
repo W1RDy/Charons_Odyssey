@@ -2,23 +2,26 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MapWayMovementController : MonoBehaviour 
+public class MapWayMovementController : MonoBehaviour, ISubscribable
 {
-    [SerializeField] private ClickHandler _clickHandler;
+    private ClickHandler _clickHandler;
 
-    [SerializeField] private WayView _wayView;
-    [SerializeField] private MapShip _mapShip;
+    private WayView _wayView;
+    private MapShip _mapShip;
+
     private bool _isMovementActivated;
 
     private NavMeshPath _path;
 
     private Action<Vector2> ActivateMovementDelegate;
 
-    public void Awake()
+    public void Init(MapShip mapShip, ClickHandler clickHandler, WayView wayView)
     {
-        ActivateMovementDelegate = destination => TryActivateWayMovement(destination);
+        _mapShip = mapShip;
+        _clickHandler = clickHandler;
+        _wayView = wayView;
 
-        _clickHandler.OnGoodClick += ActivateMovementDelegate;
+        Subscribe();
     }
 
     private void Update()
@@ -57,6 +60,18 @@ public class MapWayMovementController : MonoBehaviour
     }
 
     private void OnDestroy()
+    {
+        Unsubscribe();
+    }
+
+    public void Subscribe()
+    {
+        ActivateMovementDelegate = destination => TryActivateWayMovement(destination);
+
+        _clickHandler.OnGoodClick += ActivateMovementDelegate;
+    }
+
+    public void Unsubscribe()
     {
         _clickHandler.OnGoodClick -= ActivateMovementDelegate;
     }

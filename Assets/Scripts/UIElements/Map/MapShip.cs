@@ -9,6 +9,7 @@ public class MapShip : MonoBehaviour
 {
     [SerializeField] private float _speed;
     private MapShipMoveHandler _moveHandler;
+
     public NavMeshAgent Agent { get; private set; }
 
     public event Action<MapLocation> ReachedNewLocation;

@@ -3,25 +3,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class MapLocationChanger : MonoBehaviour
+public class MapLocationChanger : SubscribableClass
 {
     [SerializeField] private LocationIndicator _locationIndicator;
 
-    [SerializeField] private MapShip _mapShip;
+    private MapShip _mapShip;
     private LoadSceneManager _loadSceneManager;
 
     private Action<MapLocation> ChangeLocationDelegate;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager)
+    private void Construct(LoadSceneManager loadSceneManager, MapShip mapShip)
     {
         _loadSceneManager = loadSceneManager;
-    }
+        _mapShip = mapShip;
 
-    private void Awake()
-    {
-        ChangeLocationDelegate = location => ChangeLocation(location);
-        _mapShip.ReachedNewLocation += ChangeLocationDelegate;
+        Subscribe();
     }
 
     public void ChangeLocation(MapLocation mapLocation)
@@ -30,7 +27,13 @@ public class MapLocationChanger : MonoBehaviour
         else _locationIndicator.ActivateIndicator(mapLocation.Name);
     }
 
-    private void OnDestroy()
+    public override void Subscribe()
+    {
+        ChangeLocationDelegate = location => ChangeLocation(location);
+        _mapShip.ReachedNewLocation += ChangeLocationDelegate;
+    }
+
+    public override void Unsubscribe()
     {
         _mapShip.ReachedNewLocation -= ChangeLocationDelegate;
     }
