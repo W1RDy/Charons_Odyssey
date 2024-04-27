@@ -10,11 +10,13 @@ using Zenject;
 public class BackgroundLayer : IMovable
 {
     public string layerIndex;
-    public BackgroundLayerPart[] layerParts;
     [Range(0, 10)] public float speed = 1;
     public float[] randomOffsetRange;
-    private Transform _layer;
+
+    public BackgroundLayerPart[] layerParts;
     private BackgroundLayerPart _leftPart;
+    private Transform _layer;
+
     private float _cameraWidthInUints;
     private CustomCamera _customCamera;
 

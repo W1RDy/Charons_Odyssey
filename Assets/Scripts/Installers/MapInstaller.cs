@@ -14,12 +14,17 @@ public class MapInstaller : MonoInstaller
     [SerializeField] private WayView _wayView;
     [SerializeField] private ClickHandler _clickHandler;
 
+    [SerializeField] private Wheel _wheel;
+    [SerializeField] private Background _background;
+
     #endregion
 
     public override void InstallBindings()
     {
         BindMapShip();
+
         BindMapMovementController();
+
         BindMapLocationChanger();
         BindMapActivator();
     }
@@ -38,7 +43,9 @@ public class MapInstaller : MonoInstaller
 
     private void BindMapMovementController()
     {
-        _wayMovementController.Init(_clickHandler, _wayView);
+        var shipMovementView = new ShipMovementView(_wheel, _background);
+
+        _wayMovementController.Init(_clickHandler, _wayView, shipMovementView);
         Container.Bind<MapWayMovementController>().FromInstance(_wayMovementController).AsSingle();
     }
 

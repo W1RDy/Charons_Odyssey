@@ -20,7 +20,19 @@ public class Wheel : MonoBehaviour, IPause
     private void Awake()
     {
         _animator = GetComponent<Animator>();
-        if (!_isRotating) _animator.speed = 0;
+        if (!_isRotating) DeactivateRotating();
+    }
+
+    public void ActivateRotating()
+    {
+        _animator.speed = 1;
+        _isRotating = true;
+    }
+
+    public void DeactivateRotating()
+    {
+        _animator.speed = 0;
+        _isRotating = false;
     }
 
     public void Pause()

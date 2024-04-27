@@ -7,9 +7,13 @@ public class Background : MonoBehaviour, IPause
 {
     [SerializeField] private BackgroundLayer[] _layers;
     [Range(0, 2), SerializeField] private int _backgroundSpeed = 1;
+    
     private CustomCamera _customCamera;
+
     private PauseService _pauseService;
+
     private bool _isPaused;
+    private bool _isCanMoving;
 
     [Inject]
     private void Construct(CustomCamera customCamera, PauseService pauseService)
@@ -30,9 +34,19 @@ public class Background : MonoBehaviour, IPause
         }
     }
 
+    public void ActivateMovement()
+    {
+        _isCanMoving = true;
+    }
+
+    public void DeactivateMovement()
+    {
+        _isCanMoving = false;
+    }
+
     private void Update()
     {
-        if (!_isPaused)
+        if (!_isPaused && _isCanMoving)
         {
             foreach (var layer in _layers) layer.Move();
         }

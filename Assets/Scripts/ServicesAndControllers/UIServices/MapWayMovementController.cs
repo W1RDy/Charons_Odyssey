@@ -10,6 +10,8 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private WayView _wayView;
     private MapShip _mapShip;
 
+    private ShipMovementView _shipMovementView;
+
     private bool _isMovementActivated;
 
     private NavMeshPath _path;
@@ -23,10 +25,11 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
         _mapShip = mapShip;
     }
 
-    public void Init(ClickHandler clickHandler, WayView wayView)
+    public void Init(ClickHandler clickHandler, WayView wayView, ShipMovementView shipMovementView)
     {
         _clickHandler = clickHandler;
         _wayView = wayView;
+        _shipMovementView = shipMovementView;
 
         Subscribe();
     }
@@ -53,6 +56,7 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private void ActivateShipMovement(NavMeshPath path)
     {
         _mapShip.Move(path);
+        _shipMovementView.ActivateMovementView();
         _isMovementActivated = true;
     }
 
@@ -73,8 +77,11 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private void DeactivateShipMovement()
     {
         _isMovementActivated = false;
+
         _wayView.ClearView();
+        _shipMovementView.DeactivateMovementView();
         _mapShip.Stop();
+
         _destination = null;
         _path = null;
     }
