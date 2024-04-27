@@ -122,12 +122,6 @@ public class PCInputService : IInputService, IService
             DeactivateButton(InputButtonType.Heal);
         }
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            ActivateButton(InputButtonType.Map);
-        }
-        else DeactivateButton(InputButtonType.Map);
-
         if (Input.GetKeyDown(KeyCode.Escape)) ActivateButton(InputButtonType.Pause);
         else DeactivateButton(InputButtonType.Pause);
     }

@@ -35,6 +35,7 @@ public class WindowActivator : MonoBehaviour, IPause
         _window.ActivateWindow();
 
         if (_controller) _controller.IsControl = false;
+        if (type == WindowType.MapWindow) _controller.IsInteractActivated = true;
 
         if (_defaultMenuElements != null && _defaultMenuElements.activeInHierarchy)
         {

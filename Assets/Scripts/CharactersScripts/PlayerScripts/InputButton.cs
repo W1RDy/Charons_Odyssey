@@ -33,6 +33,5 @@ public enum InputButtonType
     Heal,
     Shield,
     Parrying,
-    Dodge,
-    Map
+    Dodge
 }

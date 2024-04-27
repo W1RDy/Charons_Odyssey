@@ -19,27 +19,28 @@ public class PlayerController : MonoBehaviour, IPause
         get => _isControl;
         set
         {
-            if (typeof(bool) == value.GetType()) _isControl = value;
+            if (typeof(bool) == value.GetType())
+            {
+                _isControl = value;
+                IsInteractActivated = value;
+            }
         }
     }
+
+    public bool IsInteractActivated { private get; set; }
 
     private Inventory _inventory;
     private PauseService _pauseService;
     public LadderUseChecker LadderUseChecker { get; private set; }
 
-    private MapActivator _mapActivator;
-    private bool _isMapActivated;
-
 
     [Inject]
-    private void Construct(Inventory inventory, IInputService inputService, PauseService pauseService, MapActivator mapActivator)
+    private void Construct(Inventory inventory, IInputService inputService, PauseService pauseService)
     {
         _inventory = inventory;
         _inputService = inputService;
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
-
-        _mapActivator = mapActivator;
     }
 
     private void Awake()
@@ -99,12 +100,7 @@ public class PlayerController : MonoBehaviour, IPause
                     _player.ChangeState(PlayerStateType.Dodge);
                 }
 
-                if (_inputService.ButtonIsPushed(InputButtonType.Interact))
-                {
-                    var interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);
-                    interactable?.Interact();
-                }
-                else if (_inputService.ButtonIsPushed(InputButtonType.Heal) && _inventory.HasItem(ItemType.FirstAidKit))
+                if (_inputService.ButtonIsPushed(InputButtonType.Heal) && _inventory.HasItem(ItemType.FirstAidKit))
                 {
                     _player.ChangeState(PlayerStateType.Heal);
                 }
@@ -115,17 +111,12 @@ public class PlayerController : MonoBehaviour, IPause
                 _playerMove.DisableMovement();
             }
 
-            if (_inputService.ButtonIsPushed(InputButtonType.Map))
+            if (_isControl || IsInteractActivated)
             {
-                if (!_isMapActivated)
+                if (_inputService.ButtonIsPushed(InputButtonType.Interact))
                 {
-                    _mapActivator.ActivateMap();
-                    _isMapActivated = true;
-                }
-                else
-                {
-                    _mapActivator.DeactivateMap();
-                    _isMapActivated = false;
+                    var interactable = FinderObjects.FindInteractableObjectByCircle(1f, _player.transform.position);
+                    interactable?.Interact();
                 }
             }
         }

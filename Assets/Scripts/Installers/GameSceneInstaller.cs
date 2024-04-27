@@ -33,6 +33,10 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] private ButtonService _buttonService;
     [SerializeField] private WindowActivator _windowActivator;
+
+    [SerializeField] private Tip _tip;
+    [SerializeField] private TipActivator _tipActivator;
+
     [SerializeField] private Settings _settings;
     [SerializeField] private SubscribeController _subscribeController;
     private AudioService _audioService;
@@ -51,6 +55,7 @@ public class GameSceneInstaller : MonoInstaller
         BindEssenceSpawner();
 
         BindWindowActivator();
+        BindTipActivator();
 
         BindSettings();
         BindAudioPlayer();
@@ -82,6 +87,12 @@ public class GameSceneInstaller : MonoInstaller
     { 
         BindDialogCloudService();
         BindButtonService();
+    }
+
+    private void BindTipActivator()
+    {
+        var tipActivator = new TipActivator(_tip);
+        Container.Bind<TipActivator>().FromInstance(tipActivator).AsSingle();
     }
 
     private void BindSubscribeController()

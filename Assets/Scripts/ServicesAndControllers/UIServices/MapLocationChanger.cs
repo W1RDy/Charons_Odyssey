@@ -1,37 +1,43 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 public class MapLocationChanger : SubscribableClass
 {
     private LocationIndicator _locationIndicator;
-
     private MapShip _mapShip;
-    private LoadSceneManager _loadSceneManager;
+
+    private ExitToStationTrigger _exitToStationTrigger;
 
     private Action<MapLocation> ChangeLocationDelegate;
 
     [Inject]
-    private void Construct(MapShip mapShip, LoadSceneManager loadSceneManager)
+    private void Construct(MapShip mapShip)
     {
-        Debug.Log(mapShip);
         _mapShip = mapShip;
-        _loadSceneManager = loadSceneManager;
 
         Subscribe();
     }
 
-    public MapLocationChanger(LocationIndicator locationIndicator)
+    public MapLocationChanger(LocationIndicator locationIndicator, ExitToStationTrigger exitToStationTrigger)
     {
         _locationIndicator = locationIndicator;
+        _exitToStationTrigger = exitToStationTrigger;
     }
 
     public void ChangeLocation(MapLocation mapLocation)
     {
-        if (mapLocation is MapStation mapStation) _loadSceneManager.LoadScene(mapStation.SceneIndex);
-        else _locationIndicator.ActivateIndicator(mapLocation.Name);
+        if (mapLocation is MapStation mapStation)
+        {
+            _locationIndicator.ActivateIndicator("Вы прибыли на станцию " + mapStation.Name);
+            _exitToStationTrigger.ActivateTrigger(mapStation);
+        }
+        else
+        {
+            _locationIndicator.ActivateIndicator(mapLocation.Name);
+            if (_exitToStationTrigger.IsActivated) _exitToStationTrigger.DeactivateTrigger();
+        }
     }
 
     public override void Subscribe()

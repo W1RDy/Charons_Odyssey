@@ -1,8 +1,10 @@
-﻿using Zenject;
+﻿using UnityEngine;
+using Zenject;
 
 public class MapActivator
 {
     private WindowActivator _windowActivator;
+    public bool IsActivated { get; private set; }
 
     [Inject]
     private void Construct(WindowActivator windowActivator)
@@ -13,10 +15,12 @@ public class MapActivator
     public void ActivateMap()
     {
         _windowActivator.ActivateWindow(WindowType.MapWindow);
+        IsActivated = true;
     }
 
     public void DeactivateMap()
     {
         _windowActivator.DeactivateWindow(WindowType.MapWindow);
+        IsActivated = false;
     }
 }

@@ -67,9 +67,7 @@ public class MapWindow : Window
         {
             if (destination != null)
             {
-                Debug.Log(destination.Value);
                 destination = TranslateMapPos(destination.Value);
-                Debug.Log(destination.Value);
                 _wayMovementController.TryActivateWayMovement(destination.Value);
             }
         };

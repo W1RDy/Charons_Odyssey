@@ -8,6 +8,8 @@ public class MapInstaller : MonoInstaller
 
     [SerializeField] private MapWayMovementController _wayMovementController;
 
+    [SerializeField] private ExitToStationTrigger _exitToStationTrigger;
+
     #region View
 
     [SerializeField] private LocationIndicator _locationIndicator;
@@ -51,7 +53,7 @@ public class MapInstaller : MonoInstaller
 
     private void BindMapLocationChanger()
     {
-        var locationChanger = new MapLocationChanger(_locationIndicator);
+        var locationChanger = new MapLocationChanger(_locationIndicator, _exitToStationTrigger);
         Container.Inject(locationChanger);
         Container.Bind<MapLocationChanger>().FromInstance(locationChanger).AsSingle();
     }
