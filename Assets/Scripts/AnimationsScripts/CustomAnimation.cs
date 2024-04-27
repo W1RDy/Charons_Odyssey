@@ -11,11 +11,21 @@ public class CustomAnimation
 
     public bool IsPlaying { get; private set; }
 
-    public event Action OnComplete;
+    private Action OnComplete;
 
     public virtual void Play()
     {
+        if (IsPlaying) return;
+
         IsPlaying = true;
+    }
+
+    public virtual void Play(Action onComplete)
+    {
+        if (IsPlaying) return;
+
+        IsPlaying = true;
+        OnComplete = onComplete;
     }
 
     protected virtual void Finish()

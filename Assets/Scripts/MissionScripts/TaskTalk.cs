@@ -22,7 +22,7 @@ public class TaskTalk : BaseTask
             if (dialogIndex == _goalDialogIndex) FinishTask();
         };
 
-        _dialogController.DeactivateDialog += CheckDialog;
+        _dialogController.DialogDeactivated += CheckDialog;
     }
 
     public override void ActivateTask()
@@ -33,6 +33,6 @@ public class TaskTalk : BaseTask
 
     private void OnDestroy()
     {
-        _dialogController.DeactivateDialog -= CheckDialog;
+        _dialogController.DialogDeactivated -= CheckDialog;
     }
 }

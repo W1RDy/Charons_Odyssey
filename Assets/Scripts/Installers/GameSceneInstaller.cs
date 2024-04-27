@@ -19,6 +19,9 @@ public class GameSceneInstaller : MonoInstaller
 
     [SerializeField] private DialogCloudService _dialogCloudService;
     [SerializeField] private DialogUpdater _dialogUpdater;
+    [SerializeField] private DialogClickHandler _dialogClickHandler;
+
+    private DialogLifeController _dialogLifeController;
 
     #endregion
 
@@ -160,11 +163,14 @@ public class GameSceneInstaller : MonoInstaller
     {
         var talkableFinder = new TalkableFinderOnLevel();
         Container.Bind<TalkableFinderOnLevel>().FromInstance(talkableFinder).AsSingle();
+
+        Container.Inject(_dialogLifeController);
     }
 
     private void BindDialogLifeController()
     {
-        Container.Bind<DialogLifeController>().FromNew().AsSingle();
+        _dialogLifeController = new DialogLifeController(_dialogClickHandler);
+        Container.Bind<DialogLifeController>().FromInstance(_dialogLifeController).AsSingle();
     }
 
     private void BindWindowActivator()

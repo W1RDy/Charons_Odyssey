@@ -755,6 +755,7 @@ MonoBehaviour:
   _staminaIndicator: {fileID: 703319542}
   _dialogCloudService: {fileID: 923567215}
   _dialogUpdater: {fileID: 1593684095}
+  _dialogClickHandler: {fileID: 2313524752092892278}
   _gameLifeController: {fileID: 1156764378}
   _levelInitializer: {fileID: 946304579}
   _buttonService: {fileID: 2313524752092892272}
@@ -1263,8 +1264,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dialogCloudPrefab: {fileID: 4462291311515871643, guid: c6260ee635a9fe94585c41f97322ae66, type: 3}
-  _cloudOffset: 1
   _spawnParent: {fileID: 1298870858}
+  _cloudOffset: 1
+  _appearAnimation:
+    _startScale: 0
+    _endScale: 1
+    _startOffset: {x: 0, y: -1, z: 0}
+    _offset: {x: 0, y: 1}
+    _duration: 0.2
+  _disappearAnimation:
+    _startScale: 1
+    _endScale: 0
+    _startOffset: {x: 0, y: -10, z: 0}
+    _offset: {x: 0, y: 4}
+    _duration: 0.2
 --- !u!4 &923567216
 Transform:
   m_ObjectHideFlags: 0
@@ -2687,7 +2700,7 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     - target: {fileID: 6227171369599834099, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6694557447075453656, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3029,6 +3042,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db20c7a8b30f4964d9b70a617feae9d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2313524752092892278 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5521437133936109762, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
+  m_PrefabInstance: {fileID: 2313524752092892269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02ec74020c0a22d4c9e95a9909b801cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &4110630866679686605 stripped

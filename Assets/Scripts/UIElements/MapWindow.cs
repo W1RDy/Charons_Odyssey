@@ -2,6 +2,7 @@
 using NavMeshPlus.Components;
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using Zenject;
 
@@ -14,11 +15,16 @@ public class MapWindow : Window
     private MapShip _mapShip;
     private MapWayMovementController _wayMovementController;
 
+    private CancellationToken _token;
+    private PauseTokenSource _pauseTokenSource;
+
     [Inject]
     private void Construct(MapShip mapShip, MapWayMovementController mapWayMovementController)
     {
         _mapShip = mapShip;
         _wayMovementController = mapWayMovementController;
+
+        _token = this.GetCancellationTokenOnDestroy();
     }
 
     public override void ActivateWindow()
@@ -41,14 +47,15 @@ public class MapWindow : Window
             }
         };
 
-        StartCoroutine(WaitWhileBuild(() => _surface.UpdateNavMesh(_surface.navMeshData), action));
+        WaitWhileBuild(() => _surface.UpdateNavMesh(_surface.navMeshData), action);
     }
 
-    private IEnumerator WaitWhileBuild(Action action, Action action1)
+    private async void WaitWhileBuild(Action action, Action action1)
     {
-        yield return null;
+        await UniTask.Yield();
         action.Invoke();
-        yield return new WaitForSeconds(0.02f);
+        await Delayer.DelayWithPause(0.02f, _token, _pauseTokenSource.Token);
+        if (_token.IsCancellationRequested) return;
         action1.Invoke();
     }
 
@@ -72,7 +79,7 @@ public class MapWindow : Window
             }
         };
 
-        StartCoroutine(WaitWhileBuild(() => _surface.UpdateNavMesh(_surface.navMeshData), action));
+        WaitWhileBuild(() => _surface.UpdateNavMesh(_surface.navMeshData), action);
     }
 
     private Vector2 TranslateMapPos(Vector2 pos)

@@ -20,13 +20,13 @@ public class DialogActivator : IDisposable
         _dialogCloudService = dialogCloudService;
 
         DeactivateDialogDelegate = dialogIndex => DeactivateDialog();
-        _dialogLifeController.DeactivateDialog += DeactivateDialogDelegate;
+        _dialogLifeController.DialogDeactivated += DeactivateDialogDelegate;
     }
 
     public void ActivateDialog(string branchIndex)
     {
         _player.StartTalk();
-        _dialogLifeController.StartDialog(branchIndex, _player.GetCancellationTokenOnDestroy());
+        _dialogLifeController.StartDialog(branchIndex);
     }
 
     public void DeactivateDialog()
@@ -36,6 +36,6 @@ public class DialogActivator : IDisposable
 
     public void Dispose()
     {
-        _dialogLifeController.DeactivateDialog -= DeactivateDialogDelegate;
+        _dialogLifeController.DialogDeactivated -= DeactivateDialogDelegate;
     }
 }

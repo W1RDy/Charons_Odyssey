@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,13 @@ using Zenject;
 public class DialogCloudService : MonoBehaviour, IService, IPause
 {
     [SerializeField] private DialogCloud _dialogCloudPrefab;
-    [SerializeField] private float _cloudOffset;
-    [SerializeField] private Transform _spawnParent;
     private DialogCloud _currentDialogCloud;
+
+    [SerializeField] private Transform _spawnParent;
+    [SerializeField] private float _cloudOffset;
+
+    [SerializeField] private ScaleWithOffsetAnimation _appearAnimation;
+    
     private PauseService _pausedService;
 
     [Inject]
@@ -29,6 +34,9 @@ public class DialogCloudService : MonoBehaviour, IService, IPause
         {
             _currentDialogCloud = Instantiate(_dialogCloudPrefab, _spawnParent).GetComponent<DialogCloud>();
             _currentDialogCloud.transform.SetSiblingIndex(5);
+
+            _appearAnimation.SetParameters(_currentDialogCloud.transform);
+
             SetSpawnPosition(pos);
         }
         else if (_currentDialogCloud.transform.position != pos)
@@ -45,11 +53,16 @@ public class DialogCloudService : MonoBehaviour, IService, IPause
     private void SetSpawnPosition(Vector2 pos)
     {
         _currentDialogCloud.transform.position = new Vector2(pos.x, pos.y + _cloudOffset);
+        _appearAnimation.Play();
     }
 
     public void RemoveDialogCloud()
     {
-        if (_currentDialogCloud) Destroy(_currentDialogCloud.gameObject);
+        if (_currentDialogCloud)
+        {
+            if (_appearAnimation.IsPlaying) _appearAnimation.Kill();
+            Destroy(_currentDialogCloud.gameObject);
+        }
     }
 
     public void Pause()

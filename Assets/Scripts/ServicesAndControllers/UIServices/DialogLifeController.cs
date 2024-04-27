@@ -3,19 +3,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using Zenject;
 
-public class DialogLifeController : IPause
+public class DialogLifeController : SubscribableClass, IPause
 {
     private bool _dialogIsFinished = true;
-    public event Action<string> DeactivateDialog;
-    private DialogBranch _currentDialog;
+
     private TalkableFinderOnLevel _talkableFinder;
+    private DialogBranch _currentDialog;
     private DialogService _dialogService;
+    private DialogClickHandler _dialogClickHandler;
+
     private PauseService _pauseService;
-    private PauseTokenSource _pauseTokenSource;
-    private PauseToken _pauseToken;
+
+    public event Action<string> DialogDeactivated;
 
     [Inject]
     private void Construct(TalkableFinderOnLevel talkableFinder, DialogService dialogService, PauseService pauseService)
@@ -23,31 +24,28 @@ public class DialogLifeController : IPause
         _talkableFinder = talkableFinder;
         _dialogService = dialogService;
         _pauseService = pauseService;
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
     }
 
-    public void StartDialog(string branchIndex, CancellationToken token)
+    public DialogLifeController(DialogClickHandler dialogClickHandler)
+    {
+        _dialogClickHandler = dialogClickHandler;
+        Subscribe();
+    }
+
+    public void StartDialog(string branchIndex)
     {
         if (_currentDialog == null)
         {
             _pauseService.AddPauseObj(this);
+
             _currentDialog = _dialogService.GetDialog(branchIndex);
             _dialogIsFinished = false;
+
             var message = _currentDialog.GetFirstMessage();
             var talkable = _talkableFinder.GetTalkable(message.talkableIndex);
             talkable.Talk(message.message);
-            Dialog(2f, token);
-        }
-    }
 
-    public async void Dialog(float delay, CancellationToken token)
-    {
-        while (true)
-        { 
-            await Delayer.DelayWithPause(delay, token, _pauseToken);
-            if (token.IsCancellationRequested || _dialogIsFinished) break;
-            ActivateNextMessage();
+            _dialogClickHandler.Activate();
         }
     }
 
@@ -67,8 +65,11 @@ public class DialogLifeController : IPause
     public void FinishDialog()
     {
         _pauseService.RemovePauseObj(this);
+        _dialogClickHandler.Deactivate();
+       
         _dialogIsFinished = true;
-        DeactivateDialog(_currentDialog.index);
+
+        DialogDeactivated(_currentDialog.index);
         _currentDialog = null;
     }
 
@@ -76,11 +77,21 @@ public class DialogLifeController : IPause
 
     public void Pause()
     {
-        _pauseTokenSource.Pause();
+        _dialogClickHandler.Deactivate();
     }
 
     public void Unpause()
     {
-        _pauseTokenSource.Unpause();
+        _dialogClickHandler.Activate();
+    }
+
+    public override void Subscribe()
+    {
+        _dialogClickHandler.OnClick += ActivateNextMessage;
+    }
+
+    public override void Unsubscribe()
+    {
+        _dialogClickHandler.OnClick -= ActivateNextMessage;
     }
 }
