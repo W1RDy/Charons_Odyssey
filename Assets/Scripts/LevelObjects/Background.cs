@@ -46,10 +46,15 @@ public class Background : MonoBehaviour, IPause
 
     private void Update()
     {
-        if (!_isPaused && _isCanMoving)
+        if (!_isPaused)
         {
-            foreach (var layer in _layers) layer.Move();
+            foreach (var layer in _layers)
+            {
+                if (_isCanMoving) layer.Move();
+                layer.UpdateLayerParts();
+            }
         }
+
     }
 
     public void Pause()

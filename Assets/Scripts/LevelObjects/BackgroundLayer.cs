@@ -42,7 +42,6 @@ public class BackgroundLayer : IMovable
     public void Move()
     {
         _layer.Translate(Vector2.left * speed * Time.deltaTime);
-        UpdateLayerParts();
     }
 
     public void SetSpeed(float speed)
@@ -50,15 +49,32 @@ public class BackgroundLayer : IMovable
         this.speed = speed;
     }
 
-    private void UpdateLayerParts()
+    public void UpdateLayerParts()
     {
-        if (_leftPart.partTransform.position.x < _customCamera.GetCameraPos().x - _cameraWidthInUints * 2f)
+        if (_leftPart.partTransform.position.x - _leftPart.LayerExtent.x > _customCamera.GetCameraPos().x - _cameraWidthInUints)
         {
-            var offset = GetRandomOffset();
-            var layerRightBorder = _leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerExtent.x;
-            _leftPart.partTransform.position = new Vector2(layerRightBorder + _leftPart.LayerExtent.x + offset, _leftPart.partTransform.position.y);
-            _leftPart = _leftPart.PreviousPart;
+            UpdateLeftLayer();
         }
+        else if (_leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerExtent.x < _customCamera.GetCameraPos().x + _cameraWidthInUints)
+        {
+            UpdateRightLayer();
+        }
+    }
+
+    private void UpdateRightLayer()
+    {
+        var offset = GetRandomOffset();
+        var layerRightBorder = _leftPart.NextPart.partTransform.position.x + _leftPart.NextPart.LayerExtent.x;
+        _leftPart.partTransform.position = new Vector2(layerRightBorder + _leftPart.LayerExtent.x + offset, _leftPart.partTransform.position.y);
+        _leftPart = _leftPart.PreviousPart;
+    }
+
+    private void UpdateLeftLayer()
+    {
+        var offset = GetRandomOffset();
+        var layerLeftBorder = _leftPart.partTransform.position.x - _leftPart.LayerExtent.x;
+        _leftPart.NextPart.partTransform.position = new Vector2(layerLeftBorder - (_leftPart.NextPart.LayerExtent.x + offset), _leftPart.NextPart.partTransform.position.y);
+        _leftPart = _leftPart.NextPart;
     }
 
     private float GetRandomOffset()

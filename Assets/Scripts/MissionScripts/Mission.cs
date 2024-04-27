@@ -9,10 +9,14 @@ using Zenject;
 public class Mission : MonoBehaviour
 {
     [SerializeField] private BaseTask[] _tasks;
+    private BaseTask _currentTask;
+
     [SerializeField] private Timer _timer;
     private GameLifeController _gameLifeController;
-    private BaseTask _currentTask;
+
     protected CancellationToken _token;
+
+    [SerializeField] private bool _isWinWhenCompletedMissions;
 
     [Inject]
     private void Construct(GameLifeController gameLifeController)
@@ -47,7 +51,7 @@ public class Mission : MonoBehaviour
     public void FinishMission()
     {
         if (_timer != null) _timer.StopTimer();
-        _gameLifeController.WinGame();
+        if (_isWinWhenCompletedMissions) _gameLifeController.WinGame();
     }
 
     public void OnDestroy()

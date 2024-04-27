@@ -3842,6 +3842,7 @@ MonoBehaviour:
   _tasks:
   - {fileID: 643269475}
   _timer: {fileID: 1005683727}
+  _isWinWhenCompletedMissions: 1
 --- !u!4 &843681792
 Transform:
   m_ObjectHideFlags: 0
