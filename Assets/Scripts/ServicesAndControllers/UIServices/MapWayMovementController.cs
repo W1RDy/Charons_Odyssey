@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 public class MapWayMovementController : MonoBehaviour, ISubscribable
 {
@@ -12,12 +13,18 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private bool _isMovementActivated;
 
     private NavMeshPath _path;
+    private Vector2? _destination;
 
     private Action<Vector2> ActivateMovementDelegate;
 
-    public void Init(MapShip mapShip, ClickHandler clickHandler, WayView wayView)
+    [Inject]
+    private void Construct(MapShip mapShip)
     {
         _mapShip = mapShip;
+    }
+
+    public void Init(ClickHandler clickHandler, WayView wayView)
+    {
         _clickHandler = clickHandler;
         _wayView = wayView;
 
@@ -32,10 +39,15 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
         }
     }
 
-    private void TryActivateWayMovement(Vector2 destination)
+    public void TryActivateWayMovement(Vector2 destination)
     {
+        Debug.Log(destination);
         _path = ConstructWay(destination);
-        if (_path != null) ActivateShipMovement(_path);
+        if (_path != null)
+        {
+            _destination = destination;
+            ActivateShipMovement(_path);
+        }
     }
 
     private void ActivateShipMovement(NavMeshPath path)
@@ -53,10 +65,28 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
         return path;
     }
 
+    public Vector2? GetDestination()
+    {
+        return _destination;
+    }
+
     private void DeactivateShipMovement()
     {
         _isMovementActivated = false;
+        _wayView.ClearView();
+        _mapShip.Stop();
+        _destination = null;
         _path = null;
+    }
+
+    public void InteruptMovement()
+    {
+        if (_isMovementActivated)
+        {
+            _isMovementActivated = false;
+            _wayView.ClearView();
+            _mapShip.Stop();
+        }
     }
 
     private void OnDestroy()

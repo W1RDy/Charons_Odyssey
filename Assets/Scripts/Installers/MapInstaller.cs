@@ -18,10 +18,15 @@ public class MapInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Debug.Log("BindMapInstallers");
+        BindMapShip();
         BindMapMovementController();
         BindMapLocationChanger();
         BindMapActivator();
+    }
+
+    private void BindMapShip()
+    {
+        Container.Bind<MapShip>().FromInstance(_ship).AsSingle();
     }
 
     private void BindMapActivator()
@@ -33,13 +38,13 @@ public class MapInstaller : MonoInstaller
 
     private void BindMapMovementController()
     {
-        _wayMovementController.Init(_ship, _clickHandler, _wayView);
+        _wayMovementController.Init(_clickHandler, _wayView);
         Container.Bind<MapWayMovementController>().FromInstance(_wayMovementController).AsSingle();
     }
 
     private void BindMapLocationChanger()
     {
-        var locationChanger = new MapLocationChanger(_ship, _locationIndicator);
+        var locationChanger = new MapLocationChanger(_locationIndicator);
         Container.Inject(locationChanger);
         Container.Bind<MapLocationChanger>().FromInstance(locationChanger).AsSingle();
     }

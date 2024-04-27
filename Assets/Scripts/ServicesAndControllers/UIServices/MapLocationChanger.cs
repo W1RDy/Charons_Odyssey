@@ -14,17 +14,18 @@ public class MapLocationChanger : SubscribableClass
     private Action<MapLocation> ChangeLocationDelegate;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager)
+    private void Construct(MapShip mapShip, LoadSceneManager loadSceneManager)
     {
-        _loadSceneManager = loadSceneManager;
-    }
-
-    public MapLocationChanger(MapShip mapShip, LocationIndicator locationIndicator)
-    {
+        Debug.Log(mapShip);
         _mapShip = mapShip;
-        _locationIndicator = locationIndicator;
+        _loadSceneManager = loadSceneManager;
 
         Subscribe();
+    }
+
+    public MapLocationChanger(LocationIndicator locationIndicator)
+    {
+        _locationIndicator = locationIndicator;
     }
 
     public void ChangeLocation(MapLocation mapLocation)

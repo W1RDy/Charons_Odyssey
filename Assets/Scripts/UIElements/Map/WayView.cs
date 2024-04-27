@@ -28,6 +28,7 @@ public class WayView : MonoBehaviour
             _agent = agent;
         }
 
+        Debug.Log(destination);
         _agent.CalculatePath(destination, path);
 
         ShowWay(path.corners);
@@ -35,6 +36,7 @@ public class WayView : MonoBehaviour
 
     public void ShowWay(Vector3[] points)
     {
+        Debug.Log(points.Length);
         _lineRenderer.positionCount = points.Length;
 
         for (int i = 0; i < points.Length; i++)
@@ -43,9 +45,15 @@ public class WayView : MonoBehaviour
         }
     }
 
+    public void ClearView()
+    {
+        _lineRenderer.positionCount = 0;
+        _lineRenderer.SetPositions(new Vector3[0]);
+    }
+
     public void ChangeWayView()
     {
-        if (_agent != null )
+        if (_agent != null && _lineRenderer.positionCount > 0)
         {
             var lastPointIndex = _lineRenderer.positionCount - 1;
 

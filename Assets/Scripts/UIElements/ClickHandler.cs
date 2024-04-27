@@ -31,7 +31,7 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
     public void HandleClick()
     {
         Ray ray = _customCamera.MainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 100, 1 << 5);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 100, 1 << 11);
 
         if (hits.Length > 0)
         {

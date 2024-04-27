@@ -21,4 +21,11 @@ public class MapShipMoveHandler : INavMeshMovable
         Debug.Log(path);
         _agent.SetPath(path);
     }
+
+    public void Stop()
+    {
+        Debug.Log("Stop");
+        _agent.isStopped = true;
+        _agent.enabled = false;
+    }
 }

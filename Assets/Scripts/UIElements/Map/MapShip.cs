@@ -26,6 +26,11 @@ public class MapShip : MonoBehaviour
         _moveHandler.Move(path);
     }
 
+    public void Stop()
+    {
+        _moveHandler.Stop();
+    }
+
     public bool DestinationReached()
     {
         return Agent.remainingDistance < 0.1f;

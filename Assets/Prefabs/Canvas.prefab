@@ -3462,7 +3462,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8870018380357119703}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Locations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3595,7 +3595,7 @@ GameObject:
   - component: {fileID: 1134933838790168184}
   - component: {fileID: 7370120243282022264}
   - component: {fileID: 265734537749692775}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: IslandRotationContainer
   m_TagString: CancelClick
   m_Icon: {fileID: 0}
@@ -3675,7 +3675,7 @@ GameObject:
   - component: {fileID: 2975740944025321256}
   - component: {fileID: 6951662171602307657}
   - component: {fileID: 1655554204235319182}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3929,7 +3929,7 @@ GameObject:
   - component: {fileID: 5485320365418264439}
   - component: {fileID: 9092172789100196934}
   - component: {fileID: 56768253864505868}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: OtherLocation
   m_TagString: MapLocation
   m_Icon: {fileID: 0}
@@ -4105,7 +4105,7 @@ GameObject:
   - component: {fileID: 621195523197186114}
   - component: {fileID: 9135374104663597680}
   - component: {fileID: 3591606440990043231}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: MapBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4221,7 +4221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5183055452315606656}
   - component: {fileID: 7133197535280332282}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4289,7 +4289,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4475,7 +4475,7 @@ GameObject:
   - component: {fileID: 5825130375310441499}
   - component: {fileID: 655370254300432973}
   - component: {fileID: 5474413092004949875}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Ship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4495,7 +4495,7 @@ RectTransform:
   m_Children:
   - {fileID: 5183055452315606656}
   m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4594,7 +4594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7940464465327028827}
   - component: {fileID: 3960481234360133490}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: MapWayMovementController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4613,7 +4613,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4742,12 +4742,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 1
+  m_Father: {fileID: 1634682163689693248}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1000}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1164001773008712995
@@ -4768,7 +4768,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 0, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 2048
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
@@ -4779,7 +4779,7 @@ MonoBehaviour:
   m_VoxelSize: 0.016666668
   m_BuildHeightMesh: 0
   m_HideEditorLogs: 0
-  m_NavMeshData: {fileID: 23800000, guid: 77b0bdb9c4831bd42bdf1bb1bb47d219, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: c1cd077e78b950b4fb9e9a134b8d59e3, type: 2}
 --- !u!114 &1339232662823312502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4807,7 +4807,7 @@ GameObject:
   - component: {fileID: 5575288668643447796}
   - component: {fileID: 3937916917571240158}
   - component: {fileID: 2630346733067953789}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: IslandView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5129,7 +5129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2144620030656798475}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: MAP OBJECTS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5151,7 +5151,7 @@ RectTransform:
   - {fileID: 8671859633911871759}
   - {fileID: 2924135365181417410}
   m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5196,6 +5196,7 @@ RectTransform:
   - {fileID: 3906416598983771239}
   - {fileID: 676244161}
   - {fileID: 467316967}
+  - {fileID: 6460878091184991386}
   - {fileID: 7191222715467537653}
   - {fileID: 6694557447075453656}
   - {fileID: 2826527344418610999}
@@ -5695,7 +5696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7191222715467537653}
   - component: {fileID: 4353632009723511665}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: MapWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5714,14 +5715,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2537675539736994474}
-  - {fileID: 6460878091184991386}
   - {fileID: 3261276508946498758}
   - {fileID: 1246363075984520658}
   - {fileID: 2607221348836762578}
   - {fileID: 2144620030656798475}
   - {fileID: 7940464465327028827}
   m_Father: {fileID: 1634682163689693248}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5741,6 +5741,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 6
+  _surface: {fileID: 1164001773008712995}
+  camera: {fileID: 0}
 --- !u!1 &4984806475592959296
 GameObject:
   m_ObjectHideFlags: 0
@@ -5825,7 +5827,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5995929630810434554}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: StationPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5882,7 +5884,7 @@ RectTransform:
   m_Children:
   - {fileID: 5194601904227912068}
   m_Father: {fileID: 1634682163689693248}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -5919,7 +5921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6129995562966532112}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Island
   m_TagString: CancelClick
   m_Icon: {fileID: 0}
@@ -6075,7 +6077,7 @@ GameObject:
   - component: {fileID: 3261276508946498758}
   - component: {fileID: 3985747007544931943}
   - component: {fileID: 809309531276720174}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: WayView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6094,7 +6096,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6223,7 +6225,7 @@ GameObject:
   - component: {fileID: 7385144115984282515}
   - component: {fileID: 6666126374277606652}
   - component: {fileID: 7689662743604715240}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: IslandRotationContainer
   m_TagString: CancelClick
   m_Icon: {fileID: 0}
@@ -6303,7 +6305,7 @@ GameObject:
   - component: {fileID: 2832794214529261003}
   - component: {fileID: 5871166696110907446}
   - component: {fileID: 9072020414374896370}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Station
   m_TagString: MapGoalLocation
   m_Icon: {fileID: 0}
@@ -6371,7 +6373,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8671859633911871759}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Islands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6410,7 +6412,7 @@ GameObject:
   - component: {fileID: 7694904730956043381}
   - component: {fileID: 2547398619539830886}
   - component: {fileID: 2182008655089601231}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: SwampLocation
   m_TagString: MapLocation
   m_Icon: {fileID: 0}
@@ -6605,7 +6607,7 @@ GameObject:
   - component: {fileID: 1889800286291420446}
   - component: {fileID: 2611340810968694860}
   - component: {fileID: 356727883267355531}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6819,7 +6821,7 @@ GameObject:
   - component: {fileID: 259655608599945187}
   - component: {fileID: 3015798034172941688}
   - component: {fileID: 4405104220599149619}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: IslandView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7068,7 +7070,7 @@ GameObject:
   - component: {fileID: 8697916946171677003}
   - component: {fileID: 6315983124993522789}
   - component: {fileID: 2114042735563192282}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: ClickHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7087,7 +7089,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7191222715467537653}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7269,7 +7271,7 @@ RectTransform:
   - {fileID: 2890536636972682130}
   - {fileID: 8008899698070860261}
   m_Father: {fileID: 1634682163689693248}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7684,7 +7686,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9139997383933851288}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Island (2)
   m_TagString: CancelClick
   m_Icon: {fileID: 0}
@@ -7898,7 +7900,7 @@ GameObject:
   - component: {fileID: 150236861544495235}
   - component: {fileID: 8769745850892901344}
   - component: {fileID: 804455943478584045}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: ViewPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8061,7 +8063,7 @@ GameObject:
   - component: {fileID: 7395572259891871776}
   - component: {fileID: 4032496901028810959}
   - component: {fileID: 844410508888110132}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8209,7 +8211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2924135365181417410}
-  m_Layer: 5
+  m_Layer: 11
   m_Name: Stations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
