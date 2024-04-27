@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Zenject;
 
 public class MapInstaller : MonoInstaller
@@ -17,8 +18,17 @@ public class MapInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Debug.Log("BindMapInstallers");
         BindMapMovementController();
         BindMapLocationChanger();
+        BindMapActivator();
+    }
+
+    private void BindMapActivator()
+    {
+        var mapActivator = new MapActivator();
+        Container.Inject(mapActivator);
+        Container.Bind<MapActivator>().FromInstance(mapActivator).AsSingle();
     }
 
     private void BindMapMovementController()

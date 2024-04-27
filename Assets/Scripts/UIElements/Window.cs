@@ -6,12 +6,12 @@ public class Window : MonoBehaviour
 
     public WindowType Type => type;
 
-    public void ActivateWindow()
+    public virtual void ActivateWindow()
     {
         gameObject.SetActive(true);
     }
 
-    public void DeactivateWindow() 
+    public virtual void DeactivateWindow() 
     {
         gameObject.SetActive(false);
     }

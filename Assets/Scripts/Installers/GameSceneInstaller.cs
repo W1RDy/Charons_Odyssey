@@ -6,13 +6,6 @@ using Zenject;
 
 public class GameSceneInstaller : MonoInstaller
 {
-    #region Player
-
-    [SerializeField] private Player _playerPrefab;
-    [SerializeField] private Transform _spawnPosition;
-
-    #endregion
-
     #region HUD
 
     [SerializeField] private HpIndicator _hpIndicator;
@@ -22,20 +15,10 @@ public class GameSceneInstaller : MonoInstaller
 
     #endregion
 
-    #region EnemiesAndNPCs
-
-    [SerializeField] private NPCGroup _npcGroupPrefab;
-    private NPCService _npcService;
-    private NPCFactory _npcFactory;
-    private EnemyService _enemyService;
-
-    #endregion
-
     #region Dialog
 
     [SerializeField] private DialogCloudService _dialogCloudService;
     [SerializeField] private DialogUpdater _dialogUpdater;
-    private TalkableFinderOnLevel _talkableFinder;
 
     #endregion
 
@@ -53,16 +36,12 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private Settings _settings;
     [SerializeField] private SubscribeController _subscribeController;
     private AudioService _audioService;
-    private ItemService _itemService;
 
     #endregion
 
     [Inject]
-    private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService, AudioService audioService)
+    private void Construct(AudioService audioService)
     {
-        _enemyService = enemyService;
-        _npcService = npcService;
-        _itemService = itemService;
         _audioService = audioService;
     }
 
@@ -90,9 +69,6 @@ public class GameSceneInstaller : MonoInstaller
         BindTalkableFinder();
 
         BindNoiseEventHandler();
-
-        BindFactories();
-        BindPlayer();
     }
 
     private void BindHUD()
@@ -106,14 +82,6 @@ public class GameSceneInstaller : MonoInstaller
     { 
         BindDialogCloudService();
         BindButtonService();
-    }
-
-    private void BindFactories()
-    {
-        BindEnemyFactory();
-        BindNPCFactory();
-        BindNPCGroupFactory();
-        BindItemFactory();
     }
 
     private void BindSubscribeController()
@@ -130,13 +98,6 @@ public class GameSceneInstaller : MonoInstaller
     private void BindStaminaIndicator()
     {
         Container.Bind<StaminaIndicator>().FromInstance(_staminaIndicator).AsSingle();
-    }
-
-    private void BindPlayer()
-    {
-        Player player = new Instantiator(Container).InstantiatePrefabForComponent<Player>(_playerPrefab, _spawnPosition.position);
-        Container.Bind<Player>().FromInstance(player).AsSingle();
-        _talkableFinder.AddTalkable(player);
     }
 
     private void BindGameLifeController()
@@ -184,34 +145,10 @@ public class GameSceneInstaller : MonoInstaller
         Container.Bind<LevelInitializer>().FromInstance(_levelInitializer).AsSingle();
     }
 
-    private void BindEnemyFactory()
-    {
-        var enemyFactory = new EnemyFactory(_enemyService, new Instantiator(Container));
-        Container.Bind<IEnemyFactory>().To<EnemyFactory>().FromInstance(enemyFactory).AsSingle();
-    }
-
-    private void BindNPCFactory()
-    {
-        _npcFactory = new NPCFactory(_npcService, new InstantiatorOnSurface(Container), _talkableFinder);
-        Container.Bind<INPCFactory>().To<NPCFactory>().FromInstance(_npcFactory).AsSingle();
-    }
-
-    private void BindNPCGroupFactory()
-    {
-        var npcGroupFactory = new NPCGroupFactory(new Instantiator(Container), _npcFactory, _npcGroupPrefab, _talkableFinder);
-        Container.Bind<INPCGroupFactory>().To<NPCGroupFactory>().FromInstance(npcGroupFactory).AsSingle();
-    }
-
-    private void BindItemFactory()
-    {
-        var itemFactory = new ItemFactory(new Instantiator(Container), _itemService);
-        Container.Bind<IItemFactory>().To<ItemFactory>().FromInstance(itemFactory).AsSingle();
-    }
-
     private void BindTalkableFinder()
     {
-        _talkableFinder = new TalkableFinderOnLevel();
-        Container.Bind<TalkableFinderOnLevel>().FromInstance(_talkableFinder).AsSingle();
+        var talkableFinder = new TalkableFinderOnLevel();
+        Container.Bind<TalkableFinderOnLevel>().FromInstance(talkableFinder).AsSingle();
     }
 
     private void BindDialogLifeController()

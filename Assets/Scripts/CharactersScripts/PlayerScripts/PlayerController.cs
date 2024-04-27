@@ -10,28 +10,36 @@ public class PlayerController : MonoBehaviour, IPause
     private PlayerMove _playerMove;
     private Player _player;
     private PlayerColliderChecker _playerColliderChecker;
+
     private bool _isControl = true;
-    private IInputService _inputService;
-    private Inventory _inventory;
     private bool _isPaused;
-    private PauseService _pauseService;
-    public LadderUseChecker LadderUseChecker { get; private set; }
-    public bool IsControl 
+    private IInputService _inputService;
+    public bool IsControl
     {
-        get => _isControl; 
-        set 
+        get => _isControl;
+        set
         {
-            if (typeof(bool) == value.GetType()) _isControl = value; 
-        } 
+            if (typeof(bool) == value.GetType()) _isControl = value;
+        }
     }
 
+    private Inventory _inventory;
+    private PauseService _pauseService;
+    public LadderUseChecker LadderUseChecker { get; private set; }
+
+    private MapActivator _mapActivator;
+    private bool _isMapActivated;
+
+
     [Inject]
-    private void Construct(Inventory inventory, IInputService inputService, PauseService pauseService)
+    private void Construct(Inventory inventory, IInputService inputService, PauseService pauseService, MapActivator mapActivator)
     {
         _inventory = inventory;
         _inputService = inputService;
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
+
+        _mapActivator = mapActivator;
     }
 
     private void Awake()
@@ -105,6 +113,20 @@ public class PlayerController : MonoBehaviour, IPause
             {
                 _player.ChangeState(PlayerStateType.Idle);
                 _playerMove.DisableMovement();
+            }
+
+            if (_inputService.ButtonIsPushed(InputButtonType.Map))
+            {
+                if (!_isMapActivated)
+                {
+                    _mapActivator.ActivateMap();
+                    _isMapActivated = true;
+                }
+                else
+                {
+                    _mapActivator.DeactivateMap();
+                    _isMapActivated = false;
+                }
             }
         }
     }
