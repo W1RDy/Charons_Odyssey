@@ -1272,12 +1272,6 @@ MonoBehaviour:
     _startOffset: {x: 0, y: -1, z: 0}
     _offset: {x: 0, y: 1}
     _duration: 0.2
-  _disappearAnimation:
-    _startScale: 1
-    _endScale: 0
-    _startOffset: {x: 0, y: -10, z: 0}
-    _offset: {x: 0, y: 4}
-    _duration: 0.2
 --- !u!4 &923567216
 Transform:
   m_ObjectHideFlags: 0

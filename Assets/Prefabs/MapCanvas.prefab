@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7c7b0b7edc8b94f9c632e614b56a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Other location
+  _name: "\u0414\u0440\u0443\u0433\u0430\u044F \u043B\u043E\u043A\u0430\u0446\u0438\u044F"
 --- !u!1 &7790940368630839564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7c7b0b7edc8b94f9c632e614b56a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Swamp
+  _name: "\u0411\u043E\u043B\u043E\u0442\u043E"
 --- !u!1 &7790940368858665998
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,7 +1602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47608abbf9e5de64d9047fad36c84d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Station1
+  _name: "\u0421\u0442\u0430\u043D\u0446\u0438\u044F 1"
   _sceneIndex: 2
   _stationPoint: {fileID: 7790940369672234898}
 --- !u!1 &7790940369513279042

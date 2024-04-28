@@ -33,16 +33,25 @@ public class ExitToStationTrigger : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        _loadSceneManager.LoadScene(_mapStation.SceneIndex);
+        if (_mapStation != null)
+        {
+            _loadSceneManager.LoadScene(_mapStation.SceneIndex);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _tipActivator.ActivateTip(TipType.ExitToStation);
+        if (_mapStation != null)
+        {
+            _tipActivator.ActivateTip(TipType.ExitToStation);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _tipActivator.DeactivateTip();
+        if (_mapStation != null)
+        {
+            _tipActivator.DeactivateTip();
+        }
     }
 }

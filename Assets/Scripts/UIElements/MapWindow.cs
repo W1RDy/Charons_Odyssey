@@ -24,6 +24,7 @@ public class MapWindow : Window
         _mapShip = mapShip;
         _wayMovementController = mapWayMovementController;
 
+        _pauseTokenSource = new PauseTokenSource();
         _token = this.GetCancellationTokenOnDestroy();
     }
 
