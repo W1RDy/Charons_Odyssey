@@ -36,6 +36,7 @@ public class MapWindow : Window
         if (destination != null) destination = transform.InverseTransformPoint(destination.Value);
 
         transform.SetParent(_canvas.transform);
+        transform.SetSiblingIndex(_canvas.transform.childCount - 3);
         transform.localPosition = Vector2.zero;
         //TranslateMapObject(_mapShip.transform, 0);
 

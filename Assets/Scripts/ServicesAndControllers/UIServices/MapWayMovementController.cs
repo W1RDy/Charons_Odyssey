@@ -19,10 +19,15 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
 
     private Action<Vector2> ActivateMovementDelegate;
 
+    private PauseToken _pausedToken;
+
     [Inject]
-    private void Construct(MapShip mapShip)
+    private void Construct(MapShip mapShip, PauseService pauseService)
     {
         _mapShip = mapShip;
+
+        var pauseHandler = new PauseHandler(pauseService, Pause, Unpause);
+        _pausedToken = pauseHandler.GetPauseToken();
     }
 
     public void Init(ClickHandler clickHandler, WayView wayView, ShipMovementView shipMovementView)
@@ -36,9 +41,12 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
 
     private void Update()
     {
-        if (_isMovementActivated && _mapShip.DestinationReached())
+        if (!_pausedToken.IsCancellationRequested)
         {
-            DeactivateShipMovement();
+            if (_isMovementActivated && _mapShip.DestinationReached())
+            {
+                DeactivateShipMovement();
+            }
         }
     }
 
@@ -99,6 +107,24 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private void OnDestroy()
     {
         Unsubscribe();
+    }
+
+    private void Pause()
+    {
+        if (_isMovementActivated)
+        {
+            _isMovementActivated = false;
+            _mapShip.Stop();
+        }
+    }
+
+    private void Unpause()
+    {
+        if (_path != null)
+        {
+            _isMovementActivated = true;
+            _mapShip.Move(_path);
+        }
     }
 
     public void Subscribe()

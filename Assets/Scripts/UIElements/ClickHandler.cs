@@ -16,16 +16,24 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
 
     public event Action<Vector2> OnGoodClick;
 
+    private PauseToken _pauseToken;
+
     [Inject]
-    private void Construct(CustomCamera camera)
+    private void Construct(CustomCamera camera, PauseService pauseService)
     {
         _customCamera = camera;
+
+        var pauseHandler = new PauseHandler(pauseService);
+        _pauseToken = pauseHandler.GetPauseToken();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("Click");
-        HandleClick();
+        if (!_pauseToken.IsCancellationRequested)
+        {
+            Debug.Log("Click");
+            HandleClick();
+        }
     }
 
     public void HandleClick()

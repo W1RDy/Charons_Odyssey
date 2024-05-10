@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
+public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 {
     [SerializeField] private string _talkableIndex;
     [SerializeField] private string _branchIndex;
@@ -12,19 +12,19 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
     [SerializeField] private Trigger _trigger;
 
     protected SpriteRenderer _spriteRenderer;
+    private Animator _animator;
 
     protected DialogCloudService _dialogCloudService; 
     private DialogActivator _dialogActivator;
 
-    private PauseService _pauseService;
 
     [Inject]
     private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService, PauseService pauseService)
     {
         _dialogActivator = dialogActivator;
         _dialogCloudService = dialogCloudService;
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
+
+        new PauseHandler(pauseService, Pause, Unpause);
     }
 
     public virtual void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
@@ -34,6 +34,8 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
         ChangeAvailable(isAvailable);
 
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _animator = GetComponentInChildren<Animator>();
+
         if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
 
@@ -74,15 +76,12 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
     public virtual void Pause()
     {
         if (_isAvailable == true) _isAvailable = false;
+        _animator.speed = 0;
     }
 
     public void Unpause()
     {
         if (_isAvailable == false) _isAvailable = true;
-    }
-
-    public void OnDestroy()
-    {
-        _pauseService.RemovePauseObj(this);
+        _animator.speed = 1;
     }
 }
