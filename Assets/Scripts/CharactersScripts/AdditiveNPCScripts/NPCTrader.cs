@@ -20,7 +20,7 @@ public class NPCTrader : NPC, IInteractable
     public override void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
     {
         base.InitializeNPC(direction, dialogId, isAvailable);
-        _defaultSprite = GetComponent<SpriteRenderer>().sprite;
+        _defaultSprite = GetComponentInChildren<SpriteRenderer>().sprite;
     }
 
     public void Interact()

@@ -39,11 +39,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _talkableIndex: trader
-  _trigger: {fileID: 9182165237290028451}
-  _talkDelay: 2
   _branchIndex: 
+  _talkDelay: 2
   _isAvailable: 1
-  _windowActivator: {fileID: 0}
+  _trigger: {fileID: 9182165237290028451}
   _traderTradeSprite: {fileID: 21300000, guid: 5f517aa76376f864bb3879db5e597e98, type: 3}
 --- !u!1001 &1842058742812305489
 PrefabInstance:
@@ -52,6 +51,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1854483493481294207, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 571e2b71e7aecc745b925832467ece6a, type: 3}
     - target: {fileID: 2548283833956344377, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
       propertyPath: m_Sprite
       value: 

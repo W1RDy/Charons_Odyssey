@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1854483493481294207, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1cbd7c475e35e0c4db953b8333e961d0, type: 3}
     - target: {fileID: 2548283833956344377, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -71,5 +75,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: StationManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7078134004494203780, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 9fdf3c8081dd46a428e8bbe0322ff800, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}

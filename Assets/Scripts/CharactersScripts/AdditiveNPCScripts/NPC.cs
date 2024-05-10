@@ -1,17 +1,21 @@
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
 {
     [SerializeField] private string _talkableIndex;
-    [SerializeField] private Trigger _trigger;
-    [SerializeField] private float _talkDelay;
     [SerializeField] private string _branchIndex;
+
+    [SerializeField] private float _talkDelay;
     [SerializeField] protected bool _isAvailable = true;
-    protected DialogCloudService _dialogCloudService; 
+
+    [SerializeField] private Trigger _trigger;
+
     protected SpriteRenderer _spriteRenderer;
+
+    protected DialogCloudService _dialogCloudService; 
     private DialogActivator _dialogActivator;
+
     private PauseService _pauseService;
 
     [Inject]
@@ -29,7 +33,7 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable, IPause
         UpdateDialog(dialogId);
         ChangeAvailable(isAvailable);
 
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
 
