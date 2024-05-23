@@ -9,9 +9,9 @@ public class PlayerMoveState : PlayerState
     private float _horizontalMoveValue = 0;
     private PlayerController _controller;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _controller = player.GetComponent<PlayerController>();
@@ -21,6 +21,7 @@ public class PlayerMoveState : PlayerState
     {
         base.Enter();
         _player.SetAnimation("Move", true);
+        _audioMaster.PlaySound("Walk");
     }
 
     public override void Update()
@@ -48,6 +49,7 @@ public class PlayerMoveState : PlayerState
         base.Exit();
         _playerMove.SetDirection(Vector2.zero);
         _player.SetAnimation("Move", false);
+        _audioMaster.StopSound("Walk");
     }
 
     public override void ResetValues()

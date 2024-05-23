@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c8a1cffb031f54ebb598ea1af8bdc2, type: 3}
+  m_Name: Audio Data
+  m_EditorClassIdentifier: 
+  _audioGroups:
+  - _audioConfigs:
+    - _index: MainTheme
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: d5fcb94c83d6b4643a721c15fc11994c, type: 3}
+      _additiveConfigs: []
+    _groupIndex: music
+  - _audioConfigs:
+    - _index: OpenIronDoor
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: f68e7e29913f9b042b67a4fab7eb0a96, type: 3}
+      _additiveConfigs: []
+    - _index: OpenWoodDoor
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: bb622ca79c110224d9a634bccaedb8ad, type: 3}
+      _additiveConfigs: []
+    - _index: Dodge
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 96037055b5afdfc4c91b6a2442297e29, type: 3}
+      _additiveConfigs: []
+    - _index: Heal
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 50e1eca40647a88448c37c78737a8a1e, type: 3}
+      _additiveConfigs: []
+    - _index: Hit
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 2900f0731dc490843a40a3cef83f9d52, type: 3}
+      _additiveConfigs: []
+    - _index: Button
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: af2762ae0b3fe56468f5ec715e208f85, type: 3}
+      _additiveConfigs: []
+    - _index: Pause
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: ff10ed70b885a1f478ce0a45e156bcd1, type: 3}
+      _additiveConfigs: []
+    - _index: StaminaIsOver
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 279a36d7111b67648b9f08d83bfc7027, type: 3}
+      _additiveConfigs: []
+    - _index: Shot
+      _audioPlayerType: 4
+      _volume: 1
+      _audioClip: {fileID: 8300000, guid: 92c381186d6ad924d80d2d385eea6dd9, type: 3}
+      _additiveConfigs:
+      - _index: Shot
+        _audioPlayerType: 4
+        _volume: 1
+        _audioClip: {fileID: 8300000, guid: 5d83035ba7622e84893a92f4fa4e8f9f, type: 3}
+        _additiveConfigs: []
+      - _index: Shot
+        _audioPlayerType: 4
+        _volume: 1
+        _audioClip: {fileID: 8300000, guid: 4c8d280bad481064da34acb8290d2b6f, type: 3}
+        _additiveConfigs: []
+    _groupIndex: one shot sound
+  - _audioConfigs:
+    - _index: ShipMovement
+      _audioPlayerType: 2
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 4a9f203da7ae74649900d1905e28f750, type: 3}
+      _additiveConfigs: []
+    - _index: Swamp
+      _audioPlayerType: 3
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: b349aa08b81480148ab7a01797cb4fa2, type: 3}
+      _additiveConfigs: []
+    - _index: WheelMovement
+      _audioPlayerType: 1
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: c94b87314c7807140b4532e80fff541c, type: 3}
+      _additiveConfigs: []
+    - _index: Climb
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 0dbdbd4cf0e977f48abef2ecfe26d213, type: 3}
+      _additiveConfigs: []
+    - _index: Walk
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: a7d46bd50addc7b46b2df64403524a38, type: 3}
+      _additiveConfigs: []
+    _groupIndex: looping sound

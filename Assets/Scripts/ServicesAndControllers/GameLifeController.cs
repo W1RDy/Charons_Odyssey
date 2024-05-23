@@ -12,12 +12,12 @@ public class GameLifeController : MonoBehaviour, IPause
     private ButtonService _buttonService;
     private LevelInitializer _levelInitializer;
     private PauseService _pauseService;
-    private AudioPlayer _audioPlayer;
+    private AudioMaster _audioPlayer;
     private bool _isPaused;
 
     [Inject]
     private void Construct(LoadSceneManager loadSceneManager, Inventory inventory, IInputService inputService, ButtonService buttonService,
-        LevelInitializer levelInitializer, WindowActivator windowActivator, PauseService pauseService, AudioPlayer audioPlayer)
+        LevelInitializer levelInitializer, WindowActivator windowActivator, PauseService pauseService, AudioMaster audioPlayer)
     {
         _loadSceneManager = loadSceneManager;
         _inventory = inventory;

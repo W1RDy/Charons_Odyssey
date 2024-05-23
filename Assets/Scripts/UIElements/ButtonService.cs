@@ -13,14 +13,19 @@ public class ButtonService : MonoBehaviour, IService
     private DataController _dataController;
     private PauseService _pauseService;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController, PauseService pauseService)
+    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController,
+        PauseService pauseService, AudioMaster audioMaster)
     {
         _loadSceneManager = loadSceneManager;
         _windowActivator = windowActivator;
         _talkableFinderOnLevel = talkableFinderOnLevel;
         _dataController = dataController;
         _pauseService = pauseService;
+
+        _audioMaster = audioMaster;
     }
 
     public void InitializeService()
@@ -32,23 +37,27 @@ public class ButtonService : MonoBehaviour, IService
     {
         if (_trader == null) _trader = _talkableFinderOnLevel.GetTalkable("trader") as NPCTrader;
         _trader.CloseTrade();
+        PlayButtonSound();
     }
 
     public void StartGame()
     {
         _loadSceneManager.LoadScene(_dataController.DataContainer.lastLocationIndex);
+        PlayButtonSound();
     }
 
     public void NewGame()
     {
         if (_dataController.DataContainer.isHaveSavings) _windowActivator.ActivateWindow(WindowType.ResetDataWindow);
         else ResetDatasAndStartGame();
+        PlayButtonSound();
     }
 
     public void ResetDatasAndStartGame()
     {
         _dataController.ResetDatas();
         StartGame();
+        PlayButtonSound();
     }
 
     public void Continue()
@@ -56,36 +65,47 @@ public class ButtonService : MonoBehaviour, IService
         _pauseService.SetUnpause();
         DeactivateSettings();
         DeactivatePauseWindow();
-    }
-
-    public void ActivatePauseWindow()
-    {
-        _windowActivator.ActivateWindow(WindowType.PauseWindow);
+        PlayButtonSound();
     }
 
     public void DeactivatePauseWindow()
     {
         _windowActivator.DeactivateWindow(WindowType.PauseWindow);
+        PlayPauseSound();
     }
 
     public void ActivateSettings()
     {
         _windowActivator.ActivateWindow(WindowType.SettingsWindow);
+        PlayButtonSound();
     }
 
     public void DeactivateSettings()
     {
         _windowActivator.DeactivateWindow(WindowType.SettingsWindow);
+        PlayButtonSound();
     }
 
     public void DeactivateResetDataWindow()
     {
         _windowActivator.DeactivateWindow(WindowType.ResetDataWindow);
+        PlayButtonSound();
     }
 
     public void Menu()
     {
         _loadSceneManager.LoadScene(0);
+        PlayButtonSound();
+    }
+
+    private void PlayButtonSound()
+    {
+        _audioMaster.PlaySound("Button");
+    }
+
+    private void PlayPauseSound()
+    {
+        _audioMaster.PlaySound("Pause");
     }
 
     public void Exit()

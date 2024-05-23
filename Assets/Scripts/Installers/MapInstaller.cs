@@ -10,6 +10,8 @@ public class MapInstaller : MonoInstaller
 
     [SerializeField] private ExitToStationTrigger _exitToStationTrigger;
 
+    private AudioMaster _audioMaster;
+
     #region View
 
     [SerializeField] private LocationIndicator _locationIndicator;
@@ -20,6 +22,12 @@ public class MapInstaller : MonoInstaller
     [SerializeField] private Background _background;
 
     #endregion
+
+    [Inject]
+    private void Construct(AudioMaster audioMaster)
+    {
+        _audioMaster = audioMaster;
+    }
 
     public override void InstallBindings()
     {
@@ -45,7 +53,7 @@ public class MapInstaller : MonoInstaller
 
     private void BindMapMovementController()
     {
-        var shipMovementView = new ShipMovementView(_wheel, _background);
+        var shipMovementView = new ShipMovementView(_wheel, _background, _audioMaster);
 
         _wayMovementController.Init(_clickHandler, _wayView, shipMovementView);
         Container.Bind<MapWayMovementController>().FromInstance(_wayMovementController).AsSingle();

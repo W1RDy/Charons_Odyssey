@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class PauseHandler : SubscribableClass, IPause
 {
@@ -53,6 +54,7 @@ public class PauseHandler : SubscribableClass, IPause
 
     public override void Unsubscribe()
     {
+        Debug.Log("Unsubscribe");
         _pauseService.RemovePauseObj(this);
     }
 }

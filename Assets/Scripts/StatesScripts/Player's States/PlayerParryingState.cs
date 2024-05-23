@@ -15,9 +15,9 @@ public class PlayerParryingState : PlayerState
 
     private bool _isCooldown;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _token = player.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
     }
@@ -47,6 +47,6 @@ public class PlayerParryingState : PlayerState
     public override bool IsStateAvailable()
     {
         _parryingHittable = FinderObjects.FindParryingHittableByCircle(_parryingDistance, _player.transform.position);
-        return _parryingHittable != null && !_isCooldown && _player.GetStamina() >= _neededStamina;
+        return _parryingHittable != null && !_isCooldown && _player.IsEnoughStamina(_neededStamina);
     }
 }

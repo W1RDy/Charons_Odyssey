@@ -6,9 +6,9 @@ public class PlayerStunState : PlayerState
 {
     private PauseTokenSource _pauseTokenSource;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _pauseTokenSource = new PauseTokenSource();
     }
 

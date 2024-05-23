@@ -20,9 +20,9 @@ public class PlayerDodgeState : PlayerState
 
     private Vector2 _pausedVelocity;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _rb = player.GetComponent<Rigidbody2D>();
 
         _token = player.GetCancellationTokenOnDestroy();
@@ -39,6 +39,7 @@ public class PlayerDodgeState : PlayerState
         _direction = new Vector2(_player.transform.localScale.x, 0).normalized;
 
         _player.SetAnimation("Dodge", true);
+        _audioMaster.PlaySound("Dodge");
 
         ChangeDodgeSpeed();
     }
@@ -73,6 +74,7 @@ public class PlayerDodgeState : PlayerState
     public override void Exit()
     {
         _player.IsImmortal = false;
+        _audioMaster.StopSound("Dodge");
         base.Exit();
     }
 
@@ -97,6 +99,6 @@ public class PlayerDodgeState : PlayerState
 
     public override bool IsStateAvailable()
     {
-        return _player.GetStamina() >= _neededStamina;
+        return _player.IsEnoughStamina(_neededStamina);
     }
 }

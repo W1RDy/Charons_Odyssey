@@ -10,15 +10,18 @@ public abstract class PlayerState : ScriptableObject, IPause
     private PauseService _pauseService;
     protected bool _isPaused;
     protected Player _player;
+
+    protected AudioMaster _audioMaster;
     public bool IsStateFinished { get; protected set; }
 
-    public virtual void Initialize(Player player, PauseService pauseService)
+    public virtual void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
         _player = player;
         _player.OnPlayerDisable += OnPlayerDisable;
 
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
+        _audioMaster = audioMaster;
     }
 
     public virtual void Enter() { }

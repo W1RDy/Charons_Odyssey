@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class AudioService : MonoBehaviour, IService
 {
-    [SerializeField] private AudioGroup[] _audioGroups;
+    [SerializeField] private AudioData _audioData;
     private Dictionary<string, Dictionary<string, AudioConfig>> _audios = new Dictionary<string, Dictionary<string, AudioConfig>>();
-    public AudioConfig CurrentAudioConfig { get; set; }
 
     private void Awake()
     {
@@ -16,7 +15,7 @@ public class AudioService : MonoBehaviour, IService
 
     public void InitializeService()
     {
-        foreach (var audioGroup in _audioGroups)
+        foreach (var audioGroup in _audioData.AudioGroups)
         {
             if (!_audios.ContainsKey(audioGroup.GroupIndex))
             {
@@ -25,6 +24,7 @@ public class AudioService : MonoBehaviour, IService
 
             foreach (var audioConfig in audioGroup.AudioConfigs)
             {
+                audioConfig.Init(audioGroup.GroupIndex);
                 _audios[audioGroup.GroupIndex].Add(audioConfig.Index, audioConfig);
             }
         }
@@ -37,29 +37,7 @@ public class AudioService : MonoBehaviour, IService
 
     public AudioConfig GetSound(string index)
     {
-        return _audios["sounds"][index];
+        if (_audios["one shot sound"].TryGetValue(index, out var sound)) return sound;
+        return _audios["looping sound"][index];
     }
-}
-
-[Serializable]
-public class AudioConfig
-{
-    [SerializeField] private string _index;
-    [SerializeField] private AudioClip _audioClip;
-    [SerializeField] private float _volume;
-
-    public string Index => _index;
-    public float Volume => _volume;
-    public AudioClip AudioClip => _audioClip;
-
-}
-
-[Serializable]
-public class AudioGroup
-{
-    [SerializeField] private AudioConfig[] _audioConfigs;
-    [SerializeField] private string _groupIndex;
-
-    public AudioConfig[] AudioConfigs => _audioConfigs;
-    public string GroupIndex => _groupIndex;
 }

@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using System.Diagnostics;
+using Zenject;
 
 public abstract class SubscribableClass : ISubscribable
 {

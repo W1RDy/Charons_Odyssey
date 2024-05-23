@@ -1,74 +1,60 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
+using Zenject;
 
-public class AudioPlayer
+[RequireComponent(typeof(AudioSource))]
+public abstract class AudioPlayer : MonoBehaviour
 {
-    private AudioService _audioService;
-    private AudioSource _audioSource;
-    private Settings _settings;
-    private string _rememberedIndex;
+    [SerializeField] private AudioPlayerType _type;
+    public AudioPlayerType AudioPlayerType => _type;
 
-    public AudioPlayer(AudioService audioService, Settings settings)
+    protected AudioMaster _audioMaster;
+    protected AudioSource _audioSource;
+    protected AudioConfig _currentAudio;
+
+    private float _volume;
+
+    [Inject]
+    private void Construct(AudioMaster audioMaster)
     {
-        _audioService = audioService;
-        _audioSource = audioService.GetComponent<AudioSource>();
-        _settings = settings;
-        _settings.SettingsChanged += SetSettings;
+        _audioSource = GetComponent<AudioSource>();
+
+        _audioMaster = audioMaster;
+        _audioMaster.AddAudioPlayer(this);
     }
 
-    public void SetSettings()
+    public virtual void PlayAudio(AudioConfig audio)
     {
-        if (_audioService.CurrentAudioConfig != null)
+        if (_audioSource.isPlaying && _audioSource.clip != audio.AudioClip)
         {
-            _audioSource.volume = _settings.MusicVolume * _audioService.CurrentAudioConfig.Volume;
-            if (_audioSource.volume == 0) StopMusic();
+            StopAudio();
         }
-        else if (_settings.MusicVolume > 0 && _rememberedIndex != "")
-        {
-            PlayMusic(_rememberedIndex);
-        }
-    }
 
-    public void PlayMusic(string index)
-    {
-        _rememberedIndex = index;
-        if (index == "") StopMusic();
-        else if ((_audioService.CurrentAudioConfig == null || _audioService.CurrentAudioConfig.Index != index) && _settings.MusicVolume > 0)
+        if (!_audioSource.isPlaying)
         {
-            var audio = _audioService.GetMusic(index);
-            StopMusic();
-            PlayMusic(audio);
+            _audioSource.volume = _volume * audio.Volume;
+            _audioSource.clip = audio.AudioClip;
+            _currentAudio = audio;
+
+            _audioSource.Play();
         }
     }
 
-    private void StopMusic()
+    public virtual void StopAudio()
     {
         if (_audioSource.isPlaying)
         {
             _audioSource.Stop();
-            _audioService.CurrentAudioConfig = null;
         }
     }
 
-    private void PlayMusic(AudioConfig audio)
+    public void SetVolume(float volume)
     {
-        _audioService.CurrentAudioConfig = audio;
-        _audioSource.volume = _settings.MusicVolume * audio.Volume;
-        _audioSource.clip = audio.AudioClip;
-        _audioSource.Play();
+        if (_currentAudio != null) _audioSource.volume = volume * _currentAudio.Volume;
+        _volume = volume;
     }
 
-    public void PlaySound(string index)
+    public void OnDestroy()
     {
-        if (_settings.SoundVolume > 0)
-        {
-            var audio = _audioService.GetSound(index);
-            _audioSource.PlayOneShot(audio.AudioClip, _settings.SoundVolume * audio.Volume);
-        }
-    }
-
-    public void Unsubscribe()
-    {
-        _settings.SettingsChanged -= SetSettings;
+        _audioMaster.RemoveAudioPlayer(this);
     }
 }

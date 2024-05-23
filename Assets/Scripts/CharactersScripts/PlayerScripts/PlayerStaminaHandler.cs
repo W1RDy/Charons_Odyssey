@@ -1,33 +1,67 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 public class PlayerStaminaHandler
 {
     private float _maxStaminaValue;
+    private float _currentStamina;
+
     private StaminaIndicator _staminaIndicator;
 
-    public PlayerStaminaHandler(float maxStaminaValue, StaminaIndicator staminaIndicator)
+    private AudioMaster _audioMaster;
+    private bool _isRepeatSound = true;
+
+    public PlayerStaminaHandler(float maxStaminaValue, StaminaIndicator staminaIndicator, AudioMaster audioMaster)
     {
-        _staminaIndicator = staminaIndicator;
         _maxStaminaValue = maxStaminaValue;
+        _currentStamina = maxStaminaValue;
+
+        _staminaIndicator = staminaIndicator;
         _staminaIndicator.Initialize(maxStaminaValue);
+
+        _audioMaster = audioMaster;
     }
 
-    public void UseStamina(float value, ref float currentStaminaValue)
+    public void UseStamina(float value)
     {
-        currentStaminaValue = Mathf.Clamp(currentStaminaValue - value, 0, _maxStaminaValue);
-        _staminaIndicator.SetStamine(currentStaminaValue);
+        _currentStamina = Mathf.Clamp(_currentStamina - value, 0, _maxStaminaValue);
+        _staminaIndicator.SetStamine(_currentStamina);
     }
 
-    public void ChangeStaminaTo(float value, ref float currentStaminaValue)
+    public void ChangeStaminaTo(float value)
     {
-        currentStaminaValue = Mathf.Clamp(value, 0, _maxStaminaValue);
-        _staminaIndicator.SetStamine(currentStaminaValue);
+        _currentStamina = Mathf.Clamp(value, 0, _maxStaminaValue);
+        _staminaIndicator.SetStamine(_currentStamina);
     }
 
-    public void RefillStamina(float value, ref float currentStaminaValue)
+    public void RefillStamina(float value)
     {
-        currentStaminaValue = Mathf.Clamp(currentStaminaValue + value, 0, _maxStaminaValue);
-        _staminaIndicator.SetStamine(currentStaminaValue);
+        _currentStamina = Mathf.Clamp(_currentStamina + value, 0, _maxStaminaValue);
+        _staminaIndicator.SetStamine(_currentStamina);
+    }
+
+    public bool IsEnoughStamina(float neededStamina)
+    {
+        var isEnough = _currentStamina >= neededStamina;
+        if (!isEnough && _isRepeatSound)
+        {
+            _audioMaster.PlaySound("StaminaIsOver");
+            WaitBetweenSounds();
+        }
+
+        return isEnough;
+    }
+
+    public float GetStamina()
+    {
+        return _currentStamina;
+    }
+
+    private async void WaitBetweenSounds()
+    {
+        _isRepeatSound = false;
+        await Delayer.Delay(2f, _staminaIndicator.GetCancellationTokenOnDestroy());
+        _isRepeatSound = true;
     }
 }

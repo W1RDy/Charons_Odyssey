@@ -13,11 +13,15 @@ public class WindowActivator : MonoBehaviour, IPause
     private PauseService _pauseService;
     private bool _isPaused;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(PauseService pauseService)
+    private void Construct(PauseService pauseService, AudioMaster audioMaster)
     {
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
+
+        _audioMaster = audioMaster;
     }
 
     private void Start()
@@ -74,6 +78,7 @@ public class WindowActivator : MonoBehaviour, IPause
     {
         if (!_isPaused) _isPaused = true;
         ActivateWindow(WindowType.PauseWindow);
+        _audioMaster.PlaySound("Pause");
     }
 
     public void Unpause()

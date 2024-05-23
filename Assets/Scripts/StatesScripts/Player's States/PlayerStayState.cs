@@ -7,9 +7,9 @@ public class PlayerStayState : PlayerState
 {
     protected PlayerMove _playerMove;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _playerMove = player.GetComponent<PlayerMove>();
     }
 }

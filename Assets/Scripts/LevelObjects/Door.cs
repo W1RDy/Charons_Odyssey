@@ -11,10 +11,13 @@ public class Door : MonoBehaviour, IInteractable
     private Collider2D _collider;
     private Inventory _inventory;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(Inventory inventory)
+    private void Construct(Inventory inventory, AudioMaster audioMaster)
     {
         _inventory = inventory;
+        _audioMaster = audioMaster;
     }
 
     private void Awake()
@@ -30,7 +33,13 @@ public class Door : MonoBehaviour, IInteractable
             {
                 _inventory.RemoveItem(ItemType.Key);
                 _isLocked = false;
+                _audioMaster.PlaySound("OpenIronDoor");
             }
+            else
+            {
+                _audioMaster.PlaySound("OpenWoodDoor");
+            }
+
             _collider.enabled = false;
             foreach (var space in _spaces) space.OpenSpace();
             _view.gameObject.SetActive(false);

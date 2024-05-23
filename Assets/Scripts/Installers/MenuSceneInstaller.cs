@@ -8,11 +8,13 @@ public class MenuSceneInstaller : MonoInstaller
     [SerializeField] WindowActivator _windowActivator;
     [SerializeField] private Settings _settings;
     private AudioService _audioService;
+    private AudioMaster _audioMaster;
 
     [Inject]
-    private void Construct(AudioService audioService)
+    private void Construct(AudioService audioService, AudioMaster audioMaster)
     {
         _audioService = audioService;
+        _audioMaster = audioMaster;
     }
 
     public override void InstallBindings()
@@ -41,12 +43,15 @@ public class MenuSceneInstaller : MonoInstaller
 
     private void BindAudioPlayer()
     {
-        var audioPlayer = new AudioPlayer(_audioService, _settings);
-        Container.Bind<AudioPlayer>().FromInstance(audioPlayer).AsSingle();
+        _audioMaster.SetSettings(_settings);
+
+        var mainAudioPlayer = _audioService.transform.GetChild(0).GetComponent<AudioPlayer>();
+        Container.Inject(mainAudioPlayer);
     }
 
     private void BindSettings()
     {
         Container.Bind<Settings>().FromInstance(_settings).AsSingle();
+        Container.Inject(_settings);
     }
 }

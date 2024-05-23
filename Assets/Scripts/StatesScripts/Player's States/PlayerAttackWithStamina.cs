@@ -6,6 +6,6 @@ public abstract class PlayerAttackWithStamina : PlayerAttackBaseState
 
     public override bool IsStateAvailable()
     {
-        return !IsCooldown && _neededStamina <= _player.GetStamina();
+        return !IsCooldown && _player.IsEnoughStamina(_neededStamina);
     }
 }

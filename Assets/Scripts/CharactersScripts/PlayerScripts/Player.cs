@@ -67,8 +67,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public event Action OnPlayerDisable;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(WeaponService weaponService, ArmorItemsService armorItemsService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService, StaminaIndicator staminaIndicator)
+    private void Construct(WeaponService weaponService, ArmorItemsService armorItemsService, BulletsCounterIndicator bulletsCounterIndicator, PauseService pauseService,
+        StaminaIndicator staminaIndicator, AudioMaster audioMaster)
     {
         _playerStaminaIndicator = staminaIndicator;
         _weaponService = weaponService;
@@ -76,6 +79,8 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         _bulletsCounterIndicator = bulletsCounterIndicator;
         _pauseService = pauseService;
         _pauseService.AddPauseObj(this);
+
+        _audioMaster = audioMaster;
     }
 
     private void Awake()
@@ -103,7 +108,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     private void InitializeHandlers()
     {
         _playerHpHandler = GetComponent<PlayerHpHandler>();
-        _playerStaminaHandler = new PlayerStaminaHandler(_staminaValue, _playerStaminaIndicator);
+        _playerStaminaHandler = new PlayerStaminaHandler(_staminaValue, _playerStaminaIndicator, _audioMaster);
         _playerHpHandler.Initialize(_hp, _shield);
     }
 
@@ -214,24 +219,29 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public void UseStamina(float value)
     {
-        _playerStaminaHandler.UseStamina(value, ref _staminaValue);
+        _playerStaminaHandler.UseStamina(value);
         _playerStaminaController.StopRefillStamina();
         _playerStaminaController.ActivateRefillingStaminaCycle();
     }
 
     public void ChangeStaminaTo(float value)
     {
-        _playerStaminaHandler.ChangeStaminaTo(value, ref _staminaValue);
+        _playerStaminaHandler.ChangeStaminaTo(value);
     }
 
     public void RefillStamina(float value)
     {
-        _playerStaminaHandler.RefillStamina(value, ref _staminaValue);
+        _playerStaminaHandler.RefillStamina(value);
     }
 
     public float GetStamina()
     {
-        return _staminaValue;
+        return _playerStaminaHandler.GetStamina();
+    }
+
+    public bool IsEnoughStamina(float neededStamina)
+    {
+        return _playerStaminaHandler.IsEnoughStamina(neededStamina);
     }
 
     public void OnDisable()

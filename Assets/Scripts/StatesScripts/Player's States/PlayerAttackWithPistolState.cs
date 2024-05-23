@@ -18,9 +18,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     private PauseService _pauseService;
     private NoiseEventHandler _noiseEventHandler;
 
-    public void Initialize(Player player, Weapon weapon, PauseService pauseService, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler)
+    public void Initialize(Player player, Weapon weapon, PauseService pauseService, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
     {
-        base.Initialize(player, weapon, pauseService);
+        base.Initialize(player, weapon, pauseService, audioMaster);
         _camera = customCamera;
         _pistol = _weapon as Pistol;
         _pistolEnd = _pistol.View.pistolEnd;
@@ -41,6 +41,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     public override void Enter()
     {
         _player.SetAnimation("PistolAttack", true);
+        _audioMaster.PlaySound("Shot");
         base.Enter();
     }
 

@@ -7,9 +7,9 @@ public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
 {
     private Paddle _paddle;
 
-    public override void Initialize(Player player, Weapon weapon, PauseService pauseService)
+    public override void Initialize(Player player, Weapon weapon, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, weapon, pauseService);
+        base.Initialize(player, weapon, pauseService, audioMaster);
         _paddle = _weapon as Paddle;
     }
 
@@ -21,7 +21,7 @@ public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
 
     public override void Attack()
     {
-        if (!IsCooldown && _player.GetStamina() >= _neededStamina)
+        if (!IsCooldown && _player.IsEnoughStamina(_neededStamina))
         {
             base.Attack();
             _player.UseStamina(_neededStamina);

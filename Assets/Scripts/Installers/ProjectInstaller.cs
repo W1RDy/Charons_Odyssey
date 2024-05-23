@@ -25,10 +25,13 @@ public class ProjectInstaller : MonoInstaller
     {
         BindPauseService();
         BindAudioService();
+
         BindInputService();
         BindDialogService();
+
         BindEnemyService();
         BindNPCService();
+
         BindItemService();
         BindWeaponService();
         BindArmorItemService();
@@ -96,7 +99,11 @@ public class ProjectInstaller : MonoInstaller
 
     private void BindAudioService()
     {
-        BindService(Container.InstantiatePrefabForComponent<AudioService>(_audioServicePrefab));
+        var audioService = Instantiate(_audioServicePrefab);
+        BindService(audioService);
+
+        var audioMaster = new AudioMaster(audioService);
+        BindService(audioMaster);
     }
 
     private void BindService<T>(T service) where T : IService

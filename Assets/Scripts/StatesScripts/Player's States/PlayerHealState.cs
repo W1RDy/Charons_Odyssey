@@ -12,9 +12,9 @@ public class PlayerHealState : PlayerState
     private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, PauseService pauseService, Inventory inventory)
+    public virtual void Initialize(Player player, PauseService pauseService, Inventory inventory, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _inventory = inventory;
         _pauseTokenSource = new PauseTokenSource();
         _pauseToken = _pauseTokenSource.Token;
@@ -26,7 +26,10 @@ public class PlayerHealState : PlayerState
         IsStateFinished = false;
         _inventory.RemoveItem(ItemType.FirstAidKit);
         _player.TakeHeal(_healValue);
+
         _player.SetAnimation("Heal", true);
+        _audioMaster.PlaySound("Heal");
+
         WaitWhileHeal();
     }
 
@@ -34,6 +37,7 @@ public class PlayerHealState : PlayerState
     {
         base.Exit();
         _player.SetAnimation("Heal", false);
+        _audioMaster.StopSound("Heal");
     }
 
     private async void WaitWhileHeal()

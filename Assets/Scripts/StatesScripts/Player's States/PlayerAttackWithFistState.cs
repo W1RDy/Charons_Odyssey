@@ -9,12 +9,13 @@ public class PlayerAttackWithFistState : PlayerAttackWithStamina
     public override void Enter()
     {
         _player.SetAnimation("FistAttack", true);
+        _audioMaster.PlaySound("Hit");
         base.Enter();
     }
 
     public override void Attack()
     {
-        if (!IsCooldown && _player.GetStamina() >= _neededStamina)
+        if (!IsCooldown && _player.IsEnoughStamina(_neededStamina))
         {
             base.Attack();
             _player.UseStamina(_neededStamina);
@@ -29,6 +30,7 @@ public class PlayerAttackWithFistState : PlayerAttackWithStamina
         {
             base.Exit();
             _player.SetAnimation("FistAttack", false);
+            _audioMaster.StopSound("Hit");
         }
     }
 }

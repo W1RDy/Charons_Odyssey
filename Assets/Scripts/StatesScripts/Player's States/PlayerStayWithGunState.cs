@@ -14,9 +14,9 @@ public class PlayerStayWithGunState : PlayerStayState
     private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService, CustomCamera customCamera)
+    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService, CustomCamera customCamera, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _camera = customCamera;
         _pistol = weapon as Pistol;
         try

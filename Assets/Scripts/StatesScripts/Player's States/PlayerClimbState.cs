@@ -17,9 +17,9 @@ public class PlayerClimbState : PlayerState
     private Rigidbody2D _rigidbody;
     private float _gravityScale;
 
-    public override void Initialize(Player player, PauseService pauseService)
+    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _rigidbody = player.GetComponent<Rigidbody2D>();
@@ -32,6 +32,8 @@ public class PlayerClimbState : PlayerState
     {
         base.Enter();
         _player.SetAnimation("Climb", true);
+        _audioMaster.PlaySound("Climb");
+
         IsStateFinished = !_playerColliderChecker.TryGetLadder(out _ladder);
         _rigidbody.gravityScale = 0;
 
@@ -66,6 +68,7 @@ public class PlayerClimbState : PlayerState
         _ladder.ThrowLadder();
         _playerMove.SetDirection(Vector2.zero);
         _player.SetAnimation("Climb", false);
+        _audioMaster.StopSound("Climb");
     }
 
     public override void ResetValues()

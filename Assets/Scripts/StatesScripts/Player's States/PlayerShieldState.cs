@@ -10,9 +10,9 @@ public class PlayerShieldState : PlayerState
     private StaminaController _staminaController;
     private IInputService _inputService;
 
-    public void Initialize(Player player, PauseService pauseService, Shield shield, StaminaController staminaController, IInputService inputService)
+    public void Initialize(Player player, PauseService pauseService, Shield shield, StaminaController staminaController, IInputService inputService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService);
+        base.Initialize(player, pauseService, audioMaster);
         _shield = shield;
         _staminaController = staminaController;
         _inputService = inputService;
@@ -20,7 +20,7 @@ public class PlayerShieldState : PlayerState
 
     public override void Enter()
     {
-        if (_staminaPerSecond <= _player.GetStamina())
+        if (_player.IsEnoughStamina(_staminaPerSecond))
         {
             IsStateFinished = false;
             base.Enter();
