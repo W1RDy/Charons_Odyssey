@@ -28,6 +28,7 @@ public class PlayerShieldState : PlayerState
             _shield.ActivateShield();
 
             _player.SetAnimation("Shield", true);
+            _audioMaster.PlaySound("UseShield");
 
             if (_player.transform.localScale.x > 0) _shield.IsTurnedRight = true;
             else _shield.IsTurnedRight = false;

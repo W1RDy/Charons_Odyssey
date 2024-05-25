@@ -8,11 +8,15 @@ public class PlayerHpHandler : MonoBehaviour
     private GameLifeController _gameLifeController;
     private Shield _shield;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(HpIndicator hpIndicator, GameLifeController gameLifeController)
+    private void Construct(HpIndicator hpIndicator, GameLifeController gameLifeController, AudioMaster audioMaster)
     {
         _hpIndicator = hpIndicator;
         _gameLifeController = gameLifeController;
+
+        _audioMaster = audioMaster;
     }
 
     public void Initialize(float hp, Shield shield)
@@ -40,6 +44,11 @@ public class PlayerHpHandler : MonoBehaviour
         if (_shield.IsActivated && (_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0))
         {
             _shield.AbsorbDamage(ref damage);
+            _audioMaster.PlaySound("ShieldTakeDamage");
+        }
+        else
+        {
+            _audioMaster.PlaySound("TakeDamage");
         }
         TakeHit(damage, ref hp);
     }

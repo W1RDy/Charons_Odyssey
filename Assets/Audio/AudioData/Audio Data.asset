@@ -76,6 +76,41 @@ MonoBehaviour:
         _volume: 1
         _audioClip: {fileID: 8300000, guid: 4c8d280bad481064da34acb8290d2b6f, type: 3}
         _additiveConfigs: []
+    - _index: Death
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: a911ba62e7b22da488fae60201438332, type: 3}
+      _additiveConfigs: []
+    - _index: PaddleHit
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 64bd9b2f70cc6e746a9159a5b1a71da8, type: 3}
+      _additiveConfigs: []
+    - _index: ShieldTakeDamage
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 31bd670f81b11024eb30db97eadba4da, type: 3}
+      _additiveConfigs: []
+    - _index: TakeDamage
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 66e8f7cf093cc7f4ea3087b402e21b83, type: 3}
+      _additiveConfigs:
+      - _index: TakeDamage
+        _audioPlayerType: 4
+        _volume: 0.5
+        _audioClip: {fileID: 8300000, guid: 0d4160e67224d4e48a3d60a29c380905, type: 3}
+        _additiveConfigs: []
+    - _index: UseShield
+      _audioPlayerType: 4
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 82dd1625b70907048b7acb12778182b7, type: 3}
+      _additiveConfigs: []
+    - _index: Trader
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 3874890ecb1f8dd428855c001758e760, type: 3}
+      _additiveConfigs: []
     _groupIndex: one shot sound
   - _audioConfigs:
     - _index: ShipMovement

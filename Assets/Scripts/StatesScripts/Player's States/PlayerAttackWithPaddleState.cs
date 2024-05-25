@@ -16,6 +16,8 @@ public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
     public override void Enter()
     {
         _player.SetAnimation("PaddleAttack", true);
+        _audioMaster.PlaySound("PaddleHit");
+
         base.Enter();
     }
 

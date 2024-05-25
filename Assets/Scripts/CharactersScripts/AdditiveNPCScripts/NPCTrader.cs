@@ -11,10 +11,13 @@ public class NPCTrader : NPC, IInteractable
     private WindowActivator _windowActivator;
     private Sprite _defaultSprite;
 
+    private AudioMaster _audioMaster;
+
     [Inject]
-    private void Construct(WindowActivator windowActivator)
+    private void Construct(WindowActivator windowActivator, AudioMaster audioMaster)
     {
         _windowActivator = windowActivator;
+        _audioMaster = audioMaster;
     }
 
     public override void InitializeNPC(Direction direction, string dialogId, bool isAvailable)
@@ -29,6 +32,8 @@ public class NPCTrader : NPC, IInteractable
         {
             _spriteRenderer.sprite = _traderTradeSprite;
             _windowActivator.ActivateWindowWithDelay(WindowType.TradeWindow, 1f);
+
+            _audioMaster.PlaySound("Trader");
         }
     }
 

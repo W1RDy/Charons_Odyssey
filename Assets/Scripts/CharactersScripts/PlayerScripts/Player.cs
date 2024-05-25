@@ -164,6 +164,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     public void Death()
     {
         _playerHpHandler.Death();
+        _audioMaster.PlaySound("Death");
     }
 
     public void SetAnimation(string animationIndex, bool isActivate)
