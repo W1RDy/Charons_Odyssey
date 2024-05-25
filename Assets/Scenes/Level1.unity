@@ -3203,18 +3203,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 24276407730763970, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: _ladderPartPrefab
-      value: 
-      objectReference: {fileID: 1264244678864412256, guid: 136cc8246b1179349ab374f2a7a561c1, type: 3}
-    - target: {fileID: 839091839971990779, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: _groundCollider
-      value: 
-      objectReference: {fileID: 4516439201628347064}
-    - target: {fileID: 2595446200809570438, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2595446202111645666, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
       propertyPath: m_Name
       value: Ship
@@ -3263,50 +3251,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2595446202172463676, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
-    - target: {fileID: 2595446202172463676, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5885226927254724451, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: _isRotating
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6831243090318200737, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6831243090710173977, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8173081564588525926, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: _groundCollider
-      value: 
-      objectReference: {fileID: 4516439201628347063}
-    - target: {fileID: 8245662575458097272, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: m_Size.y
-      value: 2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8835970899624897887, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-      propertyPath: _ladderPartPrefab
-      value: 
-      objectReference: {fileID: 1264244678864412256, guid: 136cc8246b1179349ab374f2a7a561c1, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
---- !u!61 &4516439201628347063 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 3377636573593132096, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-  m_PrefabInstance: {fileID: 4516439201628347062}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &4516439201628347064 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1532969225470929600, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}
-  m_PrefabInstance: {fileID: 4516439201628347062}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4516439201628347065 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3971940033292645792, guid: 3192b9d3e4a28ea4ba209632b8acbbde, type: 3}

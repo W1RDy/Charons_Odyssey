@@ -3,17 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class Ladder : MonoBehaviour
+public class Ladder : MonoBehaviour, IAvailable
 {
     [SerializeField] private PassageToFloor[] _passages;
     [SerializeField] private LadderPart _ladderPartPrefab;
+    private List<LadderPart> _ladderParts = new List<LadderPart>();
+
     private BoxCollider2D _collider;
+
+    [SerializeField] private bool _isAvailable;
+    private bool _isAvailableInDefault;
+
     private bool _isUsing;
 
     private void Awake()
     {
         _collider = GetComponent<BoxCollider2D>();
         InitializeLadder();
+
+        _isAvailableInDefault = _isAvailable;
     }
 
     public void InitializeLadder()
@@ -33,6 +41,7 @@ public class Ladder : MonoBehaviour
         while (ladderLength > 0)
         {
             var ladderPart = SpawnLadderPart(spawnPosition, transform);
+            _ladderParts.Add(ladderPart);
 
             ladderLength -= ladderPart.Height;
 
@@ -58,11 +67,13 @@ public class Ladder : MonoBehaviour
 
     public bool IsHaveLadderOnHeight(float height)
     {
+        if (!_isAvailable) return false;
         return _collider.bounds.max.y > height && _collider.bounds.min.y < height;
     }
 
     public bool IsColliderOnLaddersCenter(Collider2D collider)
     {
+        if (!_isAvailable) return false;
         return collider.bounds.min.x > _collider.bounds.min.x && collider.bounds.max.x < _collider.bounds.max.x;
     }
 
@@ -79,4 +90,16 @@ public class Ladder : MonoBehaviour
     }
 
     public bool LadderIsUsing() => _isUsing;
+
+    public void ChangeAvailable(bool isAvailable)
+    {
+        if (_isAvailableInDefault) _isAvailable = !isAvailable;
+        else _isAvailable = isAvailable;
+
+        foreach (var ladderPart in _ladderParts)
+        {
+            if (_isAvailable) ladderPart.ShowLadderPart();
+            else ladderPart.HideLadderPart();
+        }
+    }
 }

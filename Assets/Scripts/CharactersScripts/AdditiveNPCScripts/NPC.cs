@@ -9,6 +9,7 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 
     [SerializeField] private float _talkDelay;
     [SerializeField] protected bool _isAvailable = true;
+    private bool _isAvailableInDefault;
 
     [SerializeField] private Trigger _trigger;
 
@@ -17,6 +18,7 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 
     protected DialogCloudService _dialogCloudService; 
     private DialogActivator _dialogActivator;
+
 
 
     [Inject]
@@ -33,10 +35,12 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
     {
         if (direction == Direction.Left) transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
         UpdateDialog(dialogId);
-        ChangeAvailable(isAvailable);
 
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _animator = GetComponentInChildren<Animator>();
+
+        ChangeAvailable(isAvailable);
+        _isAvailableInDefault = isAvailable;
 
         if (_branchIndex != "") _trigger.TriggerWorked += StartDialog;
     }
@@ -72,7 +76,10 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 
     public void ChangeAvailable(bool isAvailable)
     {
-        _isAvailable = isAvailable;
+        if (_isAvailableInDefault) _isAvailable = !isAvailable;
+        else _isAvailable = isAvailable;
+
+        _spriteRenderer.enabled = _isAvailable;
     }
 
     public virtual void Pause()

@@ -8,10 +8,15 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private SpriteRenderer _view;
     [SerializeField] private bool _isLocked;
     [SerializeField] private Space[] _spaces;
-    private Collider2D _collider;
     private Inventory _inventory;
 
+    private Collider2D _collider;
+    private bool _colliderIsTrigger;
+
     private AudioMaster _audioMaster;
+
+    [SerializeField] private bool _isCanBeClosed;
+    private bool _isOpened;
 
     [Inject]
     private void Construct(Inventory inventory, AudioMaster audioMaster)
@@ -23,6 +28,7 @@ public class Door : MonoBehaviour, IInteractable
     private void Awake()
     {
         _collider = GetComponent<Collider2D>();
+        _colliderIsTrigger = _collider.isTrigger;
     }
 
     private void OpenDoor()
@@ -40,19 +46,28 @@ public class Door : MonoBehaviour, IInteractable
                 _audioMaster.PlaySound("OpenWoodDoor");
             }
 
-            _collider.enabled = false;
+            _isOpened = true;
+            _collider.isTrigger = true;
+
             foreach (var space in _spaces) space.OpenSpace();
-            _view.gameObject.SetActive(false);
+            if (_view) _view.gameObject.SetActive(false);
         }
     }
 
     private void CloseDoor()
     {
+        _isOpened = false;
+        _collider.isTrigger = _colliderIsTrigger;
 
+        foreach (var space in _spaces) space.CloseSpace();
+        if (_view) _view.gameObject.SetActive(true);
+
+        _audioMaster.PlaySound("OpenWoodDoor");
     }
 
     public void Interact()
     {
-        OpenDoor();
+        if (!_isOpened) OpenDoor();
+        else if (_isCanBeClosed) CloseDoor();
     }
 }

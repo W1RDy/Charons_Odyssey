@@ -12,4 +12,14 @@ public class LadderPart : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _height = _spriteRenderer.sprite.bounds.size.y;
     }
+
+    public void HideLadderPart()
+    {
+        _spriteRenderer.enabled = false;
+    }
+
+    public void ShowLadderPart()
+    {
+        _spriteRenderer.enabled = true;
+    }
 }
