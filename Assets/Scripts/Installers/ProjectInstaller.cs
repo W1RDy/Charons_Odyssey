@@ -23,6 +23,7 @@ public class ProjectInstaller : MonoInstaller
 
     private void BindServices()
     {
+        BindInstantiator();
         BindPauseService();
         BindAudioService();
 
@@ -35,6 +36,11 @@ public class ProjectInstaller : MonoInstaller
         BindItemService();
         BindWeaponService();
         BindArmorItemService();
+    }
+
+    private void BindInstantiator()
+    {
+        Container.Bind<IInstantiator>().FromInstance(Container).AsSingle();
     }
 
     private void BindArmorItemService()

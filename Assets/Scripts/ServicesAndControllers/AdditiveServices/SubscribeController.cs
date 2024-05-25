@@ -20,7 +20,6 @@ public class SubscribeController : MonoBehaviour
 
     private void OnDestroy()
     {
-        Debug.Log("Unsubscribe");
         UnsubscribeAll();
     }
 }

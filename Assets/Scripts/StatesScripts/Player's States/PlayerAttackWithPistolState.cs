@@ -15,17 +15,21 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private CustomCamera _camera;
     private Inventory _inventory;
-    private PauseService _pauseService;
     private NoiseEventHandler _noiseEventHandler;
 
-    public void Initialize(Player player, Weapon weapon, PauseService pauseService, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
+    private IInstantiator _instantiator;
+
+    public void Initialize(Player player, Weapon weapon, IInstantiator instantiator, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
     {
-        base.Initialize(player, weapon, pauseService, audioMaster);
+        base.Initialize(player, weapon, instantiator, audioMaster);
         _camera = customCamera;
+
         _pistol = _weapon as Pistol;
         _pistolEnd = _pistol.View.pistolEnd;
+
         _inventory = inventory;
-        _pauseService = pauseService;
+        _instantiator = instantiator;
+
         try
         {
             _shootPoint = GameObject.Find("ShootPoint").transform;
@@ -61,7 +65,7 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
     {
         var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
         if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
-        bullet.Initialize(AttackableObjectIndex.Player, _pauseService, _pistol.Distance, _pistol.Damage);
+        bullet.Initialize(AttackableObjectIndex.Player, _instantiator, _pistol.Distance, _pistol.Damage);
         _inventory.RemoveItem(ItemType.Patrons, 1);
         _noiseEventHandler.MakeNoise(_pistolEnd.position);
     }

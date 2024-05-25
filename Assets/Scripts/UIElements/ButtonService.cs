@@ -74,6 +74,11 @@ public class ButtonService : MonoBehaviour, IService
         PlayPauseSound();
     }
 
+    public void ActivatePauseWindow() // используется при отключении окна настроек в паузе
+    {
+        _windowActivator.ActivateWindow(WindowType.PauseWindow);
+    }
+
     public void ActivateSettings()
     {
         _windowActivator.ActivateWindow(WindowType.SettingsWindow);

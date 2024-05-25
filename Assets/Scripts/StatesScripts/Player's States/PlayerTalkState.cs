@@ -11,9 +11,9 @@ public class PlayerTalkState : PlayerState
     private DialogCloudService _dialogCloudService;
     private DialogLifeController _dialogLifeController;
 
-    public virtual void Initialize(Player player, PauseService pauseService, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService, AudioMaster audioMaster)
+    public virtual void Initialize(Player player, IInstantiator instantiator, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _spriteRenderer = player.transform.GetChild(0).GetComponent<SpriteRenderer>();
         _playerController = player.GetComponent<PlayerController>();
         _dialogCloudService = dialogCloudService;

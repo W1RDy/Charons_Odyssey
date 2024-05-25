@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 public class PauseHandler : SubscribableClass, IPause
 {
@@ -9,15 +10,14 @@ public class PauseHandler : SubscribableClass, IPause
     private Action _pauseAction;
     private Action _unpauseAction;
 
-    public PauseHandler(PauseService pauseService) : base()
+    [Inject]
+    private void Construct(PauseService pauseService)
     {
         Init(pauseService);
     }
 
-    public PauseHandler(PauseService pauseService, Action pauseCallback, Action unpauseCallback) : base() 
+    public void SetCallbacks(Action pauseCallback, Action unpauseCallback)
     {
-        Init(pauseService);
-
         _pauseAction = pauseCallback;
         _unpauseAction = unpauseCallback;
     }
@@ -54,7 +54,6 @@ public class PauseHandler : SubscribableClass, IPause
 
     public override void Unsubscribe()
     {
-        Debug.Log("Unsubscribe");
         _pauseService.RemovePauseObj(this);
     }
 }

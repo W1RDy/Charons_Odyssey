@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public abstract class PlayerAttackBaseState : PlayerState
 {
@@ -19,9 +20,9 @@ public abstract class PlayerAttackBaseState : PlayerState
         WaitWhileAttack();
     }
 
-    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService, AudioMaster audioMaster)
+    public virtual void Initialize(Player player, Weapon weapon, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _weapon = weapon;
         _pauseTokenSource = new PauseTokenSource();
         _pauseToken = _pauseTokenSource.Token;

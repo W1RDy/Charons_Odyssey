@@ -19,11 +19,11 @@ public class ClickHandler : MonoBehaviour, IPointerDownHandler
     private PauseToken _pauseToken;
 
     [Inject]
-    private void Construct(CustomCamera camera, PauseService pauseService)
+    private void Construct(CustomCamera camera, IInstantiator instantiator)
     {
         _customCamera = camera;
 
-        var pauseHandler = new PauseHandler(pauseService);
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
         _pauseToken = pauseHandler.GetPauseToken();
     }
 

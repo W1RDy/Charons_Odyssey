@@ -5,33 +5,40 @@ using Zenject;
 
 public class PlayerStatesInitializer : MonoBehaviour
 {
+    private List<PlayerState> _statesInstances;
+
     private Player _player;
     private WeaponService _weaponService;
+    private Inventory _inventory;
+
     private DialogLifeController _dialogLifeController;
     private DialogCloudService _dialogCloudService;
-    private Inventory _inventory;
-    private List<PlayerState> _statesInstances;
-    private CustomCamera _customCamera;
-    private PauseService _pauseService;
-    private IInputService _inputService;
-    private NoiseEventHandler _noiseEventHandler;
 
+    private CustomCamera _customCamera;
+
+    private IInputService _inputService;
+    private IInstantiator _instantiator;
+
+    private NoiseEventHandler _noiseEventHandler;
     private AudioMaster _audioMaster;
 
     [Inject]
-    private void Construct(Inventory inventory, WeaponService weaponService, DialogLifeController dialogLifeController,
-        DialogCloudService dialogCloudService, CustomCamera customCamera, PauseService pauseService, IInputService inputService, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
+    private void Construct(Inventory inventory, WeaponService weaponService, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService, CustomCamera customCamera,
+        IInstantiator instantiator, IInputService inputService, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
     {
+        _player = GetComponent<Player>();
         _weaponService = weaponService;
+        _inventory = inventory;
+
         _dialogLifeController = dialogLifeController;
         _dialogCloudService = dialogCloudService;
-        _inventory = inventory;
-        _customCamera = customCamera;
-        _pauseService = pauseService;
-        _inputService = inputService;
-        _noiseEventHandler = noiseEventHandler;
-        _player = GetComponent<Player>();
 
+        _customCamera = customCamera;
+
+        _inputService = inputService;
+        _instantiator = instantiator;
+
+        _noiseEventHandler = noiseEventHandler;
         _audioMaster = audioMaster;
     }
 
@@ -60,19 +67,19 @@ public class PlayerStatesInitializer : MonoBehaviour
                     weapon = _weaponService.GetWeapon(WeaponType.Fist);
 
                 if (state.GetStateType() == PlayerStateType.IdleWithGun)
-                    (state as PlayerStayWithGunState).Initialize(_player, weapon, _pauseService, _customCamera, _audioMaster);
+                    (state as PlayerStayWithGunState).Initialize(_player, weapon, _instantiator, _customCamera, _audioMaster);
                 else if (state.GetStateType() == PlayerStateType.AttackWithPistol)
-                    (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _pauseService, _inventory, _customCamera, _noiseEventHandler, _audioMaster);
+                    (state as PlayerAttackWithPistolState).Initialize(_player, weapon, _instantiator, _inventory, _customCamera, _noiseEventHandler, _audioMaster);
                 else
-                    (state as PlayerAttackWithStamina).Initialize(_player, weapon, _pauseService, _audioMaster);
+                    (state as PlayerAttackWithStamina).Initialize(_player, weapon, _instantiator, _audioMaster);
             }
             else if (state.GetStateType() == PlayerStateType.Talk)
-                (state as PlayerTalkState).Initialize(_player, _pauseService, _dialogLifeController, _dialogCloudService, _audioMaster);
+                (state as PlayerTalkState).Initialize(_player, _instantiator, _dialogLifeController, _dialogCloudService, _audioMaster);
             else if (state.GetStateType() == PlayerStateType.Heal)
-                (state as PlayerHealState).Initialize(_player, _pauseService, _inventory, _audioMaster);
+                (state as PlayerHealState).Initialize(_player, _instantiator, _inventory, _audioMaster);
             else if (state.GetStateType() == PlayerStateType.Shield)
-                (state as PlayerShieldState).Initialize(_player, _pauseService, shield, staminaController, _inputService, _audioMaster);
-            else state.Initialize(_player, _pauseService, _audioMaster);
+                (state as PlayerShieldState).Initialize(_player, _instantiator, shield, staminaController, _inputService, _audioMaster);
+            else state.Initialize(_player, _instantiator, _audioMaster);
         }
     }
 

@@ -2,25 +2,29 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public abstract class PlayerState : ScriptableObject, IPause
 {
     [SerializeField] private int _priorityIndex;
     [SerializeField] private PlayerStateType _stateType;
-    private PauseService _pauseService;
+
+    protected PauseHandler _pauseHandler;
     protected bool _isPaused;
+
     protected Player _player;
 
     protected AudioMaster _audioMaster;
     public bool IsStateFinished { get; protected set; }
 
-    public virtual void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
+    public virtual void Initialize(Player player, IInstantiator instantiator, AudioMaster audioMaster)
     {
         _player = player;
         _player.OnPlayerDisable += OnPlayerDisable;
 
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
+        _pauseHandler = instantiator.Instantiate<PauseHandler>();
+        _pauseHandler.SetCallbacks(Pause, Unpause);
+
         _audioMaster = audioMaster;
     }
 
@@ -52,7 +56,6 @@ public abstract class PlayerState : ScriptableObject, IPause
 
     public virtual void OnPlayerDisable()
     {
-        _pauseService.RemovePauseObj(this);
         _player.OnPlayerDisable -= OnPlayerDisable;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Stay With Gun State", menuName = "Player's State/Stay With Gun State")]
 public class PlayerStayWithGunState : PlayerStayState
@@ -11,12 +12,12 @@ public class PlayerStayWithGunState : PlayerStayState
     private Transform _shootPoint;
     private int _waitsMethodCount;
     private CustomCamera _camera;
-    private PauseTokenSource _pauseTokenSource;
+
     private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, Weapon weapon, PauseService pauseService, CustomCamera customCamera, AudioMaster audioMaster)
+    public virtual void Initialize(Player player, Weapon weapon, IInstantiator instantiator, CustomCamera customCamera, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _camera = customCamera;
         _pistol = weapon as Pistol;
         try
@@ -27,8 +28,7 @@ public class PlayerStayWithGunState : PlayerStayState
         {
             _shootPoint = new GameObject("ShootPoint").transform;
         }
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+        _pauseToken = _pauseHandler.GetPauseToken();
     }
 
     public override void Enter()

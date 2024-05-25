@@ -13,13 +13,14 @@ public class NPCGroup : MonoBehaviour, ITalkable, IAvailable, IPause
     [SerializeField] private bool _isAvailable = true;
     private DialogActivator _dialogActivator;
     private NPC[] _NPCs;
-    private PauseService _pauseService;
 
     [Inject]
-    private void Consruct(DialogActivator dialogActivator, PauseService pauseService)
+    private void Consruct(DialogActivator dialogActivator, IInstantiator instantiator)
     {
         _dialogActivator = dialogActivator;
-        _pauseService = pauseService;
+
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Pause, Unpause);
     }
 
     public void InitializeGroup(NPC[] NPCs, string dialogId, bool isAvailable)
@@ -67,10 +68,5 @@ public class NPCGroup : MonoBehaviour, ITalkable, IAvailable, IPause
     public void Unpause()
     {
         if (_isAvailable == false) _isAvailable = true;
-    }
-
-    public void OnDestroy()
-    {
-        _pauseService.RemovePauseObj(this);
     }
 }

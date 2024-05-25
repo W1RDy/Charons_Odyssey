@@ -9,15 +9,15 @@ public class PlayerHealState : PlayerState
 {
     [SerializeField] private int _healValue;
     private Inventory _inventory;
-    private PauseTokenSource _pauseTokenSource;
+
     private PauseToken _pauseToken;
 
-    public virtual void Initialize(Player player, PauseService pauseService, Inventory inventory, AudioMaster audioMaster)
+    public virtual void Initialize(Player player, IInstantiator instantiator, Inventory inventory, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _inventory = inventory;
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+
+        _pauseToken = _pauseHandler.GetPauseToken();
     }
 
     public override void Enter()

@@ -9,11 +9,11 @@ public class MapActivator
     private PauseToken _pauseToken;
 
     [Inject]
-    private void Construct(WindowActivator windowActivator, PauseService pauseService)
+    private void Construct(WindowActivator windowActivator, IInstantiator instantiator)
     {
         _windowActivator = windowActivator;
 
-        var pauseHandler = new PauseHandler(pauseService);
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
         _pauseToken = pauseHandler.GetPauseToken();
     }
 

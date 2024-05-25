@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "PlayerParryingState", menuName = "Player's State/ParryingState")]
 public class PlayerParryingState : PlayerState
@@ -15,9 +16,9 @@ public class PlayerParryingState : PlayerState
 
     private bool _isCooldown;
 
-    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
+    public override void Initialize(Player player, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _token = player.GetCancellationTokenOnDestroy();
         _pauseTokenSource = new PauseTokenSource();
     }

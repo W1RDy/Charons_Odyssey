@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using UnityEngine;
 using Zenject;
 
 public abstract class SubscribableClass : ISubscribable
@@ -6,7 +6,7 @@ public abstract class SubscribableClass : ISubscribable
     private SubscribeController _subscribeController;
 
     [Inject]
-    private void Construct(SubscribeController subscribeController)
+    public void Construct(SubscribeController subscribeController)
     {
         _subscribeController = subscribeController;
         _subscribeController.AddSubscribable(this);

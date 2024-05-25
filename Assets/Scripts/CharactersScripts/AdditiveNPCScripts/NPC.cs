@@ -1,5 +1,6 @@
 using UnityEngine;
 using Zenject;
+using System;
 
 public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 {
@@ -19,12 +20,13 @@ public abstract class NPC : MonoBehaviour, ITalkable, IAvailable
 
 
     [Inject]
-    private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService, PauseService pauseService)
+    private void Consruct(DialogActivator dialogActivator, DialogCloudService dialogCloudService, IInstantiator instantiator)
     {
         _dialogActivator = dialogActivator;
         _dialogCloudService = dialogCloudService;
 
-        new PauseHandler(pauseService, Pause, Unpause);
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Pause, Unpause);
     }
 
     public virtual void InitializeNPC(Direction direction, string dialogId, bool isAvailable)

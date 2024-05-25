@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "PlayerShieldState", menuName = "Player's State/ShieldState")]
 public class PlayerShieldState : PlayerState
@@ -10,9 +11,9 @@ public class PlayerShieldState : PlayerState
     private StaminaController _staminaController;
     private IInputService _inputService;
 
-    public void Initialize(Player player, PauseService pauseService, Shield shield, StaminaController staminaController, IInputService inputService, AudioMaster audioMaster)
+    public void Initialize(Player player, IInstantiator instantiator, Shield shield, StaminaController staminaController, IInputService inputService, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _shield = shield;
         _staminaController = staminaController;
         _inputService = inputService;

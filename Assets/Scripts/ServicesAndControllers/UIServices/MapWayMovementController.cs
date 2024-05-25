@@ -22,11 +22,13 @@ public class MapWayMovementController : MonoBehaviour, ISubscribable
     private PauseToken _pausedToken;
 
     [Inject]
-    private void Construct(MapShip mapShip, PauseService pauseService)
+    private void Construct(MapShip mapShip, IInstantiator instantiator)
     {
         _mapShip = mapShip;
 
-        var pauseHandler = new PauseHandler(pauseService, Pause, Unpause);
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Subscribe, Unsubscribe);
+
         _pausedToken = pauseHandler.GetPauseToken();
     }
 

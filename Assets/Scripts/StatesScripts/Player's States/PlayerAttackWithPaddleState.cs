@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Attack With Paddle State", menuName = "Player's State/Attack With Paddle State")]
 public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
 {
     private Paddle _paddle;
 
-    public override void Initialize(Player player, Weapon weapon, PauseService pauseService, AudioMaster audioMaster)
+    public override void Initialize(Player player, Weapon weapon, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, weapon, pauseService, audioMaster);
+        base.Initialize(player, weapon, instantiator, audioMaster);
         _paddle = _weapon as Paddle;
     }
 

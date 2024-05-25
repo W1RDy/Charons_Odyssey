@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Move State", menuName = "Player's State/Move State")]
 public class PlayerMoveState : PlayerState
@@ -9,9 +10,9 @@ public class PlayerMoveState : PlayerState
     private float _horizontalMoveValue = 0;
     private PlayerController _controller;
 
-    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
+    public override void Initialize(Player player, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _controller = player.GetComponent<PlayerController>();

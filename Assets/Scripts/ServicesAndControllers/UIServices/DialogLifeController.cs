@@ -14,16 +14,16 @@ public class DialogLifeController : SubscribableClass, IPause
     private DialogService _dialogService;
     private DialogClickHandler _dialogClickHandler;
 
-    private PauseService _pauseService;
-
     public event Action<string> DialogDeactivated;
 
     [Inject]
-    private void Construct(TalkableFinderOnLevel talkableFinder, DialogService dialogService, PauseService pauseService)
+    private void Construct(TalkableFinderOnLevel talkableFinder, DialogService dialogService, IInstantiator instantiator)
     {
         _talkableFinder = talkableFinder;
         _dialogService = dialogService;
-        _pauseService = pauseService;
+
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Pause, Unpause);
     }
 
     public DialogLifeController(DialogClickHandler dialogClickHandler)
@@ -36,8 +36,6 @@ public class DialogLifeController : SubscribableClass, IPause
     {
         if (_currentDialog == null)
         {
-            _pauseService.AddPauseObj(this);
-
             _currentDialog = _dialogService.GetDialog(branchIndex);
             _dialogIsFinished = false;
 
@@ -64,7 +62,6 @@ public class DialogLifeController : SubscribableClass, IPause
 
     public void FinishDialog()
     {
-        _pauseService.RemovePauseObj(this);
         _dialogClickHandler.Deactivate();
        
         _dialogIsFinished = true;
@@ -77,12 +74,12 @@ public class DialogLifeController : SubscribableClass, IPause
 
     public void Pause()
     {
-        _dialogClickHandler.Deactivate();
+        if (!DialogIsFinished()) _dialogClickHandler.Deactivate();
     }
 
     public void Unpause()
     {
-        _dialogClickHandler.Activate();
+        if (!DialogIsFinished()) _dialogClickHandler.Activate();
     }
 
     public override void Subscribe()

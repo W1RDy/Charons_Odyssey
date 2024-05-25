@@ -3,28 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class DirectionalMove : MonoBehaviour, IMovable, IPause
+public class DirectionalMove : MonoBehaviour, IMovable
 {
     [SerializeField] private Vector3 _direction;
     private float _speed;
-    private bool _isPaused;
-    private PauseService _pauseService;
 
-    [Inject]
-    private void Construct(PauseService pauseService)
-    {
-        Init(pauseService);
-    }
+    private PauseToken _pauseToken;
 
-    public void Init(PauseService pauseService)
+    public void Init(PauseToken pauseToken)
     {
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
+        _pauseToken = pauseToken;
     }
 
     private void Update()
     {
-        if (!_isPaused)
+        if (!_pauseToken.IsCancellationRequested)
         {
             Move();
         }
@@ -38,20 +31,5 @@ public class DirectionalMove : MonoBehaviour, IMovable, IPause
     public void SetSpeed(float speed)
     {
         _speed = speed;
-    }
-
-    public void Pause()
-    {
-        if (!_isPaused) _isPaused = true; 
-    }
-
-    public void Unpause()
-    {
-        if (_isPaused) _isPaused = false;
-    }
-
-    public void OnDestroy()
-    {
-        _pauseService.RemovePauseObj(this);
     }
 }

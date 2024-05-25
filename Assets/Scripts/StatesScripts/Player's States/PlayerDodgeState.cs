@@ -2,6 +2,7 @@
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "PlayerDodgeState", menuName = "Player's State/DodgeState")]
 public class PlayerDodgeState : PlayerState
@@ -20,9 +21,9 @@ public class PlayerDodgeState : PlayerState
 
     private Vector2 _pausedVelocity;
 
-    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
+    public override void Initialize(Player player, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
         _rb = player.GetComponent<Rigidbody2D>();
 
         _token = player.GetCancellationTokenOnDestroy();

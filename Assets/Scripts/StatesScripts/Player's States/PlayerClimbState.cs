@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Climb State", menuName = "Player's State/Climb State")]
 public class PlayerClimbState : PlayerState
@@ -17,9 +18,9 @@ public class PlayerClimbState : PlayerState
     private Rigidbody2D _rigidbody;
     private float _gravityScale;
 
-    public override void Initialize(Player player, PauseService pauseService, AudioMaster audioMaster)
+    public override void Initialize(Player player, IInstantiator instantiator, AudioMaster audioMaster)
     {
-        base.Initialize(player, pauseService, audioMaster);
+        base.Initialize(player, instantiator, audioMaster);
 
         _playerMove = player.GetComponent<PlayerMove>();
         _rigidbody = player.GetComponent<Rigidbody2D>();
