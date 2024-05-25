@@ -93,7 +93,7 @@ public class PlayerDodgeState : PlayerState
     {
         _pauseTokenSource.Unpause();
 
-        _rb.velocity = _pausedVelocity;
+        if (_rb) _rb.velocity = _pausedVelocity;
 
         base.Unpause();
     }

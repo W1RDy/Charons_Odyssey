@@ -163,6 +163,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     public void Death()
     {
+        _shield.DeactivateShield();
         _playerHpHandler.Death();
         _audioMaster.PlaySound("Death");
     }

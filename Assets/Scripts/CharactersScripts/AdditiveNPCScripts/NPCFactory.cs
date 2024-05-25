@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking.Types;
 using Zenject;
 
 public class NPCFactory : INPCFactory

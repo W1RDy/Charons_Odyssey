@@ -165,7 +165,7 @@ TextureImporter:
       213: -6317826685950317628
     second: women_53
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -182,10 +182,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -224,6 +226,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -235,6 +239,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -247,6 +252,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -259,6 +265,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -271,6 +278,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -1420,9 +1441,63 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      women_0: 5611162614225047703
+      women_1: -8802017650344547289
+      women_10: -1073542931123396051
+      women_11: -4692969760773439887
+      women_12: 926900746383327736
+      women_13: -481237836283199312
+      women_14: 6606495505312072578
+      women_15: 9087050125180403734
+      women_16: 6847233283413405915
+      women_17: -253690000631262351
+      women_18: 7699589937515659114
+      women_19: -4702338087499097710
+      women_2: 8457639191386824300
+      women_20: -2537145616169959834
+      women_21: -2340463010070381031
+      women_22: -6047205715193569473
+      women_23: 4937713556238514980
+      women_24: -6654786488819692385
+      women_25: -3213107427534741753
+      women_26: -5265913137121966567
+      women_27: 3668913025665983283
+      women_28: -5017050681879134374
+      women_29: 3094098992800597485
+      women_3: -6243880659651652627
+      women_30: 7079211496434693533
+      women_31: 3263335588691092382
+      women_32: 4342630353777150823
+      women_33: 1723869108848601921
+      women_34: 4146589124961805089
+      women_35: 7335790012901977400
+      women_36: 7244127133406562815
+      women_37: -1994977989072004427
+      women_38: -5746098352163477148
+      women_39: 7515210843249513775
+      women_4: -4394216724697166547
+      women_40: -4080058969994886038
+      women_41: -7763372429511158362
+      women_42: 4968815082637090667
+      women_43: -3735841654147107364
+      women_44: 3618289051926412306
+      women_45: -7517027677161821293
+      women_46: -6793438822082171552
+      women_47: -5275843459540824423
+      women_48: -5696085301847373243
+      women_49: 1738467992156054847
+      women_5: 559795488476608717
+      women_50: 5899148137586608319
+      women_51: 1971638925553006178
+      women_52: -9026441649154325196
+      women_53: -6317826685950317628
+      women_6: -1897653803005097721
+      women_7: -4760722427705317646
+      women_8: -3135330666808785734
+      women_9: 1199364531841411177
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

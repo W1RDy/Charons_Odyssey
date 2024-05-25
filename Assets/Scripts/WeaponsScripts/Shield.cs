@@ -7,7 +7,7 @@ public class Shield : ArmorItem
     public bool IsTurnedRight { get; set; }
     public bool CanParrying { get; set; }
 
-    public Shield()
+    private void Awake()
     {
         IsActivated = false;
     }
