@@ -9,7 +9,6 @@ public abstract class PlayerAttackBaseState : PlayerState
 {
     protected Weapon _weapon;
     public bool IsCooldown { get; protected set; }
-    private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
 
     public override void Enter()
@@ -24,8 +23,7 @@ public abstract class PlayerAttackBaseState : PlayerState
     {
         base.Initialize(player, instantiator, audioMaster);
         _weapon = weapon;
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+        _pauseToken = _pauseHandler.GetPauseToken();
     }
 
     public virtual void Attack()
@@ -52,9 +50,9 @@ public abstract class PlayerAttackBaseState : PlayerState
     private async void WaitWhileAttack()
     {
         var token = _player.GetCancellationTokenOnDestroy();
-        await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Hit") || _player.GetCurrentAnimationName().EndsWith("Shot"));
+        await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Hit") || _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: token).SuppressCancellationThrow();
         if (token.IsCancellationRequested) return;
-        await Delayer.DelayWithPause(_player.GetCurrentAnimationDuration(), token, _pauseToken);
+        await Delayer.DelayWithPause(_player.GetCurrentAnimationDuration(), token, _pauseToken).SuppressCancellationThrow();
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;
@@ -65,17 +63,5 @@ public abstract class PlayerAttackBaseState : PlayerState
     public override bool IsStateAvailable()
     {
         return !IsCooldown;
-    }
-
-    public override void Pause()
-    {
-        base.Pause();
-        _pauseTokenSource.Pause();
-    }
-
-    public override void Unpause()
-    {
-        base.Unpause();
-        _pauseTokenSource.Unpause();
     }
 }

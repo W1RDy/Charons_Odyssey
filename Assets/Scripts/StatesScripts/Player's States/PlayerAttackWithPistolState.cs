@@ -2,7 +2,9 @@ using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using Zenject;
 
@@ -19,6 +21,8 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private IInstantiator _instantiator;
 
+    private CancellationToken _token;
+
     public void Initialize(Player player, Weapon weapon, IInstantiator instantiator, Inventory inventory, CustomCamera customCamera, NoiseEventHandler noiseEventHandler, AudioMaster audioMaster)
     {
         base.Initialize(player, weapon, instantiator, audioMaster);
@@ -29,6 +33,8 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
         _inventory = inventory;
         _instantiator = instantiator;
+
+        _token = player.GetCancellationTokenOnDestroy(); 
 
         try
         {
@@ -54,7 +60,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         if (!IsCooldown && _pistol.PatronsCount > 0)
         {
             base.Attack();
-            await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
+            await UniTask.WaitUntil(() => _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: _token).SuppressCancellationThrow();
+            if (_token.IsCancellationRequested) return;
+
             _pistol.View.pistolView.gameObject.SetActive(true);
             Shot();
             _player.SetAnimation("HoldPistol", true);
@@ -105,9 +113,12 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         _player.SetAnimation("HoldPistol", false);
         if (newStateType != PlayerStateType.IdleWithGun)
         {
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: _token);
+
+            if (_token.IsCancellationRequested) return;
             _pistol.View.pistolView.gameObject.SetActive(false);
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"));
+
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"), cancellationToken: _token);
         }
     }
 

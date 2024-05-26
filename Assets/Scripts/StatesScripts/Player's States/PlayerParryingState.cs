@@ -34,6 +34,7 @@ public class PlayerParryingState : PlayerState
         IsStateFinished = true;
 
         _player.SetAnimation("Parrying", true);
+        _audioMaster.PlaySound("UseShield");
 
         WaitCooldown();
         base.Enter();
