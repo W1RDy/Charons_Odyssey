@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class DialogService : IService 
 {
-    private Dictionary<string, DialogBranch> _branchDictionary;
+    private Dictionary<string, DialogBranch> _branchDictionary = new Dictionary<string, DialogBranch>();
+
+    private const string DialogFilePath = "Configs/DialogFile.json";
 
     public void InitializeService()
     {
         InitializeMessagesDictionary();
     }
 
-    private async void InitializeMessagesDictionary()
+    private void InitializeMessagesDictionary()
     {
-        _branchDictionary = await DownloaderDataFromGoogleSheets.DownloadDialogsData();
+        var json = File.ReadAllText("Assets/Resources/" + DialogFilePath);
+        var dialogConfigs = JsonUtility.FromJson<DialogConfigs>(json);
 
-        //foreach (var branch in _branchDictionary)
-        //{
-        //    Debug.Log(branch.Key);
-        //    foreach (var message in branch.Value.messageConfigs)
-        //    {
-        //        Debug.Log(message.talkableIndex);
-        //    }
-        //}
+        foreach (var dialogBranch in dialogConfigs.DialogBranches)
+        {
+            _branchDictionary.Add(dialogBranch.index, dialogBranch);
+        }
     }
 
     public DialogBranch GetDialog(string dialogId)
@@ -62,14 +62,12 @@ public class DialogBranch
 [Serializable]
 public class MessageConfig
 {
-    public string message;
-    public bool isNeedChangeTalkable;
+    public string russianMessage;
     public string talkableIndex;
+}
 
-    public MessageConfig(string message, bool isNeedChangeTalkable, string talkableIndex)
-    {
-        this.message = message;
-        this.isNeedChangeTalkable = isNeedChangeTalkable;
-        this.talkableIndex = talkableIndex;
-    }
+[Serializable]
+public class DialogConfigs
+{
+    public List<DialogBranch> DialogBranches;
 }
