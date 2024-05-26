@@ -41,7 +41,7 @@ public class DialogLifeController : SubscribableClass, IPause
 
             var message = _currentDialog.GetFirstMessage();
             var talkable = _talkableFinder.GetTalkable(message.talkableIndex);
-            talkable.Talk(message.message);
+            talkable.Talk(message.russianMessage);
 
             _dialogClickHandler.Activate();
         }
@@ -57,7 +57,7 @@ public class DialogLifeController : SubscribableClass, IPause
         }
 
         var talkable = _talkableFinder.GetTalkable(message.talkableIndex);
-        talkable.Talk(message.message);
+        talkable.Talk(message.russianMessage);
     }
 
     public void FinishDialog()

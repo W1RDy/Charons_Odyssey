@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "charons-odyssey",
+  "private_key_id": "f6695769e714e595b81e0a9f5981be10000e530c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC3wiWfdApRuIye\nTLcUmQYeBHxqbjH8oL1taGDVflLDANAOvqPmFpVGC9TD493ECGtlXUGd/3rhywuh\nap44v1Hhuw+3M5q86APTT2QRqXSB7vF/4mdrqObzHTpdJoj2hG6Qk0VkSDBkSErk\nEYN1+UutpyUBwbFyKgE2S4v/9i4hs+D08Tnjv20OBl4u+eDZs6zip+YbmwzS6V7+\nK6G3HSFWYj+dX/89G1Im2mXOGrG+6krGpGJttpBbuQNm9M07l4IcuyzpvYsDokFv\ng7nKLkJwfJJMuy763xkM1a8lKlywJZgKdPDUvVcfaUvD8Jrpf9MaY/N/LKxl6gvV\n6sibSKnDAgMBAAECggEADBXRL/T2RByikZCoY8rn8OvI8POmsZ+IBceHwtK9h69T\nKlJrE2lTJO8HQwuGnMC/AMTK2Xohb0h8JIAPatpY/MMMNrdxSvuUBimNAm+wxruG\nbNY2M17sMtCuc3eNf2+t7oU5BZjifIiX9aWZ40A43saviOI1FOCNVtr4w1CXWnD4\ny5FP6hN0ZmaBAMJtZ9jYffWRk9vb77icGjBCn9VLGkIZfeGsGqClWLoKA8gllz1Y\nuayEnW3I1Tc/rPwYKXmWNq7Nbe0HLoysrXCZ/3VpOklUumiT3wG6Dy8/z0n6QQ2s\n2QzHiUxMbg36hozAP5xkCPbKjH0x8iy5SELVfdkHfQKBgQD5Z1W8ESJSQ7H1kyQl\n954gIhdV20dtM27oJxfFuf+S1IdAH393vzAOT9zI5fxaKtmNwaBYIWmUBH46yh42\nrBeZMbyjJJC6hNjsiPZ8UBYzBjt+e/cKDmS52qoWrYpYn3WKkhcIvYiKQ9hh3Ve+\nYy4crZVmu9Qs/XNjJElbrkk7HwKBgQC8nlchKgKwvYGX//A/7iLfphTA6NemVvR7\nFsQ49I7BpI88Re16ZbsJyg8y+jlnYlD8RgIxFfX1EJ1a7UqyEOK2EfdLlygiu2/N\nAln/D0dJnCHVxg6ZLvHKVsTGMuDzhaEzMSzNVC85MSYluqYKB285FOdJcU62G7Is\nvREmuHtg3QKBgA98F/meQrhC1bi+kv78ecfa9gHxpGSmTduCGdq/6ptOMLuNeReR\nOkWZNccPaHSctnczr2XpZSm4gbHavLd+RdTQHrsuWQILn4BIHK2pN0ehum3m+naY\nYC6d4fOYgL9x3xVkbqOvSNv0zGl/GaSLeeBz8pO3U7wbXF+qcBeOIaPXAoGAHe8/\nQrspHCWnSJlM5siDbl0sVAVgHD0WpeZSE/v0IBVeyiEK9G7qxT31NZDyxU6cLb1q\noaGrnE4buw+H2ETHxj+JsMx3iTOYJcAmyk0BclQ+JnA9ZuBFbWhh6FawztU5ZSd7\nxcaDjB8Zv8kkitjtNPD1V/mMlWhF2cXT0AJdSl0CgYBe30XBHRGI01p/srVoG7ln\ngu2PwoMZRK8LVHRSjRx/8lG7XTT9r93O8rtCNLSP1wctbr8eYJnmaOBKeXdt9rRO\nwuel8ucpKuN2X4Wngah5z+jtGb4lVrLZcRls6Z//md6zOx6kS/renfKsbvMjb1RV\nLUBiE9d5TZNNKYpeu2AmiQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "abvgd-96@charons-odyssey.iam.gserviceaccount.com",
+  "client_id": "101791494683408124719",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/abvgd-96%40charons-odyssey.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
