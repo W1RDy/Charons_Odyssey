@@ -7,7 +7,7 @@ public class DialogService : IService
 {
     private Dictionary<string, DialogBranch> _branchDictionary = new Dictionary<string, DialogBranch>();
 
-    private const string DialogFilePath = "Configs/DialogFile.json";
+    private const string DialogFilePath = "Configs/DialogFile";
 
     public void InitializeService()
     {
@@ -16,8 +16,8 @@ public class DialogService : IService
 
     private void InitializeMessagesDictionary()
     {
-        var json = File.ReadAllText("Assets/Resources/" + DialogFilePath);
-        var dialogConfigs = JsonUtility.FromJson<DialogConfigs>(json);
+        var json = Resources.Load<TextAsset>(DialogFilePath);
+        var dialogConfigs = JsonUtility.FromJson<DialogConfigs>(json.text);
 
         foreach (var dialogBranch in dialogConfigs.DialogBranches)
         {

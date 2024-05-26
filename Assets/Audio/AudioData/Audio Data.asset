@@ -78,7 +78,7 @@ MonoBehaviour:
         _additiveConfigs: []
     - _index: Death
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.6
       _audioClip: {fileID: 8300000, guid: a911ba62e7b22da488fae60201438332, type: 3}
       _additiveConfigs: []
     - _index: PaddleHit
@@ -88,7 +88,7 @@ MonoBehaviour:
       _additiveConfigs: []
     - _index: ShieldTakeDamage
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.3
       _audioClip: {fileID: 8300000, guid: 31bd670f81b11024eb30db97eadba4da, type: 3}
       _additiveConfigs: []
     - _index: TakeDamage
