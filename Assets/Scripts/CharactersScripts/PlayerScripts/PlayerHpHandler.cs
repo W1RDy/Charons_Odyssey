@@ -41,7 +41,7 @@ public class PlayerHpHandler : MonoBehaviour
 
     public void TakeHit(float damage, Vector2 damageDirection, ref float hp)
     {
-        if (_shield.IsActivated && (_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0))
+        if (_shield.IsActivated && ((_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0)))
         {
             _shield.AbsorbDamage(ref damage);
             _audioMaster.PlaySound("ShieldTakeDamage");

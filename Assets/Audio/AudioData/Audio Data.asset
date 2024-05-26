@@ -23,57 +23,57 @@ MonoBehaviour:
   - _audioConfigs:
     - _index: OpenIronDoor
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: f68e7e29913f9b042b67a4fab7eb0a96, type: 3}
       _additiveConfigs: []
     - _index: OpenWoodDoor
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: bb622ca79c110224d9a634bccaedb8ad, type: 3}
       _additiveConfigs: []
     - _index: Dodge
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 2
       _audioClip: {fileID: 8300000, guid: 96037055b5afdfc4c91b6a2442297e29, type: 3}
       _additiveConfigs: []
     - _index: Heal
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 1.5
       _audioClip: {fileID: 8300000, guid: 50e1eca40647a88448c37c78737a8a1e, type: 3}
       _additiveConfigs: []
     - _index: Hit
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: 2900f0731dc490843a40a3cef83f9d52, type: 3}
       _additiveConfigs: []
     - _index: Button
       _audioPlayerType: 0
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: af2762ae0b3fe56468f5ec715e208f85, type: 3}
       _additiveConfigs: []
     - _index: Pause
       _audioPlayerType: 0
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: ff10ed70b885a1f478ce0a45e156bcd1, type: 3}
       _additiveConfigs: []
     - _index: StaminaIsOver
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.9
       _audioClip: {fileID: 8300000, guid: 279a36d7111b67648b9f08d83bfc7027, type: 3}
       _additiveConfigs: []
     - _index: Shot
       _audioPlayerType: 4
-      _volume: 1
+      _volume: 1.5
       _audioClip: {fileID: 8300000, guid: 92c381186d6ad924d80d2d385eea6dd9, type: 3}
       _additiveConfigs:
       - _index: Shot
         _audioPlayerType: 4
-        _volume: 1
+        _volume: 1.5
         _audioClip: {fileID: 8300000, guid: 5d83035ba7622e84893a92f4fa4e8f9f, type: 3}
         _additiveConfigs: []
       - _index: Shot
         _audioPlayerType: 4
-        _volume: 1
+        _volume: 1.5
         _audioClip: {fileID: 8300000, guid: 4c8d280bad481064da34acb8290d2b6f, type: 3}
         _additiveConfigs: []
     - _index: Death
@@ -83,7 +83,7 @@ MonoBehaviour:
       _additiveConfigs: []
     - _index: PaddleHit
       _audioPlayerType: 4
-      _volume: 0.5
+      _volume: 0.8
       _audioClip: {fileID: 8300000, guid: 64bd9b2f70cc6e746a9159a5b1a71da8, type: 3}
       _additiveConfigs: []
     - _index: ShieldTakeDamage
@@ -115,17 +115,17 @@ MonoBehaviour:
   - _audioConfigs:
     - _index: ShipMovement
       _audioPlayerType: 2
-      _volume: 0.5
+      _volume: 0.7
       _audioClip: {fileID: 8300000, guid: 4a9f203da7ae74649900d1905e28f750, type: 3}
       _additiveConfigs: []
     - _index: Swamp
       _audioPlayerType: 3
-      _volume: 0.5
+      _volume: 0.3
       _audioClip: {fileID: 8300000, guid: b349aa08b81480148ab7a01797cb4fa2, type: 3}
       _additiveConfigs: []
     - _index: WheelMovement
       _audioPlayerType: 1
-      _volume: 0.5
+      _volume: 0.4
       _audioClip: {fileID: 8300000, guid: c94b87314c7807140b4532e80fff541c, type: 3}
       _additiveConfigs: []
     - _index: Climb

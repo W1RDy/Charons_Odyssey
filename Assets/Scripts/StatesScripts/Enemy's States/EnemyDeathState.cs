@@ -28,7 +28,7 @@ public class EnemyDeathState : EnemyState
 
     private async UniTask WaitWhileAnimationFinished()
     {
-        await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Death"), cancellationToken: _cancellationToken);
+        await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Death"), cancellationToken: _cancellationToken).SuppressCancellationThrow();
         if (_cancellationToken.IsCancellationRequested) return;
         await Delayer.DelayWithPause(_enemy.GetAnimationDuration(), _cancellationToken, _pauseToken);
         if (_cancellationToken.IsCancellationRequested) return;

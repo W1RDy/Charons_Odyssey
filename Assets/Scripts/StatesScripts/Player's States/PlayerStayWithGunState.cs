@@ -14,6 +14,7 @@ public class PlayerStayWithGunState : PlayerStayState
     private CustomCamera _camera;
 
     private PauseToken _pauseToken;
+    private CancellationToken _token;
 
     public virtual void Initialize(Player player, Weapon weapon, IInstantiator instantiator, CustomCamera customCamera, AudioMaster audioMaster)
     {
@@ -28,7 +29,9 @@ public class PlayerStayWithGunState : PlayerStayState
         {
             _shootPoint = new GameObject("ShootPoint").transform;
         }
+
         _pauseToken = _pauseHandler.GetPauseToken();
+        _token = player.GetCancellationTokenOnDestroy();
     }
 
     public override void Enter()
@@ -82,9 +85,12 @@ public class PlayerStayWithGunState : PlayerStayState
         if (newStateType != PlayerStateType.AttackWithPistol)
         {
             _player.SetAnimation("HoldPistol", false);
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"));
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: _token).SuppressCancellationThrow();
+
+            if (_token.IsCancellationRequested) return;
             _pistol.View.pistolView.gameObject.SetActive(false);
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"));
+
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"), cancellationToken: _token).SuppressCancellationThrow();
         }
     }
 }

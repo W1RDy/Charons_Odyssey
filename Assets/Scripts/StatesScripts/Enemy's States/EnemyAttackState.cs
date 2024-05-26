@@ -50,21 +50,24 @@ public class EnemyAttackState : EnemyState
                 playerWithShield.TakeHit(_enemyDefault.Damage, new Vector2(_enemyDefault.transform.localScale.x, 0).normalized);
             else if (player != null)
                 player[0].TakeHit(_enemyDefault.Damage);
+
             await Delayer.DelayWithPause(_enemy.DamageTimeBeforeAnimationEnd, _token, _pauseToken);
             if (_token.IsCancellationRequested) return;
+
             IsStateFinished = true;
         }
-
         WaitWhileCooldown();
     }
 
     private async UniTask WaitUntilAttack()
     {
-        await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Attack"));
+        await UniTask.WaitUntil(() => _enemy.GetAnimationName().EndsWith("Attack"), cancellationToken: _token).SuppressCancellationThrow();
         if (_token.IsCancellationRequested) return;
+
         await Delayer.DelayWithPause((_enemy.GetAnimationDuration() - _enemy.DamageTimeBeforeAnimationEnd) - _enemy.ParryingWindowDuration, _token, _pauseToken);
-        _enemy.IsReadyForParrying = true;
         if (_token.IsCancellationRequested) return;
+
+        _enemy.IsReadyForParrying = true;
         await Delayer.DelayWithPause(_enemy.ParryingWindowDuration, _token, _pauseToken);
     }
 

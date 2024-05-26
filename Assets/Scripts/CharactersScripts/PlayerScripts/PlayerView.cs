@@ -44,11 +44,13 @@ public class PlayerView : MonoBehaviour, IPause
 
     public float GetAnimationDuration()
     {
+        if (_animator == null) return 0f;
         return _animator.GetCurrentAnimatorStateInfo(0).length;
     }
 
     public string GetAnimationName()
     {
+        if (_animator == null) return null;
         return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
     }
 
