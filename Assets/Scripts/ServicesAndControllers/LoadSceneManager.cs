@@ -77,7 +77,8 @@ public class LoadSceneManager : MonoBehaviour
     public void LoadNextScene()
     {
         var buildIndex = SceneManager.GetActiveScene().buildIndex;
-        LoadScene(buildIndex + 1);
+        if (buildIndex == 2) LoadScene(4); // потом переделать
+        else LoadScene(1);
     }
 
     private async void AsyncLoading(int sceneIndex, int delay)

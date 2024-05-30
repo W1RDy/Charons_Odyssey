@@ -8,12 +8,12 @@
 
     public void ActivateTip(TipType tipType)
     {
-        _tip.ActivateTip(GetTipText(tipType));
+        if (_tip) _tip.ActivateTip(GetTipText(tipType));
     }
 
     public void DeactivateTip()
     {
-        _tip.DeactivateTip();
+        if (_tip) _tip.DeactivateTip();
     }
 
     public string GetTipText(TipType tipType)

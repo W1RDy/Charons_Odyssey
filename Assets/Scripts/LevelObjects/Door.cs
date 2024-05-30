@@ -6,6 +6,10 @@ using Zenject;
 public class Door : MonoBehaviour, IInteractable
 {
     [SerializeField] private SpriteRenderer _view;
+
+    [SerializeField] private Sprite _openedDoorSprite;
+    private Sprite _closedDoorSprite;
+
     [SerializeField] private bool _isLocked;
     [SerializeField] private Space[] _spaces;
     private Inventory _inventory;
@@ -29,6 +33,8 @@ public class Door : MonoBehaviour, IInteractable
     {
         _collider = GetComponent<Collider2D>();
         _colliderIsTrigger = _collider.isTrigger;
+
+        if (_view != null) _closedDoorSprite = _view.sprite;
     }
 
     private void OpenDoor()
@@ -50,7 +56,11 @@ public class Door : MonoBehaviour, IInteractable
             _collider.isTrigger = true;
 
             foreach (var space in _spaces) space.OpenSpace();
-            if (_view) _view.gameObject.SetActive(false);
+            if (_view)
+            {
+                if (_openedDoorSprite != null) _view.sprite = _openedDoorSprite;
+                else _view.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -60,7 +70,11 @@ public class Door : MonoBehaviour, IInteractable
         _collider.isTrigger = _colliderIsTrigger;
 
         foreach (var space in _spaces) space.CloseSpace();
-        if (_view) _view.gameObject.SetActive(true);
+        if (_view)
+        {
+            if (_openedDoorSprite != null) _view.sprite = _closedDoorSprite;
+            else _view.gameObject.SetActive(true);
+        }
 
         _audioMaster.PlaySound("OpenWoodDoor");
     }

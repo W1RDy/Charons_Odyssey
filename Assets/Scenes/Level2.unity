@@ -1120,6 +1120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 86715772}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 1936892725}
@@ -1245,7 +1246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1943339900}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 221342203}
   _bordersChanger: {fileID: 0}
 --- !u!61 &221342203
@@ -1707,6 +1708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 129586188}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 2063911239}
@@ -2252,7 +2254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1467318888}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 490398610}
   _bordersChanger: {fileID: 0}
 --- !u!61 &490398610
@@ -2763,6 +2765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 2034068569}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 221342202}
@@ -3608,7 +3611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1457004124}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 707715457}
   _bordersChanger: {fileID: 0}
 --- !u!61 &707715457
@@ -4055,6 +4058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 67728666}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 939989285}
@@ -4371,7 +4375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 2017996002}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 939989286}
   _bordersChanger: {fileID: 0}
 --- !u!61 &939989286
@@ -4829,7 +4833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7779190277296773070, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 53
       objectReference: {fileID: 0}
     - target: {fileID: 7779190277296773070, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4897,7 +4901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8838156300856393021, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 136
       objectReference: {fileID: 0}
     - target: {fileID: 8838156300856393021, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5499,6 +5503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 2037663300}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 2047579298}
@@ -5552,6 +5557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 914240864}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 1
   _spaces:
   - {fileID: 1374656158}
@@ -5748,6 +5754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 1192410993}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 1
   _spaces:
   - {fileID: 1341945935}
@@ -6321,6 +6328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 147583021}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 707715456}
@@ -6457,7 +6465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1533082222}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 1341945936}
   _bordersChanger: {fileID: 0}
 --- !u!61 &1341945936
@@ -6622,7 +6630,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7790940368718675231, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -62.72
+      value: 227.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7790940368718675231, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 31.4
       objectReference: {fileID: 0}
     - target: {fileID: 7790940368839908693, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
       propertyPath: m_IsActive
@@ -6789,7 +6801,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 431773589}
-  _firstPlane: {fileID: 24650398}
+  _firstPlanes:
+  - {fileID: 24650398}
   _collider: {fileID: 1374656159}
   _bordersChanger: {fileID: 0}
 --- !u!61 &1374656159
@@ -8128,7 +8141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1784780838}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 1574207987}
   _bordersChanger: {fileID: 0}
 --- !u!61 &1574207987
@@ -8380,6 +8393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 1639572066}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 1574207986}
@@ -8628,6 +8642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 1537371493}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 2047579298}
@@ -9089,6 +9104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 1532004994}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 2047579298}
@@ -9529,6 +9545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 733184581}
+  _openedDoorSprite: {fileID: 0}
   _isLocked: 0
   _spaces:
   - {fileID: 2119678108}
@@ -9789,7 +9806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 421981073}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 1936892726}
   _bordersChanger: {fileID: 0}
 --- !u!61 &1936892726
@@ -10741,7 +10758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 32148584}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 2047579299}
   _bordersChanger: {fileID: 0}
 --- !u!61 &2047579299
@@ -10854,7 +10871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 185008089}
-  _firstPlane: {fileID: 0}
+  _firstPlanes: []
   _collider: {fileID: 2063911240}
   _bordersChanger: {fileID: 0}
 --- !u!61 &2063911240
@@ -11060,7 +11077,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 1330396371}
-  _firstPlane: {fileID: 1800822585}
+  _firstPlanes:
+  - {fileID: 1800822585}
   _collider: {fileID: 2119678107}
   _bordersChanger: {fileID: 0}
 --- !u!1001 &4907064142896846212
