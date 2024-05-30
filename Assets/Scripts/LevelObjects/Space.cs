@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class Space : MonoBehaviour
 {
     [SerializeField] private SpriteMask _mask;
-    [SerializeField] private SpriteRenderer _firstPlane;
+
+    [SerializeField] private SpriteRenderer[] _firstPlanes;
+    private SpaceFirstPlane _spaceFirstPlane;
 
     [SerializeField] private Collider2D _collider;
     [SerializeField] private SpaceBordersChanger _bordersChanger;
@@ -16,6 +18,7 @@ public class Space : MonoBehaviour
     private void Awake()
     {
         _isColliderTrigger = _collider.isTrigger;
+        if (_firstPlanes.Length > 0) _spaceFirstPlane = new SpaceFirstPlane(_firstPlanes);
     }
 
     public void OpenSpace()
@@ -24,7 +27,7 @@ public class Space : MonoBehaviour
         {
             _isOpen = true;
             _mask.gameObject.SetActive(true);
-            if (_firstPlane) _firstPlane.enabled = false;
+            if (_spaceFirstPlane != null) _spaceFirstPlane.HideFirstPlane();
 
             MakeObjAvailable();
             _collider.isTrigger = true;
@@ -38,7 +41,7 @@ public class Space : MonoBehaviour
         {
             _isOpen = false;
             _mask.gameObject.SetActive(false);
-            if (_firstPlane) _firstPlane.enabled = true;
+            if (_spaceFirstPlane != null) _spaceFirstPlane.ShowFirstPlane();
 
             MakeObjAvailable();
             _collider.isTrigger = _isColliderTrigger;
@@ -61,4 +64,32 @@ public class Space : MonoBehaviour
     }
 
     public bool IsOpen() => _isOpen;
+}
+
+public class SpaceFirstPlane
+{
+    private SpriteRenderer[] _firstPlanes;
+
+    public SpaceFirstPlane(SpriteRenderer[] firstPlanes)
+    {
+        _firstPlanes = firstPlanes;
+    }
+
+    public void HideFirstPlane()
+    {
+        ChangeFirstPlane(false);
+    }
+
+    public void ShowFirstPlane()
+    {
+        ChangeFirstPlane(true);
+    }
+
+    private void ChangeFirstPlane(bool _isShow)
+    {
+        foreach (var firstPlane in _firstPlanes)
+        {
+            firstPlane.enabled = _isShow;
+        }
+    }
 }

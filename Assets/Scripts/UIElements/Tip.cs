@@ -28,4 +28,10 @@ public class Tip : MonoBehaviour
         if (_appearAnimation.IsPlaying) _appearAnimation.Kill();
         _disappearAnimation.Play();
     }
+
+    private void OnDestroy()
+    {
+        DeactivateTip();
+        _disappearAnimation.Kill();
+    }
 }
