@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e4ea3b85efe599840aa7d93f33b271f3
+guid: 7e38a2329be365d42817355884182051
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,169 +136,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Minotaur attack_0
+      name: Minotaur take hit_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
+        width: 32
         height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5004369462df3904aac417692be2cafe
-      internalID: -551728529
+      spriteID: 4a61714323e247f45bc1da1f53641c4b
+      internalID: 2057032298
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_1
+      name: Minotaur take hit_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 0
-        width: 48
+        width: 32
         height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ef8adb8fdc324c44bb263d2e0cfad2e
-      internalID: 902908283
+      spriteID: 3e261a976d942374f80030b15e2c0390
+      internalID: -996203633
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_2
+      name: Minotaur take hit_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93700f494e9ec4741a4166a3800ce353
+      internalID: 872497332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Minotaur take hit_3
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 48
+        width: 32
         height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b1b9b3d13d4d964db277c4bb3154764
-      internalID: -1644958814
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0e39cdd826384be4da70552206b296b5
-      internalID: 42253739
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_4
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9480e394a2f41cc4690b2ae958880f4a
-      internalID: -1454523196
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_5
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c2406eb4c8b59a4fb1cf3c4caffb61b
-      internalID: 311380213
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_6
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c2c2e7276601984c9aa852a58cd6c01
-      internalID: 927370416
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_7
-      rect:
-        serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cfd8143c4533f8a4bad5ba8e62e70ded
-      internalID: 559735121
+      spriteID: de8c87dec92ea8149a3e8753e6ebff01
+      internalID: -1755799882
       vertices: []
       indices: 
       edges: []
@@ -314,14 +230,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Minotaur attack_0: -551728529
-      Minotaur attack_1: 902908283
-      Minotaur attack_2: -1644958814
-      Minotaur attack_3: 42253739
-      Minotaur attack_4: -1454523196
-      Minotaur attack_5: 311380213
-      Minotaur attack_6: 927370416
-      Minotaur attack_7: 559735121
+      Minotaur take hit_0: 2057032298
+      Minotaur take hit_1: -996203633
+      Minotaur take hit_2: 872497332
+      Minotaur take hit_3: -1755799882
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

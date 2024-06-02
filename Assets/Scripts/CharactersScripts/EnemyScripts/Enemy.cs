@@ -124,11 +124,15 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     {
         if (!_isPaused)
         {
-            _view.SetAnimation("TakeHit", true);
             _hp -= hitInfo.Damage;
-            if (_hp <= 0) ChangeState(EnemyStateType.Death);
+
+            if (_hp <= 0)
+            {
+                ChangeState(EnemyStateType.Death);
+            }
             else
             {
+                _view.SetAnimation("TakeHit", true);
                 if (hitInfo.IsHasEffect(AdditiveHitEffect.Stun)) ApplyStun();
             }
         }

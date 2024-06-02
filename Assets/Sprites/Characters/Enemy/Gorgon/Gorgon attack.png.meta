@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e4ea3b85efe599840aa7d93f33b271f3
+guid: a6ef12bf15aa7c345851119f94608d57
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,169 +136,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Minotaur attack_0
+      name: Gorgon attack1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5004369462df3904aac417692be2cafe
-      internalID: -551728529
+      spriteID: a4bee93d0c14aba47a9751434244fb27
+      internalID: 302183229
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_1
+      name: Gorgon attack1_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6ef8adb8fdc324c44bb263d2e0cfad2e
-      internalID: 902908283
+      spriteID: 920ebe1a6b3096d4ebc97cf57cd71dc9
+      internalID: 325015010
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_2
+      name: Gorgon attack1_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc934a5d66de62649a57fece565a2748
+      internalID: 473393274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gorgon attack1_3
       rect:
         serializedVersion: 2
         x: 96
         y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5b1b9b3d13d4d964db277c4bb3154764
-      internalID: -1644958814
+      spriteID: 8ed3ae1a11d9dd645befa6551bb92cea
+      internalID: -1726214463
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_3
+      name: Gorgon attack1_4
       rect:
         serializedVersion: 2
-        x: 144
+        x: 128
         y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e39cdd826384be4da70552206b296b5
-      internalID: 42253739
+      spriteID: 3384c759ce9603245967ac8180e6f0a5
+      internalID: -1123873110
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Minotaur attack_4
+      name: Gorgon attack1_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27edf4e506f33944ea1dcf604e36350c
+      internalID: -1220118408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gorgon attack1_6
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9480e394a2f41cc4690b2ae958880f4a
-      internalID: -1454523196
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_5
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c2406eb4c8b59a4fb1cf3c4caffb61b
-      internalID: 311380213
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_6
-      rect:
-        serializedVersion: 2
-        x: 288
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c2c2e7276601984c9aa852a58cd6c01
-      internalID: 927370416
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Minotaur attack_7
-      rect:
-        serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 33
-      alignment: 9
-      pivot: {x: 0.333, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cfd8143c4533f8a4bad5ba8e62e70ded
-      internalID: 559735121
+      spriteID: 3d9f2f135416da7449a4080c62d3126d
+      internalID: 753513952
       vertices: []
       indices: 
       edges: []
@@ -314,14 +293,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Minotaur attack_0: -551728529
-      Minotaur attack_1: 902908283
-      Minotaur attack_2: -1644958814
-      Minotaur attack_3: 42253739
-      Minotaur attack_4: -1454523196
-      Minotaur attack_5: 311380213
-      Minotaur attack_6: 927370416
-      Minotaur attack_7: 559735121
+      Gorgon attack1_0: 302183229
+      Gorgon attack1_1: 325015010
+      Gorgon attack1_2: 473393274
+      Gorgon attack1_3: -1726214463
+      Gorgon attack1_4: -1123873110
+      Gorgon attack1_5: -1220118408
+      Gorgon attack1_6: 753513952
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
