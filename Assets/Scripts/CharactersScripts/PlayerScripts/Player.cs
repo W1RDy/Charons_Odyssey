@@ -148,6 +148,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         if (!_isImmortal)
         {
             _playerHpHandler.TakeHit(hitInfo, ref _hp);
+            if (_hp > 0) SetAnimation("TakeHit", true);
         }
         if (_hp <= 0) Death();
     }

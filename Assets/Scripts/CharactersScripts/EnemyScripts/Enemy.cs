@@ -24,8 +24,9 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     [SerializeField] protected bool _isAvailable;
 
-    protected Animator _animator;
-    protected SpriteRenderer _spriteRenderer;
+    private EnemyView _view;
+    [SerializeField] private StunAnimation _stunAnimation;
+    [SerializeField] private TakeHitAnimation _takeHitAnimation;
 
     protected NoiseEventHandler _noiseEventHandler;
     public event Action OnEnemyDisable;
@@ -67,8 +68,10 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         var pauseHandler = _instantiator.Instantiate<PauseHandler>();
         pauseHandler.SetCallbacks(Pause, Unpause);
 
-        _animator = GetComponentInChildren<Animator>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        var animator = GetComponentInChildren<Animator>();
+        var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        _view = new EnemyView(spriteRenderer, animator, _stunAnimation, _takeHitAnimation);
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
@@ -121,7 +124,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     {
         if (!_isPaused)
         {
-            StartCoroutine(TakeHit());
+            _view.SetAnimation("TakeHit", true);
             _hp -= hitInfo.Damage;
             if (_hp <= 0) ChangeState(EnemyStateType.Death);
             else
@@ -153,47 +156,6 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         ChangeState(EnemyStateType.Attack);
     }
 
-    public void SetIdleAnimation()
-    {
-        foreach (var parameter in _animator.parameters)
-        {
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-                _animator.SetBool(parameter.name, parameter.defaultBool);
-        }
-    }
-
-    public void SetAnimation(string animationIndex, bool isActivate)
-    {
-        if (animationIndex == "Idle" && isActivate) SetIdleAnimation();
-        else
-        { 
-            try { _animator.SetBool(animationIndex, isActivate); }
-            catch { if (isActivate) _animator.SetTrigger(animationIndex); }
-        }
-    }
-
-    IEnumerator TakeHit() // убрать, когда появится анимация
-    {
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.red;
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.white;
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.red;
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.white;
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.red;
-        yield return new WaitWhile(() => _isPaused);
-        yield return new WaitForSeconds(0.1f);
-        _spriteRenderer.color = Color.white;
-    }
-
     public void ChangeAvailable(bool isAvailable) 
     {
         _isAvailable = isAvailable;
@@ -201,12 +163,17 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public float GetAnimationDuration()
     {
-        return _animator.GetCurrentAnimatorStateInfo(0).length;
+        return _view.GetAnimationDuration();
     }
 
     public string GetAnimationName()
     {
-        return _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        return _view.GetAnimationName();
+    }
+
+    public void SetAnimation(string animationIndex, bool isActivate)
+    {
+        _view.SetAnimation(animationIndex, isActivate);
     }
 
     public void Flip(Vector2 direction)
@@ -219,13 +186,13 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public void Pause()
     {
-        _animator.speed = 0;
+        _view.Pause();
         _isPaused = true;
     }
 
     public void Unpause()
     {
-        _animator.speed = 1;
+        _view.Unpause();
         _isPaused = false;
     }
 

@@ -281,6 +281,12 @@ MonoBehaviour:
   _damageTimeBeforeAnimationEnd: 0.1
   _stunningTime: 3.5
   _isAvailable: 0
+  _stunAnimation:
+    _scaleOffset: 0.5
+    _stepDuration: 0.02
+    _endColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
+  _takeHitAnimation:
+    _stepDuration: 0.1
   _idleState: {fileID: 11400000, guid: b85badca845c9bb44b4485fdb6818a4b, type: 2}
   _cooldownState: {fileID: 11400000, guid: e95b6970dbc1d844c86705ad5ec32c76, type: 2}
   _attackState: {fileID: 11400000, guid: 01850b1efa966b34c818faafd554eef5, type: 2}
