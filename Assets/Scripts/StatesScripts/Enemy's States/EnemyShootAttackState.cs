@@ -20,7 +20,11 @@ public class EnemyShootAttackState : EnemyAttackState
 
     private Bullet SpawnBullet()
     {
-        var bulletObj = Instantiate(_bulletPrefab, _enemy.transform.position, Quaternion.identity);
+        Bullet bulletObj;
+        if (_enemy is Gorgon gorgon)
+            bulletObj = Instantiate(_bulletPrefab, gorgon.ShootPoint.position, Quaternion.identity);
+        else
+            bulletObj = Instantiate(_bulletPrefab, _enemy.transform.position, Quaternion.identity);
 
         var direction = (_target.transform.position - bulletObj.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

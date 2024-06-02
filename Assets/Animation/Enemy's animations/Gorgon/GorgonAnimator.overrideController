@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GorgonAnimator
+  m_Controller: {fileID: 9100000, guid: d2b016dac123f724c95e98df1521f8e8, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 704099bde78a4b14a9eb2ac5268cebff, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ec7026a4d6c8e4149b10638ac2d99cd4, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: f1dc9c6c62bfac54893d68d3dfea290e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f947a617bac03f44390d4be887508242, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: c69bab124b858604fac42f896fb3cd6f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f947a617bac03f44390d4be887508242, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4473596895e26c345b24e74ca5b2c5d0, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f947a617bac03f44390d4be887508242, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 6e12077abd47ff343a9fe952816387d7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f947a617bac03f44390d4be887508242, type: 2}
