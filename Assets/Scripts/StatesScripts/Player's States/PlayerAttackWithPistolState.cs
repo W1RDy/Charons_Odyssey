@@ -113,12 +113,12 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         _player.SetAnimation("HoldPistol", false);
         if (newStateType != PlayerStateType.IdleWithGun)
         {
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: _token);
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Shot"), cancellationToken: _token).SuppressCancellationThrow();
 
             if (_token.IsCancellationRequested) return;
             _pistol.View.pistolView.gameObject.SetActive(false);
 
-            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"), cancellationToken: _token);
+            await UniTask.WaitWhile(() => _player.GetCurrentAnimationName().EndsWith("Pistol"), cancellationToken: _token).SuppressCancellationThrow();
         }
     }
 

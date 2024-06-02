@@ -5,20 +5,26 @@ using Zenject;
 
 public class PlayerView : MonoBehaviour, IPause
 {
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+
     private Animator _animator;
-    private PauseService _pauseService;
     private float _animatorSpeed;
 
+    [SerializeField] private StunAnimation _stunAnimation;
+    [SerializeField] private TakeHitAnimation _takeHitAnimation;
+
     [Inject]
-    private void Construct(PauseService pauseService)
+    private void Construct(IInstantiator instantiator)
     {
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
+        var pauseHandler = instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Pause, Unpause);
     }
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _stunAnimation.SetParameters(_spriteRenderer.transform, _spriteRenderer);
+        _takeHitAnimation.SetParameters(_spriteRenderer);
     }
 
     private void SetIdleAnimation()
@@ -30,6 +36,9 @@ public class PlayerView : MonoBehaviour, IPause
             else if (parameter.type == AnimatorControllerParameterType.Int)
                 _animator.SetInteger(parameter.name, parameter.defaultInt);
         }
+
+        SetStunAnimation(false);
+        SetTakeHitAnimation(false);
     }
 
     public void SetAnimation(string animationIndex, bool isActivate)
@@ -37,6 +46,9 @@ public class PlayerView : MonoBehaviour, IPause
         if (animationIndex == "Idle" && isActivate) SetIdleAnimation();
         else
         {
+            if (animationIndex == "TakeHit") SetTakeHitAnimation(isActivate);
+            else if (animationIndex == "Stun") SetStunAnimation(isActivate);
+
             try { _animator.SetBool(animationIndex, isActivate); }
             catch { if (isActivate) _animator.SetTrigger(animationIndex); }
         }
@@ -56,7 +68,19 @@ public class PlayerView : MonoBehaviour, IPause
 
     public void SetAnimatorSpeed(float speed)
     {
-        _animator.speed = speed;
+        if (_animator) _animator.speed = speed;
+    }
+
+    private void SetStunAnimation(bool isActivate)
+    {
+        if (isActivate) _stunAnimation.Play();
+        else _stunAnimation.Kill();
+    }
+
+    private void SetTakeHitAnimation(bool isActivate)
+    {
+        if (isActivate) _takeHitAnimation.Play();
+        else _takeHitAnimation.Kill();
     }
 
     public void Pause()
@@ -68,10 +92,5 @@ public class PlayerView : MonoBehaviour, IPause
     public void Unpause()
     {
         SetAnimatorSpeed(_animatorSpeed);
-    }
-
-    public void OnDestroy()
-    {
-        _pauseService.RemovePauseObj(this);
     }
 }

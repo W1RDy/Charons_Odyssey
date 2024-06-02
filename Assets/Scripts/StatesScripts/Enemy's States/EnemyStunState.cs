@@ -23,7 +23,7 @@ public class EnemyStunState : EnemyState
     public override void Enter()
     {
         Debug.Log("Stun");
-        _enemy.SetAnimation("Stun", true);
+        //_enemy.SetAnimation("Stun", true);
         IsStateFinished = false;
         WaitWhileStunned();
         base.Enter();
@@ -43,6 +43,6 @@ public class EnemyStunState : EnemyState
     public override void Exit()
     {
         base.Exit();
-        _enemy.SetAnimation("Stun", false);
+        //_enemy.SetAnimation("Stun", false);
     }
 }

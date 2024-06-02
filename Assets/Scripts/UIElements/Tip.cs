@@ -31,7 +31,7 @@ public class Tip : MonoBehaviour
 
     private void OnDestroy()
     {
-        DeactivateTip();
+        _appearAnimation.Kill();
         _disappearAnimation.Kill();
     }
 }
