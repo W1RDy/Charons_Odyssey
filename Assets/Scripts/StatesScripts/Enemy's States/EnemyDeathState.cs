@@ -1,21 +1,19 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Death State", menuName = "Enemy's State/Death State")]
 public class EnemyDeathState : EnemyState
 {
-    private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
-
     private CancellationToken _cancellationToken;
 
-    public override void Initialize(Enemy enemy, PauseService pauseService)
+    public override void Initialize(Enemy enemy, IInstantiator instantiator)
     {
-        base.Initialize(enemy, pauseService);
+        base.Initialize(enemy, instantiator);
 
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+        _pauseToken = _pauseHandler.GetPauseToken();
         _cancellationToken = _enemy.GetCancellationTokenOnDestroy();
     }
 
@@ -39,17 +37,5 @@ public class EnemyDeathState : EnemyState
     {
         base.Exit();
         _enemy.Death();
-    }
-
-    public override void Pause()
-    {
-        base.Pause();
-        _pauseTokenSource.Pause();
-    }
-
-    public override void Unpause()
-    {
-        base.Unpause();
-        _pauseTokenSource.Unpause();
     }
 }

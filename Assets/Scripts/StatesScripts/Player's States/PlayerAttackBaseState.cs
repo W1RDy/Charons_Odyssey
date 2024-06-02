@@ -36,7 +36,7 @@ public abstract class PlayerAttackBaseState : PlayerState
         foreach (var hittable in hittables)
         {
             var objWithHealth = hittable as IHasHealth;
-            objWithHealth?.TakeHit(_weapon.Damage);
+            objWithHealth?.TakeHit(new HitInfo(_weapon.Damage, Vector2.zero));
         }
     }
 

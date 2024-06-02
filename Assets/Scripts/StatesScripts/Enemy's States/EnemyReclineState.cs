@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Recline State", menuName = "Enemy's State/Recline State")]
 public class EnemyReclineState : EnemyState
@@ -8,9 +9,9 @@ public class EnemyReclineState : EnemyState
     protected Transform _recliner;
     protected float _reclineForce;
 
-    public override void Initialize(Enemy enemy, PauseService pauseService)
+    public override void Initialize(Enemy enemy, IInstantiator instantiator)
     {
-        base.Initialize(enemy, pauseService);
+        base.Initialize(enemy, instantiator);
         _rb = enemy.GetComponent<Rigidbody2D>();
     }
 

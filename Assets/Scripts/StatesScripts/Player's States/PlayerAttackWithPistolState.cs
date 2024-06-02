@@ -71,9 +71,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private void Shot()
     {
-        var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<Bullet>();
+        var bullet = Instantiate(_pistol.BulletPrefab, _pistolEnd.position, _pistolEnd.rotation).GetComponent<PlayerBullet>();
         if (_player.transform.localScale.x < 0) bullet.transform.eulerAngles = new Vector3(0, 0, bullet.transform.eulerAngles.z + 180);
-        bullet.Initialize(AttackableObjectIndex.Player, _instantiator, _pistol.Distance, _pistol.Damage);
+        bullet.Initialize(_instantiator, _pistol.Distance, _pistol.Damage);
         _inventory.RemoveItem(ItemType.Patrons, 1);
         _noiseEventHandler.MakeNoise(_pistolEnd.position);
     }

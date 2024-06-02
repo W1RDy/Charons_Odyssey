@@ -14,5 +14,6 @@ public interface IAttackableWithWeapon
 public enum AttackableObjectIndex
 {
     Player = 7,
-    Enemy = 6
+    Enemy = 6,
+    EnemyBullet = 12
 }

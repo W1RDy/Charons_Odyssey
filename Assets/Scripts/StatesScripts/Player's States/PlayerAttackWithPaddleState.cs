@@ -38,15 +38,12 @@ public class PlayerAttackWithPaddleState : PlayerAttackWithStamina
         foreach (var hittable in hittables)
         {
             var objWithHealth = hittable as IHasHealth;
-            var reclinable = hittable as IReclinable;
-            objWithHealth?.TakeHit(_paddle.Damage);
-            if (reclinable != null) ReclineObjs(reclinable);
-        }
-    }
 
-    private void ReclineObjs(IReclinable reclinable)
-    {
-        reclinable.GetRecline(_weapon.WeaponPoint, _paddle.RecliningForce);
+            var hitInfo = new HitInfo(_weapon.Damage, Vector2.zero, AdditiveHitEffect.Recline);
+            hitInfo.SetReclineInfo(new ReclineInfo(_weapon.WeaponPoint, _paddle.RecliningForce));
+
+            objWithHealth?.TakeHit(hitInfo);
+        }
     }
 
     public override void Exit()

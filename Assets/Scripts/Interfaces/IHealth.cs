@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IHittable
 {
-    public void TakeHit(float damage = 0);
+    public void TakeHit(HitInfo hitInfo);
 }
 
 public interface IHasHealth : IHittable
@@ -20,11 +20,6 @@ public interface IHasHealableHealth : IHasHealth
 public interface IReclinable : IHittable
 {
     public void GetRecline(Transform _recliner, float _reclineForce);
-}
-
-public interface IHittableWithShield : IHittable
-{
-    public void TakeHit(float damage, Vector2 damageDirection);
 }
 
 public interface IParryingHittable : IHittable

@@ -28,7 +28,7 @@ public static class FinderObjects
 
     public static IParryingHittable FindParryingHittableByCircle(float radius, Vector2 circlePosition)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << (int)AttackableObjectIndex.Enemy);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << (int)AttackableObjectIndex.Enemy | 1 << (int)AttackableObjectIndex.EnemyBullet);
         if (colliders != null)
         {
             foreach (var collider in colliders)

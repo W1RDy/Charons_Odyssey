@@ -25,7 +25,7 @@ public class PlayerStunState : PlayerState
     private async void WaitWhileStunned()
     {
         var token = _player.GetCancellationTokenOnDestroy();
-        await Delayer.DelayWithPause(1, token, _pauseTokenSource.Token);
+        await Delayer.DelayWithPause(2, token, _pauseTokenSource.Token);
         if (!token.IsCancellationRequested) IsStateFinished = true;
     }
 

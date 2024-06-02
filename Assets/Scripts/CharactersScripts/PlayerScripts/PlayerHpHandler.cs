@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.PackageManager;
+using UnityEngine;
 using Zenject;
 
 public class PlayerHpHandler : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerHpHandler : MonoBehaviour
     private HpIndicator _hpIndicator;
     private GameLifeController _gameLifeController;
     private Shield _shield;
+    private Player _player;
 
     private AudioMaster _audioMaster;
 
@@ -19,10 +21,12 @@ public class PlayerHpHandler : MonoBehaviour
         _audioMaster = audioMaster;
     }
 
-    public void Initialize(float hp, Shield shield)
+    public void Initialize(float hp, Shield shield, Player player)
     {
         _maxHp = hp;
         _shield = shield;
+
+        _player = player;
     }
 
     public void TakeHeal(float healValue, ref float hp)
@@ -39,18 +43,30 @@ public class PlayerHpHandler : MonoBehaviour
         _hpIndicator.SetHp(hp);
     }
 
-    public void TakeHit(float damage, Vector2 damageDirection, ref float hp)
+    public void TakeHit(HitInfo hitInfo, ref float hp)
     {
-        if (_shield.IsActivated && ((_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0)))
+        var damage = hitInfo.Damage;
+
+        if (IsShieldWorked(hitInfo.DamageDirection))
         {
-            _shield.AbsorbDamage(ref damage);
+            if (!hitInfo.IsHasEffect(AdditiveHitEffect.Stun))
+            {
+                _shield.AbsorbDamage(ref damage);
+            }
             _audioMaster.PlaySound("ShieldTakeDamage");
         }
         else
         {
+            if (hitInfo.IsHasEffect(AdditiveHitEffect.Stun)) _player.ApplyStun();
+
             _audioMaster.PlaySound("TakeDamage");
         }
         TakeHit(damage, ref hp);
+    }
+
+    private bool IsShieldWorked(Vector2 damageDirection)
+    {
+        return _shield.IsActivated && ((_shield.IsTurnedRight && damageDirection.x < 0) || (!_shield.IsTurnedRight && damageDirection.x > 0));
     }
 
     public void Death()

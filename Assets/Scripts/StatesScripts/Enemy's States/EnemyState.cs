@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public abstract class EnemyState : ScriptableObject, IPause
 {
@@ -8,18 +9,20 @@ public abstract class EnemyState : ScriptableObject, IPause
     [SerializeField] private EnemyStateType _stateType;
     protected Enemy _enemy;
 
-    private PauseService _pauseService;
+    protected IInstantiator _instantiator;
+
+    protected PauseHandler _pauseHandler;
     protected bool _isPaused;
 
     public bool IsStateFinished { get; protected set; }
 
-    public virtual void Initialize(Enemy enemy, PauseService pauseService)
+    public virtual void Initialize(Enemy enemy, IInstantiator instantiator)
     {
         _enemy = enemy;
         _enemy.OnEnemyDisable += OnEnemyDisable;
 
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
+        _instantiator = instantiator;
+        _pauseHandler = _instantiator.Instantiate<PauseHandler>();
     }
 
     public virtual void Enter() { }
@@ -43,7 +46,6 @@ public abstract class EnemyState : ScriptableObject, IPause
 
     public virtual void OnEnemyDisable()
     {
-        _pauseService.RemovePauseObj(this);
         _enemy.OnEnemyDisable -= OnEnemyDisable;
     }
 }
