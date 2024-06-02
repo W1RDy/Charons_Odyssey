@@ -8,21 +8,18 @@ using Zenject;
 
 [RequireComponent(typeof(DirectionalMove))]
 [RequireComponent(typeof(Collider2D))]
-public class Bullet : MonoBehaviour
+public abstract class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed;
     private float _damage;
-    private int _layer;
+    protected List<int> _layers;
     private CancellationToken _token;
 
     private PauseHandler _pauseHandler;
     private PauseToken _pauseToken;
 
-    public void Initialize(AttackableObjectIndex attackableObjectIndex, IInstantiator instantiator, float distance, float damage)
+    public virtual void Initialize(IInstantiator instantiator, float distance, float damage)
     {
-        var attackedObj = attackableObjectIndex == AttackableObjectIndex.Enemy ? AttackableObjectIndex.Player : AttackableObjectIndex.Enemy;
-        _layer = (int)attackedObj;
-
         _pauseHandler = instantiator.Instantiate<PauseHandler>();
         _pauseToken = _pauseHandler.GetPauseToken();
         _token = this.GetCancellationTokenOnDestroy();
@@ -44,11 +41,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_layer == collision.gameObject.layer)
+        if (_layers.Contains(collision.gameObject.layer))
         {
             var hittable = collision.gameObject.GetComponent<IHittable>();
-            hittable.TakeHit(_damage);
-            if (hittable is IStunable stunable) stunable.ApplyStun();
+            hittable.TakeHit(new HitInfo(_damage, transform.InverseTransformDirection(Vector2.right), AdditiveHitEffect.Stun));
             Destroy(gameObject);
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class EnemyStateMachine
 {
@@ -17,13 +18,13 @@ public class EnemyStateMachine
         }
     }
 
-    public void InitializeStates(Enemy enemy, PauseService pauseService, Transform target)
+    public void InitializeStates(Enemy enemy, IInstantiator instantiator, Transform target)
     {
         foreach (var state in _statesDictionary.Values)
         {
-            if (state.GetStateType() == EnemyStateType.Attack) (state as EnemyAttackState).Initialize(enemy, pauseService, target);
-            else if (state.GetStateType() == EnemyStateType.Chase) (state as EnemyChaseState).Initialize(enemy, pauseService, target);
-            else state.Initialize(enemy, pauseService);
+            if (state.GetStateType() == EnemyStateType.Attack) (state as EnemyAttackState).Initialize(enemy, instantiator, target);
+            else if (state.GetStateType() == EnemyStateType.Chase) (state as EnemyChaseState).Initialize(enemy, instantiator, target);
+            else state.Initialize(enemy, instantiator);
         }
     }
 

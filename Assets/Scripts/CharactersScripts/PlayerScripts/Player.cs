@@ -8,7 +8,7 @@ using Zenject;
 [RequireComponent(typeof(PlayerMove))]
 [RequireComponent(typeof(PlayerColliderChecker))]
 [RequireComponent(typeof(PlayerHpHandler))]
-public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, IHittableWithShield, ITalkable, IPause, IHasStamina
+public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, IHittable, ITalkable, IPause, IHasStamina, IStunable
 {
     [SerializeField] private float _hp;
     [SerializeField] private float _speed;
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     {
         _playerHpHandler = GetComponent<PlayerHpHandler>();
         _playerStaminaHandler = new PlayerStaminaHandler(_staminaValue, _playerStaminaIndicator, _audioMaster);
-        _playerHpHandler.Initialize(_hp, _shield);
+        _playerHpHandler.Initialize(_hp, _shield, this);
     }
 
     private void Start()
@@ -143,20 +143,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         }
     }
 
-    public void TakeHit(float damage)
+    public void TakeHit(HitInfo hitInfo)
     {
         if (!_isImmortal)
         {
-            _playerHpHandler.TakeHit(damage, ref _hp);
-        }
-        if (_hp <= 0) Death();
-    }
-
-    public void TakeHit(float damage, Vector2 damageDirection)
-    {
-        if (!_isImmortal)
-        {
-            _playerHpHandler.TakeHit(damage, damageDirection, ref _hp);
+            _playerHpHandler.TakeHit(hitInfo, ref _hp);
         }
         if (_hp <= 0) Death();
     }
@@ -251,5 +242,10 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
         OnPlayerDisable?.Invoke();
         _pauseService.RemovePauseObj(this);
         _playerStaminaController.Unsubscribe();
+    }
+
+    public void ApplyStun()
+    {
+        ChangeState(PlayerStateType.Stun);
     }
 }

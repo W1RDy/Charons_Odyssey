@@ -1,24 +1,23 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Turn And Stay State", menuName = "Enemy's State/Turn And Stay State")]
 public class EnemyIdleTurnAndStayState : EnemyIdleState
 {
     [SerializeField] private float _timeBetweenTurns;
 
-    private PauseTokenSource _pauseTokenSource;
     private PauseToken _pauseToken;
     private CancellationToken _cancellationToken;
 
     private bool _isIdle;
 
-    public override void Initialize(Enemy enemy, PauseService pauseService)
+    public override void Initialize(Enemy enemy, IInstantiator instantiator)
     {
-        base.Initialize(enemy, pauseService);
+        base.Initialize(enemy, instantiator);
 
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+        _pauseToken = _pauseHandler.GetPauseToken();
         _cancellationToken = _enemy.GetCancellationTokenOnDestroy();
     }
 
@@ -45,17 +44,5 @@ public class EnemyIdleTurnAndStayState : EnemyIdleState
     {
         base.Exit();
         _isIdle = false;
-    }
-
-    public override void Pause()
-    {
-        _pauseTokenSource.Pause();
-        base.Pause();
-    }
-
-    public override void Unpause()
-    {
-        _pauseTokenSource.Unpause();
-        base.Unpause();
     }
 }

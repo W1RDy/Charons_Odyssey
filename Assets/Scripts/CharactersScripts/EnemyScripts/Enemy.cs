@@ -2,27 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 using Zenject;
-using Cysharp.Threading.Tasks;
 
 public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStunable, IAttackable, IAvailable, IPause
 {
     public EnemyType EnemyType { get; protected set; }
     [SerializeField] protected float _hp;
-    [SerializeField] protected bool _isAvailable;
+    [SerializeField] protected float _hitDistance;
+    [SerializeField] protected float _hearNoiseDistance;
+
+    [SerializeField] private float _attackCooldown;
+    [SerializeField] private float _damage;
+
+    public float HitDistance => _hitDistance;
+    public float AttackCooldown => _attackCooldown;
+    public float Damage => _damage;
+
     [SerializeField] protected float _parryingWindowDuration;
     [SerializeField] protected float _damageTimeBeforeAnimationEnd = 0.1f;
     [SerializeField] protected float _stunningTime;
-    [SerializeField] protected float _hearNoiseDistance;
+
+    [SerializeField] protected bool _isAvailable;
+
     protected Animator _animator;
     protected SpriteRenderer _spriteRenderer;
-    private PauseService _pauseService;
 
     protected NoiseEventHandler _noiseEventHandler;
     public event Action OnEnemyDisable;
 
     protected Transform _target;
+    private IInstantiator _instantiator;
 
     private bool _isPaused;
     public bool IsReadyForParrying { get; set; }
@@ -33,21 +42,21 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     [SerializeField] private EnemyIdleState _idleState;
     [SerializeField] private EnemyIdleState _cooldownState;
-    [SerializeField] private EnemyChaseState _chaseState;
     [SerializeField] private EnemyAttackState _attackState;
-    [SerializeField] private EnemyReclineState _reclineState;
     [SerializeField] private EnemyStunState _stunState;
-    [SerializeField] private EnemyMoveState _moveState;
     [SerializeField] private EnemyDeathState _deathState;
+    [SerializeField] private EnemyChaseState _chaseState;
 
     #endregion
 
     public EnemyStateMachine StateMachine { get; set; }
 
+    #region Initialize
+
     [Inject]
-    private void Construct(PauseService pauseService, NoiseEventHandler noiseEventHandler, Player player)
+    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player)
     {
-        _pauseService = pauseService;
+        _instantiator = instantiator;
         _noiseEventHandler = noiseEventHandler;
 
         _target = player.transform;
@@ -55,7 +64,9 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public virtual void InitializeEnemy(Direction direction, bool isAvailable)
     {
-        _pauseService.AddPauseObj(this);
+        var pauseHandler = _instantiator.Instantiate<PauseHandler>();
+        pauseHandler.SetCallbacks(Pause, Unpause);
+
         _animator = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
@@ -64,28 +75,32 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         ChangeAvailable(isAvailable);
     }
 
-    private void InitializeStatesInstances()
+    protected virtual List<EnemyState> CreateStateInstances()
     {
-        var stateInstances = new List<EnemyState>()
+        return new List<EnemyState>()
         {
            Instantiate(_idleState),
-           Instantiate(_chaseState),
            Instantiate(_attackState),
-           Instantiate(_reclineState),
            Instantiate(_stunState),
-           Instantiate(_moveState),
            Instantiate(_cooldownState),
            Instantiate(_deathState),
+           Instantiate(_chaseState)
         };
+    }
 
+    private void InitializeStatesInstances()
+    {
+        var stateInstances = CreateStateInstances();
         StateMachine.InitializeStatesDictionary(stateInstances);
     }
 
     private void Start()
     {
-        StateMachine.InitializeStates(this, _pauseService, _target);
+        StateMachine.InitializeStates(this, _instantiator, _target);
         StateMachine.InitializeCurrentState(StateMachine.GetState(EnemyStateType.Idle));
     }
+
+    #endregion
 
     protected virtual void Update()
     {
@@ -102,13 +117,17 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         if (!_isPaused) StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
     }
 
-    public void TakeHit(float damage)
+    public virtual void TakeHit(HitInfo hitInfo)
     {
         if (!_isPaused)
         {
             StartCoroutine(TakeHit());
-            _hp -= damage;
+            _hp -= hitInfo.Damage;
             if (_hp <= 0) ChangeState(EnemyStateType.Death);
+            else
+            {
+                if (hitInfo.IsHasEffect(AdditiveHitEffect.Stun)) ApplyStun();
+            }
         }
     }
 
@@ -131,7 +150,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public virtual void Attack()
     {
-
+        ChangeState(EnemyStateType.Attack);
     }
 
     public void SetIdleAnimation()
@@ -213,6 +232,5 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public void OnDisable()
     {
         OnEnemyDisable?.Invoke();
-        _pauseService.RemovePauseObj(this);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Move State", menuName = "Enemy's State/Move State")]
 public class EnemyMoveState : EnemyState
@@ -7,9 +8,9 @@ public class EnemyMoveState : EnemyState
     private Vector2 _movePosition;
     private bool _isMoving;
 
-    public override void Initialize(Enemy enemy, PauseService pauseService)
+    public override void Initialize(Enemy enemy, IInstantiator instantiator)
     {
-        base.Initialize(enemy, pauseService);
+        base.Initialize(enemy, instantiator);
         _movable = enemy.GetComponent<EnemyMove>();
     }
 

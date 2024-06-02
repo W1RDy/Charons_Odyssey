@@ -2,26 +2,23 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
-[CreateAssetMenu(fileName = "Attack State", menuName = "Enemy's State/Attack State")]
-public class EnemyAttackState : EnemyState
+public abstract class EnemyAttackState : EnemyState
 {
-    protected EnemyDefault _enemyDefault;
-    private Transform _target;
+    protected Transform _target;
 
     private CancellationToken _token;
-    private PauseTokenSource _pauseTokenSource;
-    private PauseToken _pauseToken;
+    protected PauseToken _pauseToken;
 
     public bool IsCooldown { get; private set; }
 
-    public void Initialize(Enemy enemy, PauseService pauseService, Transform target)
+    public virtual void Initialize(Enemy enemy, IInstantiator instantiator, Transform target)
     {
-        base.Initialize(enemy, pauseService);
-        _enemyDefault = enemy as EnemyDefault;
+        base.Initialize(enemy, instantiator);
         _token = _enemy.GetCancellationTokenOnDestroy();
-        _pauseTokenSource = new PauseTokenSource();
-        _pauseToken = _pauseTokenSource.Token;
+
+        _pauseToken = _pauseHandler.GetPauseToken();
         _target = target;
     }
 
@@ -29,14 +26,16 @@ public class EnemyAttackState : EnemyState
     {
         base.Enter();
         IsStateFinished = false;
-        var flipDirection = _target.position.x < _enemyDefault.transform.position.x ? Vector2.left : Vector2.right;
+
+        var flipDirection = _target.position.x < _enemy.transform.position.x ? Vector2.left : Vector2.right;
         _enemy.Flip(flipDirection);
-        _enemy.SetAnimation("Attack", true);
-        Attack();
+
+        AttackWrapper();
     }
 
-    private async void Attack()
+    private async void AttackWrapper()
     {
+        _enemy.SetAnimation("Attack", true);
         await WaitUntilAttack();
         _enemy.IsReadyForParrying = false;
 
@@ -44,13 +43,7 @@ public class EnemyAttackState : EnemyState
 
         if (!IsStateFinished)
         {
-            var player = FinderObjects.FindHittableObjectByCircle(_enemyDefault.HitDistance, _enemyDefault.transform.position, AttackableObjectIndex.Enemy);
-
-            if (player != null && player[0] is IHittableWithShield playerWithShield)
-                playerWithShield.TakeHit(_enemyDefault.Damage, new Vector2(_enemyDefault.transform.localScale.x, 0).normalized);
-            else if (player != null)
-                player[0].TakeHit(_enemyDefault.Damage);
-
+            Attack();
             await Delayer.DelayWithPause(_enemy.DamageTimeBeforeAnimationEnd, _token, _pauseToken);
             if (_token.IsCancellationRequested) return;
 
@@ -74,9 +67,11 @@ public class EnemyAttackState : EnemyState
     private async void WaitWhileCooldown()
     {
         IsCooldown = true;
-        await Delayer.DelayWithPause(_enemyDefault.AttackCooldown, _token, _pauseToken);
+        await Delayer.DelayWithPause(_enemy.AttackCooldown, _token, _pauseToken);
         if (!_token.IsCancellationRequested) IsCooldown = false;
     }
+
+    protected abstract void Attack();
 
     public override void Exit()
     {
@@ -88,17 +83,5 @@ public class EnemyAttackState : EnemyState
     public override bool IsStateAvailable()
     {
         return !IsCooldown;
-    }
-
-    public override void Pause()
-    {
-        _pauseTokenSource.Pause();
-        base.Pause();
-    }
-
-    public override void Unpause()
-    {
-        _pauseTokenSource.Unpause();
-        base.Unpause();
     }
 }

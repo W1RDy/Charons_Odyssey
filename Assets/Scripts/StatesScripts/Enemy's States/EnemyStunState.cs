@@ -1,16 +1,17 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 [CreateAssetMenu(fileName = "Stun State", menuName = "Enemy's State/Stun State")]
 public class EnemyStunState : EnemyState
 {
-    private PauseTokenSource _pauseTokenSource;
+    private PauseToken _pauseToken;
     private EnemyState _interruptedState;
 
-    public override void Initialize(Enemy enemy, PauseService pauseService)
+    public override void Initialize(Enemy enemy, IInstantiator instantiator)
     {
-        base.Initialize(enemy, pauseService);
-        _pauseTokenSource = new PauseTokenSource();
+        base.Initialize(enemy, instantiator);
+        _pauseToken = _pauseHandler.GetPauseToken();
     }
 
     public void SetInterruptedState(EnemyState interruptedState)
@@ -31,7 +32,7 @@ public class EnemyStunState : EnemyState
     private async void WaitWhileStunned()
     {
         var token = _enemy.GetCancellationTokenOnDestroy();
-        await Delayer.DelayWithPause(1, token, _pauseTokenSource.Token);
+        await Delayer.DelayWithPause(1, token, _pauseToken);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;

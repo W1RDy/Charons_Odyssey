@@ -1,4 +1,6 @@
-﻿public class Minotaur : EnemyDefault
+﻿using UnityEngine;
+
+public class Minotaur : MovableEnemy
 {
 
 }

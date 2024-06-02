@@ -1,5 +1,6 @@
 ﻿public enum EnemyType
 {
-    Default,
-    Minotaur
+    Skeleton,
+    Minotaur,
+    Gorgon
 }
