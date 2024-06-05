@@ -25,6 +25,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     [SerializeField] protected bool _isAvailable;
 
     private EnemyView _view;
+    private HPBarInitializer _hpBarInitializer;
+
     [SerializeField] private StunAnimation _stunAnimation;
     [SerializeField] private TakeHitAnimation _takeHitAnimation;
 
@@ -47,6 +49,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     [SerializeField] private EnemyStunState _stunState;
     [SerializeField] private EnemyDeathState _deathState;
     [SerializeField] private EnemyChaseState _chaseState;
+    [SerializeField] private EnemyTakeHitState _takeHitState;
 
     #endregion
 
@@ -55,12 +58,13 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     #region Initialize
 
     [Inject]
-    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player)
+    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer)
     {
         _instantiator = instantiator;
         _noiseEventHandler = noiseEventHandler;
 
         _target = player.transform;
+        _hpBarInitializer = hpBarInitializer;
     }
 
     public virtual void InitializeEnemy(Direction direction, bool isAvailable)
@@ -71,7 +75,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         var animator = GetComponentInChildren<Animator>();
         var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        _view = new EnemyView(spriteRenderer, animator, _stunAnimation, _takeHitAnimation);
+        var hpBar = _hpBarInitializer.GetHpBar(spriteRenderer, _hp, transform);
+        _view = new EnemyView(spriteRenderer, animator, _stunAnimation, _takeHitAnimation, hpBar);
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
@@ -87,7 +92,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
            Instantiate(_stunState),
            Instantiate(_cooldownState),
            Instantiate(_deathState),
-           Instantiate(_chaseState)
+           Instantiate(_chaseState),
+           Instantiate(_takeHitState),
         };
     }
 
@@ -125,6 +131,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         if (!_isPaused)
         {
             _hp -= hitInfo.Damage;
+            _view.ChangeHPView(_hp);
 
             if (_hp <= 0)
             {
@@ -132,7 +139,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
             }
             else
             {
-                _view.SetAnimation("TakeHit", true);
+                StateMachine.GetState(EnemyStateType.TakeHit).Enter();
                 if (hitInfo.IsHasEffect(AdditiveHitEffect.Stun)) ApplyStun();
             }
         }

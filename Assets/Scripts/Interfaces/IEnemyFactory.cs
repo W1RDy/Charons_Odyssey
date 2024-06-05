@@ -20,3 +20,9 @@ public interface IItemFactory
 {
     public Item Create(ItemType itemType, Vector2 position);
 }
+
+public interface ICustomFactory
+{
+    public MonoBehaviour Create(Vector2 position);
+    public MonoBehaviour Create(Vector2 position, Quaternion rotation, Transform parent);
+}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Zenject;
 
 public class EntitiesInstaller : MonoInstaller
@@ -21,6 +22,8 @@ public class EntitiesInstaller : MonoInstaller
 
     private TalkableFinderOnLevel _talkableFinder;
     private ItemService _itemService;
+
+    [SerializeField] private Canvas _entitiesUICanvas;
 
     [Inject]
     private void Construct(EnemyService enemyService, NPCService npcService, ItemService itemService, TalkableFinderOnLevel talkableFinder)
@@ -47,10 +50,19 @@ public class EntitiesInstaller : MonoInstaller
 
     private void BindFactories()
     {
+        BindHPBarInitializer();
         BindEnemyFactory();
         BindNPCFactory();
         BindNPCGroupFactory();
         BindItemFactory();
+    }
+
+    private void BindHPBarInitializer()
+    {
+        var hpBarFactory = new HPBarFactory(Container, _entitiesUICanvas.transform);
+        var hpBarInitializer = new HPBarInitializer(hpBarFactory);
+
+        Container.Bind<HPBarInitializer>().FromInstance(hpBarInitializer).AsSingle();
     }
 
     private void BindEnemyFactory()

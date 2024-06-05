@@ -5,7 +5,7 @@ using Zenject;
 public class PlayerHpHandler : MonoBehaviour
 {
     private float _maxHp;
-    private HpIndicator _hpIndicator;
+    private PlayerHpBar _hpIndicator;
     private GameLifeController _gameLifeController;
     private Shield _shield;
     private Player _player;
@@ -13,7 +13,7 @@ public class PlayerHpHandler : MonoBehaviour
     private AudioMaster _audioMaster;
 
     [Inject]
-    private void Construct(HpIndicator hpIndicator, GameLifeController gameLifeController, AudioMaster audioMaster)
+    private void Construct(PlayerHpBar hpIndicator, GameLifeController gameLifeController, AudioMaster audioMaster)
     {
         _hpIndicator = hpIndicator;
         _gameLifeController = gameLifeController;
@@ -33,14 +33,14 @@ public class PlayerHpHandler : MonoBehaviour
     {
         hp += healValue;
         if (hp > _maxHp) hp = _maxHp;
-        _hpIndicator.SetHp(hp);
+        _hpIndicator.SetHP(hp);
     }
 
     public void TakeHit(float damage, ref float hp)
     {
         hp -= damage;
         if (hp < 0) hp = 0;
-        _hpIndicator.SetHp(hp);
+        _hpIndicator.SetHP(hp);
     }
 
     public void TakeHit(HitInfo hitInfo, ref float hp)
