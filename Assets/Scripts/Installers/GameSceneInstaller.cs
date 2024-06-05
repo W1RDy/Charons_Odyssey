@@ -7,7 +7,7 @@ public class GameSceneInstaller : MonoInstaller
 {
     #region HUD
 
-    [SerializeField] private HpIndicator _hpIndicator;
+    [SerializeField] private PlayerHpBar _hpIndicator;
     [SerializeField] private BulletsCounterIndicator _bulletsCounterIndicator;
     [SerializeField] private CustomCamera _customCamera;
     [SerializeField] private StaminaIndicator _staminaIndicator;
@@ -122,7 +122,7 @@ public class GameSceneInstaller : MonoInstaller
 
     private void BindHpIndicator()
     {
-        Container.Bind<HpIndicator>().FromInstance(_hpIndicator).AsSingle();
+        Container.Bind<PlayerHpBar>().FromInstance(_hpIndicator).AsSingle();
     }
 
     private void BindBulletsCounterIndicator()

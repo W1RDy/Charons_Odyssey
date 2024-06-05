@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9518782e0f6dfe0448b9e10b1bf23026, type: 3}
-  m_Name: Death State
+  m_Script: {fileID: 11500000, guid: 615161ba5359b6b448735d6c88720904, type: 3}
+  m_Name: Take Hit State
   m_EditorClassIdentifier: 
-  _priorityIndex: 7
-  _stateType: 7
+  _priorityIndex: 4
+  _stateType: 8

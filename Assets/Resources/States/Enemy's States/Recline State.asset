@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ed4478ee6ba05408d8fb24ad219dd6, type: 3}
   m_Name: Recline State
   m_EditorClassIdentifier: 
-  _priorityIndex: 5
+  _priorityIndex: 6
   _stateType: 2
