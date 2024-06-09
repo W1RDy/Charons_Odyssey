@@ -560,7 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c87b3f155679543ae55c0d2110fb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _musicIndex: 
+  _musicIndex: ResearchMusic
   _soundIndex: Swamp
 --- !u!4 &288725324
 Transform:
@@ -893,7 +893,7 @@ MonoBehaviour:
   _dialogCloudService: {fileID: 923567215}
   _dialogUpdater: {fileID: 1593684095}
   _dialogClickHandler: {fileID: 2313524752092892278}
-  _gameLifeController: {fileID: 1156764378}
+  _gameLifeController: {fileID: 1156764380}
   _levelInitializer: {fileID: 946304579}
   _buttonService: {fileID: 2313524752092892272}
   _windowActivator: {fileID: 1137998389}
@@ -1599,7 +1599,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1156764379}
-  - component: {fileID: 1156764378}
+  - component: {fileID: 1156764380}
   m_Layer: 0
   m_Name: GameLifeController
   m_TagString: Untagged
@@ -1607,18 +1607,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1156764378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156764377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9283cbf629d9ad34bbd1d0367b80e6ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1156764379
 Transform:
   m_ObjectHideFlags: 0
@@ -1634,6 +1622,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1156764380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156764377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c25a814945f5e140ba2f46f93c0892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1193601159
 GameObject:
   m_ObjectHideFlags: 0

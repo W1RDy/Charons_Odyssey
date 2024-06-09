@@ -62,6 +62,11 @@ public class AudioMaster : IService
         }
     }
 
+    public void ContinueMusic()
+    {
+        _mainPlayer.PlayAudio();
+    }
+
     public void PlayMusic(string index)
     {
         if (index == "") StopMusic();

@@ -13,6 +13,12 @@ public class EnemyShootAttackState : EnemyAttackState
         base.Initialize(enemy, instantiator, target);
     }
 
+    public override void Update()
+    {
+        var vectorToTarget = (_target.transform.position - _enemy.transform.position);
+        _enemy.Flip(vectorToTarget.normalized);
+    }
+
     protected override void Attack()
     {
         var bulletObj = SpawnBullet();

@@ -57,7 +57,7 @@ public class Space : MonoBehaviour
             foreach (var obj in availableObjs)
             {
                 var availableObj = obj.GetComponent<IAvailable>();
-                if (availableObj == null) availableObj = obj.GetComponentInParent<IAvailable>();
+                if (availableObj == null && obj.transform.parent.gameObject.layer != 6) availableObj = obj.GetComponentInParent<IAvailable>();
                 if (availableObj != null) availableObj.ChangeAvailable(_isOpen);
             }
         }

@@ -3089,7 +3089,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 640974284}
-  - component: {fileID: 640974283}
+  - component: {fileID: 640974285}
   m_Layer: 0
   m_Name: GameLifeController
   m_TagString: Untagged
@@ -3097,18 +3097,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &640974283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 640974282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9283cbf629d9ad34bbd1d0367b80e6ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &640974284
 Transform:
   m_ObjectHideFlags: 0
@@ -3124,6 +3112,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &640974285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640974282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c25a814945f5e140ba2f46f93c0892c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &643269473
 GameObject:
   m_ObjectHideFlags: 0
@@ -3784,7 +3784,7 @@ MonoBehaviour:
   _dialogCloudService: {fileID: 1832383326}
   _dialogUpdater: {fileID: 1712993653}
   _dialogClickHandler: {fileID: 1005683739}
-  _gameLifeController: {fileID: 640974283}
+  _gameLifeController: {fileID: 640974285}
   _levelInitializer: {fileID: 318491549}
   _buttonService: {fileID: 1005683734}
   _windowActivator: {fileID: 1702011550}
@@ -4898,7 +4898,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d393d1eee8ef4134198c2801c55347ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e44af94d8ce88a4f9161b1fdb8cc1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1005683730 stripped
@@ -7789,7 +7789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c87b3f155679543ae55c0d2110fb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _musicIndex: 
+  _musicIndex: ResearchMusic
   _soundIndex: 
 --- !u!4 &1701179635
 Transform:

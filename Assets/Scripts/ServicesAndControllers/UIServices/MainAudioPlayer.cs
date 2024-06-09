@@ -6,4 +6,12 @@ public class MainAudioPlayer : AudioPlayer
     {
         _audioSource.PlayOneShot(audioClip, volume);
     }
+
+    public override void StopAudio()
+    {
+        if (_audioSource.isPlaying)
+        {
+            _audioSource.Pause();
+        }
+    }
 }

@@ -17,7 +17,22 @@ MonoBehaviour:
     - _index: MainTheme
       _audioPlayerType: 0
       _volume: 0.5
-      _audioClip: {fileID: 8300000, guid: d5fcb94c83d6b4643a721c15fc11994c, type: 3}
+      _audioClip: {fileID: 8300000, guid: a5e26339c70bd9f479c59ab5dc369e9f, type: 3}
+      _additiveConfigs: []
+    - _index: ResearchMusic
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 562b9853d18bfda40873ce5859daea58, type: 3}
+      _additiveConfigs: []
+    - _index: BattleMusic
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 2c7354718e6bc274bbb8990e9d16013c, type: 3}
+      _additiveConfigs: []
+    - _index: DialogMusic
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: c4a1777344385244999ba54e07261698, type: 3}
       _additiveConfigs: []
     _groupIndex: music
   - _audioConfigs:

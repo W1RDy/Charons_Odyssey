@@ -6,14 +6,14 @@ public class PlayerHpHandler : MonoBehaviour
 {
     private float _maxHp;
     private PlayerHpBar _hpIndicator;
-    private GameLifeController _gameLifeController;
+    private GameStateController _gameLifeController;
     private Shield _shield;
     private Player _player;
 
     private AudioMaster _audioMaster;
 
     [Inject]
-    private void Construct(PlayerHpBar hpIndicator, GameLifeController gameLifeController, AudioMaster audioMaster)
+    private void Construct(PlayerHpBar hpIndicator, GameStateController gameLifeController, AudioMaster audioMaster)
     {
         _hpIndicator = hpIndicator;
         _gameLifeController = gameLifeController;
@@ -72,6 +72,6 @@ public class PlayerHpHandler : MonoBehaviour
     public void Death()
     {
         Destroy(gameObject);
-        _gameLifeController.LoseGame();
+        _gameLifeController.ActivateLoseState();
     }
 }

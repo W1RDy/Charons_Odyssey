@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -20,13 +21,13 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private DialogUpdater _dialogUpdater;
     [SerializeField] private DialogClickHandler _dialogClickHandler;
 
-    private DialogLifeController _dialogLifeController;
+    //private DialogLifeController _dialogLifeController;
 
     #endregion
 
     #region Game
 
-    [SerializeField] private GameLifeController _gameLifeController;
+    [SerializeField] private GameStateController _gameLifeController;
     [SerializeField] private LevelInitializer _levelInitializer;
 
     #endregion
@@ -64,20 +65,26 @@ public class GameSceneInstaller : MonoInstaller
         BindSettings();
         BindAudioPlayer();
 
-        BindGameLifeController();
+        BindGameStateController();
+        BindBattleActivator();
 
         BindServices();
 
         BindHUD();
         BindCustomCamera();
 
+        BindTalkableFinder();
+ 
         BindDialogLifeController();
         BindDialogActivator();
         BindDialogUpdater();
 
-        BindTalkableFinder();
-
         BindNoiseEventHandler();
+    }
+
+    private void BindBattleActivator()
+    {
+        Container.Bind<BattleActivator>().FromNew().AsSingle();
     }
 
     private void BindHUD()
@@ -115,9 +122,9 @@ public class GameSceneInstaller : MonoInstaller
         Container.Bind<StaminaIndicator>().FromInstance(_staminaIndicator).AsSingle();
     }
 
-    private void BindGameLifeController()
+    private void BindGameStateController()
     {
-        Container.Bind<GameLifeController>().FromInstance(_gameLifeController).AsSingle();
+        Container.Bind<GameStateController>().FromInstance(_gameLifeController).AsSingle();
     }
 
     private void BindHpIndicator()
@@ -164,13 +171,11 @@ public class GameSceneInstaller : MonoInstaller
     {
         var talkableFinder = new TalkableFinderOnLevel();
         Container.Bind<TalkableFinderOnLevel>().FromInstance(talkableFinder).AsSingle();
-
-        Container.Inject(_dialogLifeController);
     }
 
     private void BindDialogLifeController()
     {
-        _dialogLifeController = new DialogLifeController(_dialogClickHandler);
+        var _dialogLifeController = Container.Instantiate<DialogLifeController>(new object[] { _dialogClickHandler });
         Container.Bind<DialogLifeController>().FromInstance(_dialogLifeController).AsSingle();
     }
 

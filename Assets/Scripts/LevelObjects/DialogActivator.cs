@@ -12,8 +12,10 @@ public class DialogActivator : IDisposable
     private DialogCloudService _dialogCloudService;
     private Action<string> DeactivateDialogDelegate;
 
+    private GameStateController _gameStateController;
+
     [Inject]
-    private void Construct(Player player, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService)
+    private void Construct(Player player, DialogLifeController dialogLifeController, DialogCloudService dialogCloudService, GameStateController gameStateController)
     {
         _player = player;
         _dialogLifeController = dialogLifeController;
@@ -21,17 +23,23 @@ public class DialogActivator : IDisposable
 
         DeactivateDialogDelegate = dialogIndex => DeactivateDialog();
         _dialogLifeController.DialogDeactivated += DeactivateDialogDelegate;
+
+        _gameStateController = gameStateController;
     }
 
     public void ActivateDialog(string branchIndex)
     {
         _player.StartTalk();
         _dialogLifeController.StartDialog(branchIndex);
+
+        _gameStateController.ActivateDialogState();
     }
 
     public void DeactivateDialog()
     {
         _dialogCloudService.RemoveDialogCloud();
+
+        _gameStateController.ActivateResearchState();
     }
 
     public void Dispose()
