@@ -12,14 +12,14 @@ public class Mission : MonoBehaviour
     private BaseTask _currentTask;
 
     [SerializeField] private Timer _timer;
-    private GameLifeController _gameLifeController;
+    private GameStateController _gameLifeController;
 
     protected CancellationToken _token;
 
     [SerializeField] private bool _isWinWhenCompletedMissions;
 
     [Inject]
-    private void Construct(GameLifeController gameLifeController)
+    private void Construct(GameStateController gameLifeController)
     {
         _gameLifeController = gameLifeController;
     }
@@ -51,7 +51,7 @@ public class Mission : MonoBehaviour
     public void FinishMission()
     {
         if (_timer != null) _timer.StopTimer();
-        if (_isWinWhenCompletedMissions) _gameLifeController.WinGame();
+        if (_isWinWhenCompletedMissions) _gameLifeController.ActivateWinState();
     }
 
     public void OnDestroy()

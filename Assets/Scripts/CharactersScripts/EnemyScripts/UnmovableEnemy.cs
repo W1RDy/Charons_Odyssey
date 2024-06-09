@@ -24,6 +24,7 @@ public abstract class UnmovableEnemy : Enemy
                 }
             }
         };
+        _noiseEventHandler.Noise += ReactToNoise;
     }
 
     protected override void Update()

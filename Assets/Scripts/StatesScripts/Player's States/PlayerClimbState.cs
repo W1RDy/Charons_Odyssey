@@ -33,7 +33,6 @@ public class PlayerClimbState : PlayerState
     {
         base.Enter();
         _player.SetAnimation("Climb", true);
-        _audioMaster.PlaySound("Climb");
 
         IsStateFinished = !_playerColliderChecker.TryGetLadder(out _ladder);
         _rigidbody.gravityScale = 0;
@@ -51,8 +50,16 @@ public class PlayerClimbState : PlayerState
             if (Input.GetAxis("Vertical") != _verticalMoveValue)
             {
                 _verticalMoveValue = Input.GetAxis("Vertical");
-                if (_verticalMoveValue != 0) _player.SetAnimationSpeed(1);
-                else _player.SetAnimationSpeed(0);
+                if (_verticalMoveValue != 0)
+                {
+                    _audioMaster.PlaySound("Climb");
+                    _player.SetAnimationSpeed(1);
+                }
+                else
+                {
+                    _player.SetAnimationSpeed(0);
+                    _audioMaster.StopSound("Climb");
+                }
                 _playerMove.SetDirection(new Vector2(0, _verticalMoveValue));
             }
 

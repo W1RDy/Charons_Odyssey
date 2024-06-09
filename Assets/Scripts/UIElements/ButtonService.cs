@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using UnityEngine;
 using Zenject;
 
-public class ButtonService : MonoBehaviour, IService
+public class ButtonService : MonoBehaviour, IService, IPause
 {
     private WindowActivator _windowActivator;
     private TalkableFinderOnLevel _talkableFinderOnLevel;
@@ -116,5 +116,15 @@ public class ButtonService : MonoBehaviour, IService
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void Pause()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Unpause()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -33,6 +33,12 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     protected NoiseEventHandler _noiseEventHandler;
     public event Action OnEnemyDisable;
 
+    private BattleActivator _battleActivator;
+
+    private bool _isAgressive;
+    public event Action OnEnemyAgressive;
+    public event Action OnEnemyCalm;
+
     protected Transform _target;
     private IInstantiator _instantiator;
 
@@ -58,13 +64,16 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     #region Initialize
 
     [Inject]
-    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer)
+    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer, BattleActivator battleActivator)
     {
         _instantiator = instantiator;
         _noiseEventHandler = noiseEventHandler;
 
         _target = player.transform;
         _hpBarInitializer = hpBarInitializer;
+
+        _battleActivator = battleActivator;
+        _battleActivator.AddEnemyToSubscribe(this);
     }
 
     public virtual void InitializeEnemy(Direction direction, bool isAvailable)
@@ -123,7 +132,30 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     public void ChangeState(EnemyStateType stateType)
     {
-        if (!_isPaused) StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
+        if (!_isPaused)
+        {
+            if (stateType == EnemyStateType.Idle || stateType == EnemyStateType.Move || stateType == EnemyStateType.Death)
+            {
+                ChangeAgressiveState(false);
+            }
+            else ChangeAgressiveState(true);
+
+            StateMachine.ChangeCurrentState(StateMachine.GetState(stateType));
+        }
+    }
+
+    private void ChangeAgressiveState(bool isChangeToAgressive)
+    {
+        if (!_isAgressive && isChangeToAgressive)
+        {
+            _isAgressive = true;
+            OnEnemyAgressive?.Invoke();
+        }
+        else if (_isAgressive && !isChangeToAgressive)
+        {
+            _isAgressive = false;
+            OnEnemyCalm?.Invoke();
+        }
     }
 
     public virtual void TakeHit(HitInfo hitInfo)
@@ -148,6 +180,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public void Death()
     {
         gameObject.SetActive(false);
+        ChangeAgressiveState(false);
+        _battleActivator.UnsubscribeToEnemy(this);
     }
 
     public void ApplyParrying()

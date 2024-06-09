@@ -24,6 +24,7 @@ public class EnemyStateMachine
         {
             if (state.GetStateType() == EnemyStateType.Attack) (state as EnemyAttackState).Initialize(enemy, instantiator, target);
             else if (state.GetStateType() == EnemyStateType.Chase) (state as EnemyChaseState).Initialize(enemy, instantiator, target);
+            else if (state is EnemyIdleStayState idleStayState) idleStayState.Initialize(enemy, instantiator, target);
             else state.Initialize(enemy, instantiator);
         }
     }

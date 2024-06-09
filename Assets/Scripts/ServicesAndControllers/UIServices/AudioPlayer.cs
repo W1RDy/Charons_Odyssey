@@ -39,6 +39,14 @@ public abstract class AudioPlayer : MonoBehaviour
         }
     }
 
+    public virtual void PlayAudio()
+    {
+        if (!_audioSource.isPlaying)
+        {
+            _audioSource.Play();
+        }
+    }
+
     public virtual void StopAudio()
     {
         if (_audioSource.isPlaying)
