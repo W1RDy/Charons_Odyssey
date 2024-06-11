@@ -35,7 +35,6 @@ public class LoadSceneManager : MonoBehaviour
         if (isOpen)
         {
             _image.enabled = true;
-            _pauseService.SetUnpause();
             _pauseService.ChangePauseAvailable(false);
         }
 

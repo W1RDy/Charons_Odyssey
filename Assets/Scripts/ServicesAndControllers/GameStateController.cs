@@ -68,7 +68,7 @@ public class GameStateController : MonoBehaviour, IPause
 
     public void DeactivatePauseState()
     {
-        _buttonService.Continue();
+        _pauseService.SetUnpause();
         //_audioPlayer.ContinueMusic();
     }
 
