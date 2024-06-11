@@ -7,20 +7,17 @@ using Zenject;
 public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStunable, IAttackable, IAvailable, IPause
 {
     public EnemyType EnemyType { get; protected set; }
-    [SerializeField] protected float _hp;
-    [SerializeField] protected float _hitDistance;
-    [SerializeField] protected float _hearNoiseDistance;
+    [SerializeField] protected EnemyData _enemyData;
 
-    [SerializeField] private float _attackCooldown;
-    [SerializeField] private float _damage;
-
-    public float HitDistance => _hitDistance;
-    public float AttackCooldown => _attackCooldown;
-    public float Damage => _damage;
+    protected float _hp;
+    public float HitDistance => _enemyData.HitDistance;
+    public float AttackCooldown => _enemyData.AttackCooldown;
+    public float Damage => _enemyData.Damage;
 
     [SerializeField] protected float _parryingWindowDuration;
     [SerializeField] protected float _damageTimeBeforeAnimationEnd = 0.1f;
-    [SerializeField] protected float _stunningTime;
+
+    public float StunningTime => _enemyData.SunningTime;
 
     [SerializeField] protected bool _isAvailable;
 
@@ -62,6 +59,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public EnemyStateMachine StateMachine { get; set; }
 
     #region Initialize
+    private bool _isInitialized;
+
 
     [Inject]
     private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer, BattleActivator battleActivator)
@@ -76,20 +75,29 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         _battleActivator.AddEnemyToSubscribe(this);
     }
 
-    public virtual void InitializeEnemy(Direction direction, bool isAvailable)
+    public virtual void InitializeEnemy(Direction direction, bool isAvailable) // инициализация врагов, которые только заспавнились по маркеру, для основных уровней
     {
+        _isInitialized = true;
+
         var pauseHandler = _instantiator.Instantiate<PauseHandler>();
         pauseHandler.SetCallbacks(Pause, Unpause);
 
         var animator = GetComponentInChildren<Animator>();
         var spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+        _hp = _enemyData.Hp;
         var hpBar = _hpBarInitializer.GetHpBar(spriteRenderer, _hp, transform);
         _view = new EnemyView(spriteRenderer, animator, _stunAnimation, _takeHitAnimation, hpBar);
 
         StateMachine = new EnemyStateMachine();
         InitializeStatesInstances();
         ChangeAvailable(isAvailable);
+    }
+
+    private void InitializeEnemy() // инициализация врагов, которые изначально находятся на сцене, для настройки баланса
+    {
+        if (transform.localScale.x > 0) InitializeEnemy(Direction.Right, true);
+        else InitializeEnemy(Direction.Left, true);
     }
 
     protected virtual List<EnemyState> CreateStateInstances()
@@ -114,6 +122,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     private void Start()
     {
+        if (!_isInitialized) InitializeEnemy();
+
         StateMachine.InitializeStates(this, _instantiator, _target);
         StateMachine.InitializeCurrentState(StateMachine.GetState(EnemyStateType.Idle));
     }

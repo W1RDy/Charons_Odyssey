@@ -23,11 +23,11 @@ public class PlayerStayWithGunState : PlayerStayState
         _pistol = weapon as Pistol;
         try
         {
-            _shootPoint = GameObject.Find("ShootPoint").transform;
+            _shootPoint = GameObject.Find("PlayerShootPoint").transform;
         }
         catch
         {
-            _shootPoint = new GameObject("ShootPoint").transform;
+            _shootPoint = new GameObject("PlayerShootPoint").transform;
         }
 
         _pauseToken = _pauseHandler.GetPauseToken();

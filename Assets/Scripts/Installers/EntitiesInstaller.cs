@@ -6,7 +6,8 @@ public class EntitiesInstaller : MonoInstaller
 {
     #region Player
 
-    [SerializeField] private Player _playerPrefab;
+    [SerializeField] private Player _playerPrefab; // для спавна Player по маркеру в основных уровнях
+    [SerializeField] private Player _player; // для уже находящегося на сцене Player для баланса
     [SerializeField] private Transform _spawnPosition;
 
     #endregion
@@ -43,9 +44,11 @@ public class EntitiesInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        Player player = new Instantiator(Container).InstantiatePrefabForComponent<Player>(_playerPrefab, _spawnPosition.position);
-        Container.Bind<Player>().FromInstance(player).AsSingle();
-        _talkableFinder.AddTalkable(player);
+        if (_player == null) _player = new Instantiator(Container).InstantiatePrefabForComponent<Player>(_playerPrefab, _spawnPosition.position);
+        else Container.Inject(_player);
+
+        Container.Bind<Player>().FromInstance(_player).AsSingle();
+        _talkableFinder.AddTalkable(_player);
     }
 
     private void BindFactories()

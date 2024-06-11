@@ -432,9 +432,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f32a24ac95eae1b46a39fd2e2bb368ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 100
-  _speed: 5
-  _staminaValue: 100
+  _playerData: {fileID: 11400000, guid: 69ea675f837e01d4f84176640b43ebd4, type: 2}
   _pistolView:
     pistolEnd: {fileID: 991589543}
     pistolView: {fileID: 1057895811}
