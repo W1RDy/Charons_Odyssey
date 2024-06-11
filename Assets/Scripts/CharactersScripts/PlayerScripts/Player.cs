@@ -10,9 +10,12 @@ using Zenject;
 [RequireComponent(typeof(PlayerHpHandler))]
 public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, IHittable, ITalkable, IPause, IHasStamina, IStunable
 {
-    [SerializeField] private float _hp;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _staminaValue = 100f;
+    [SerializeField] private PlayerData _playerData;
+
+    private float _hp;
+    private float _staminaValue;
+
+    public float StunningTime => _playerData.StunningTime;
 
     private bool _isImmortal = false;
     public bool IsImmortal { get => _isImmortal; set => _isImmortal = value; }
@@ -85,8 +88,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
 
     private void Awake()
     {
+        _hp = _playerData.Hp;
+        _staminaValue = _playerData.StaminaValue;
+
         _playerMove = GetComponent<PlayerMove>();
-        _playerMove.SetSpeed(_speed);
+        _playerMove.SetSpeed(_playerData.Speed);
         _playerView = GetComponentInChildren<PlayerView>();
 
         StateMachine = new PlayerStateMachine();

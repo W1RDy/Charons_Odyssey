@@ -134,14 +134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b486fee050463b4c8cce80591359c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 100
-  _hitDistance: 1.2
-  _hearNoiseDistance: 13.35
-  _attackCooldown: 3
-  _damage: 35
+  _enemyData: {fileID: 11400000, guid: 110e9a15063269f499db5d9bacbc9029, type: 2}
   _parryingWindowDuration: 0.8
   _damageTimeBeforeAnimationEnd: 0.3
-  _stunningTime: 2
   _isAvailable: 0
   _stunAnimation:
     _scaleOffset: 0.5
@@ -157,7 +152,6 @@ MonoBehaviour:
   _chaseState: {fileID: 11400000, guid: f29e2c0ef65df5443b906db8292a1a8a, type: 2}
   _takeHitState: {fileID: 11400000, guid: c7825f1a456c016458e0e94fcdb9062f, type: 2}
   _trigger: {fileID: 2517521349137554264}
-  _speed: 2.5
   _moveState: {fileID: 11400000, guid: 5ec4dfe5a79f9a24bbee44469cc41bb5, type: 2}
   _reclineState: {fileID: 11400000, guid: c40f8acbcfaea224da8a0e776710a5da, type: 2}
 --- !u!1 &1317921032468142883

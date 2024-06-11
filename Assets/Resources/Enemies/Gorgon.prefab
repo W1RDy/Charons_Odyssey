@@ -273,14 +273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514f68e8a7e3d864a844728235fa69b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 100
-  _hitDistance: 5
-  _hearNoiseDistance: 13.35
-  _attackCooldown: 5
-  _damage: 40
+  _enemyData: {fileID: 11400000, guid: 0a0766c1b8a074d419fe9748e9071718, type: 2}
   _parryingWindowDuration: 0.8
   _damageTimeBeforeAnimationEnd: 0.1
-  _stunningTime: 3.5
   _isAvailable: 0
   _stunAnimation:
     _scaleOffset: 0.5

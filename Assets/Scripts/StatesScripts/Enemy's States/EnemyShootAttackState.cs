@@ -35,6 +35,8 @@ public class EnemyShootAttackState : EnemyAttackState
         var direction = (_target.transform.position - bulletObj.transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
+        if (_enemy.transform.localScale.x < 0) bulletObj.transform.localScale = new Vector3(bulletObj.transform.localScale.x, -bulletObj.transform.localScale.y, 1);
+
         bulletObj.transform.eulerAngles = new Vector3(0, 0, angle);
 
         bulletObj.Initialize(_instantiator, _enemy.HitDistance, _enemy.Damage);

@@ -38,11 +38,11 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
         try
         {
-            _shootPoint = GameObject.Find("ShootPoint").transform;
+            _shootPoint = GameObject.Find("PlayerShootPoint").transform;
         }
         catch
         {
-            _shootPoint = new GameObject("ShootPoint").transform;
+            _shootPoint = new GameObject("PlayerShootPoint").transform;
         }
 
         _noiseEventHandler = noiseEventHandler;
@@ -84,7 +84,9 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
         {
             base.Update();
 
+            _shootPoint.position = _camera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
             var rotation = AngleService.GetAngleByTarget(_pistol.View.pistolView, _shootPoint);
+
             var flipDirection = rotation.eulerAngles.z > 180 ? Vector2.left : Vector2.right;
             _player.Flip(flipDirection);
             RotateGun(rotation);
@@ -93,8 +95,6 @@ public class PlayerAttackWithPistolState : PlayerAttackBaseState
 
     private void RotateGun(Quaternion rotation)
     {
-        _shootPoint.position = _camera.MainCamera.ScreenToWorldPoint(Input.mousePosition);
-
         _pistol.View.pistolView.rotation = rotation;
     }
 

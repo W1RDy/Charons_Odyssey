@@ -32,7 +32,7 @@ public class EnemyStunState : EnemyState
     private async void WaitWhileStunned()
     {
         var token = _enemy.GetCancellationTokenOnDestroy();
-        await Delayer.DelayWithPause(1, token, _pauseToken);
+        await Delayer.DelayWithPause(_enemy.StunningTime, token, _pauseToken);
         if (!token.IsCancellationRequested)
         {
             IsStateFinished = true;

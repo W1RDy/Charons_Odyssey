@@ -9,7 +9,6 @@ using Zenject;
 public abstract class MovableEnemy : Enemy, IReclinable
 {
     [SerializeField] private Trigger _trigger;
-    [SerializeField] private float _speed;
 
     private IMovableWithStops _movable;
     private Action<Vector2> MoveToNoise;
@@ -23,13 +22,13 @@ public abstract class MovableEnemy : Enemy, IReclinable
         _movable = GetComponent<IMovableWithStops>();
 
         if (direction == Direction.Left) (_movable as IMovableWithFlips).Flip(Vector2.left);
-        _movable.SetSpeed(_speed);
+        _movable.SetSpeed((_enemyData as MovableEnemyData).Speed);
 
         MoveToNoise = noisePos =>
         {
             if (_isAvailable)
             {
-                if (Vector2.Distance(new Vector2(noisePos.x, 0), new Vector2(transform.position.x, 0)) <= _hearNoiseDistance && !_trigger.PlayerInTrigger)
+                if (Vector2.Distance(new Vector2(noisePos.x, 0), new Vector2(transform.position.x, 0)) <= _enemyData.HearNoiseDistance && !_trigger.PlayerInTrigger)
                 {
                     ChangeState(EnemyStateType.Move);
                     if (StateMachine.CurrentState is EnemyMoveState moveState) moveState.SetMovePosition(noisePos);
@@ -55,12 +54,12 @@ public abstract class MovableEnemy : Enemy, IReclinable
         base.Update();
         if (_isAvailable)
         {
-            if (_target && Vector3.Distance(_target.position, transform.position) <= _hitDistance)
+            if (_target && Vector3.Distance(_target.position, transform.position) <= HitDistance)
             {
                 if (StateMachine.GetState(EnemyStateType.Attack).IsStateAvailable()) Attack();
                 else ChangeState(EnemyStateType.Cooldown);
             }
-            else if (_trigger.PlayerInTrigger && Vector3.Distance(_target.position, transform.position) > _hitDistance)
+            else if (_trigger.PlayerInTrigger && Vector3.Distance(_target.position, transform.position) > HitDistance)
             {
                 ChangeState(EnemyStateType.Chase);
             }
