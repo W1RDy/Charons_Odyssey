@@ -64,6 +64,7 @@ public class ButtonService : MonoBehaviour, IService, IPause
     {
         _pauseService.SetUnpause();
         DeactivateSettings();
+        DeactivateControlling();
         DeactivatePauseWindow();
         PlayButtonSound();
     }
@@ -88,6 +89,18 @@ public class ButtonService : MonoBehaviour, IService, IPause
     public void DeactivateSettings()
     {
         _windowActivator.DeactivateWindow(WindowType.SettingsWindow);
+        PlayButtonSound();
+    }
+
+    public void ActivateControlling()
+    {
+        _windowActivator.ActivateWindow(WindowType.ControllingWindow);
+        PlayButtonSound();
+    }
+
+    public void DeactivateControlling()
+    {
+        _windowActivator.DeactivateWindow(WindowType.ControllingWindow);
         PlayButtonSound();
     }
 

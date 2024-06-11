@@ -30,5 +30,6 @@ public enum WindowType
     MenuWindow,
     SettingsWindow,
     ResetDataWindow,
-    MapWindow
+    MapWindow,
+    ControllingWindow,
 }

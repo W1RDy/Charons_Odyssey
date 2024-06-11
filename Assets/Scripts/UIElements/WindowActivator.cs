@@ -9,6 +9,7 @@ public class WindowActivator : MonoBehaviour, IPause
 {
     [SerializeField] private WindowService _windowService;
     [SerializeField] private GameObject _defaultMenuElements;
+    [SerializeField] private GameObject _baseWindowElements;
     private PlayerController _controller;
     private PauseService _pauseService;
     private bool _isPaused;
@@ -45,6 +46,11 @@ public class WindowActivator : MonoBehaviour, IPause
         {
             _defaultMenuElements.SetActive(false);
         }
+
+        if (_baseWindowElements != null && !_baseWindowElements.activeInHierarchy)
+        {
+            _baseWindowElements.SetActive(true);
+        }
     }
 
     public async void ActivateWindowWithDelay(WindowType type, float delay)
@@ -64,6 +70,11 @@ public class WindowActivator : MonoBehaviour, IPause
         if (_defaultMenuElements != null && !_defaultMenuElements.activeInHierarchy)
         {
             _defaultMenuElements.SetActive(true);
+        }
+
+        if (_baseWindowElements != null && type == WindowType.PauseWindow)
+        {
+            _baseWindowElements.SetActive(false);
         }
     }
 
