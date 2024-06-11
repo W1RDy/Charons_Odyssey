@@ -6,24 +6,28 @@ using Zenject;
 
 public class ButtonService : MonoBehaviour, IService, IPause
 {
+    [SerializeField] private bool _isMenuScene;
+
     private WindowActivator _windowActivator;
     private TalkableFinderOnLevel _talkableFinderOnLevel;
     private NPCTrader _trader;
     private LoadSceneManager _loadSceneManager;
     private DataController _dataController;
-    private PauseService _pauseService;
+    private PauseHandler _pauseHandler;
 
     private AudioMaster _audioMaster;
 
     [Inject]
-    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController,
-        PauseService pauseService, AudioMaster audioMaster)
+    private void Construct(LoadSceneManager loadSceneManager, WindowActivator windowActivator, TalkableFinderOnLevel talkableFinderOnLevel, DataController dataController, 
+        AudioMaster audioMaster, IInstantiator instantiator)
     {
         _loadSceneManager = loadSceneManager;
         _windowActivator = windowActivator;
         _talkableFinderOnLevel = talkableFinderOnLevel;
         _dataController = dataController;
-        _pauseService = pauseService;
+
+        _pauseHandler = instantiator.Instantiate<PauseHandler>();
+        _pauseHandler.SetCallbacks(Pause, Unpause);
 
         _audioMaster = audioMaster;
     }
@@ -62,7 +66,6 @@ public class ButtonService : MonoBehaviour, IService, IPause
 
     public void Continue()
     {
-        _pauseService.SetUnpause();
         DeactivateSettings();
         DeactivateControlling();
         DeactivatePauseWindow();
@@ -75,9 +78,10 @@ public class ButtonService : MonoBehaviour, IService, IPause
         PlayPauseSound();
     }
 
-    public void ActivatePauseWindow() // используется при отключении окна настроек в паузе
+    public void ActivatePauseWindow()
     {
         _windowActivator.ActivateWindow(WindowType.PauseWindow);
+        PlayPauseSound();
     }
 
     public void ActivateSettings()
@@ -133,11 +137,11 @@ public class ButtonService : MonoBehaviour, IService, IPause
 
     public void Pause()
     {
-        throw new System.NotImplementedException();
+        ActivatePauseWindow();
     }
 
     public void Unpause()
     {
-        throw new System.NotImplementedException();
+        Continue();
     }
 }

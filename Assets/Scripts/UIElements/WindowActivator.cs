@@ -5,25 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class WindowActivator : MonoBehaviour, IPause
+public class WindowActivator : MonoBehaviour
 {
     [SerializeField] private WindowService _windowService;
     [SerializeField] private GameObject _defaultMenuElements;
     [SerializeField] private GameObject _baseWindowElements;
     private PlayerController _controller;
-    private PauseService _pauseService;
-    private bool _isPaused;
-
-    private AudioMaster _audioMaster;
-
-    [Inject]
-    private void Construct(PauseService pauseService, AudioMaster audioMaster)
-    {
-        _pauseService = pauseService;
-        _pauseService.AddPauseObj(this);
-
-        _audioMaster = audioMaster;
-    }
 
     private void Start()
     {
@@ -47,7 +34,7 @@ public class WindowActivator : MonoBehaviour, IPause
             _defaultMenuElements.SetActive(false);
         }
 
-        if (_baseWindowElements != null && !_baseWindowElements.activeInHierarchy)
+        if (_baseWindowElements != null && !_baseWindowElements.activeInHierarchy && type != WindowType.LoseWindow)
         {
             _baseWindowElements.SetActive(true);
         }
@@ -83,23 +70,5 @@ public class WindowActivator : MonoBehaviour, IPause
         var token = this.GetCancellationTokenOnDestroy();
         await Delayer.Delay(delay, token);
         if (!token.IsCancellationRequested) DeactivateWindow(type);
-    }
-
-    public void Pause()
-    {
-        if (!_isPaused) _isPaused = true;
-        ActivateWindow(WindowType.PauseWindow);
-        _audioMaster.PlaySound("Pause");
-    }
-
-    public void Unpause()
-    {
-        if (_isPaused) _isPaused = false;
-        if (_defaultMenuElements == null) DeactivateWindow(WindowType.PauseWindow);
-    }
-
-    public void OnDestroy()
-    {
-        _pauseService.RemovePauseObj(this);
     }
 }

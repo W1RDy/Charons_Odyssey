@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,7 @@ public class MenuSceneInstaller : MonoInstaller
     [SerializeField] ButtonService _buttonService;
     [SerializeField] WindowActivator _windowActivator;
     [SerializeField] private Settings _settings;
+    [SerializeField] private SubscribeController _subscribeController;
     private AudioService _audioService;
     private AudioMaster _audioMaster;
 
@@ -19,11 +21,17 @@ public class MenuSceneInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        BindSubscribeController();
         BindSettings();
         BindAudioPlayer();
         BindWindowActivator();
         BindTalkableFinder();
         BindButtonService();
+    }
+
+    private void BindSubscribeController()
+    {
+        Container.Bind<SubscribeController>().FromInstance(_subscribeController).AsSingle();
     }
 
     private void BindWindowActivator()
