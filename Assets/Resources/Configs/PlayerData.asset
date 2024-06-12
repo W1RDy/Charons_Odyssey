@@ -15,4 +15,4 @@ MonoBehaviour:
   _hp: 100
   _speed: 5
   _staminaValue: 100
-  _stunningTime: 100
+  _stunningTime: 1
