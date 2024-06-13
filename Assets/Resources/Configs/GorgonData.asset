@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GorgonData
   m_EditorClassIdentifier: 
   _hp: 100
-  _hitDistance: 5
+  _hitDistance: 8
   _hearNoiseDistance: 15
-  _attackCooldown: 5
-  _damage: 40
+  _attackCooldown: 4
+  _damage: 45
   _stunningTime: 3.5

@@ -15,7 +15,7 @@ MonoBehaviour:
   _hp: 100
   _hitDistance: 1.5
   _hearNoiseDistance: 15
-  _attackCooldown: 3
-  _damage: 35
+  _attackCooldown: 2
+  _damage: 30
   _stunningTime: 2
-  _speed: 2.5
+  _speed: 3.5

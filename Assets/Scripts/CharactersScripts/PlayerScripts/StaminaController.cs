@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StaminaController : IPause
 {
-    private const float StaminaRefillingSpeedPerSecond = 20f;
+    private const float StaminaRefillingSpeedPerSecond = 33f;
     private float _maxStaminaValue;
     private float _lastStaminaValue;
 

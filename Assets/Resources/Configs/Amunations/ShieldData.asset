@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f7027150020ca4c9f3b30d7bf0b05e, type: 3}
   m_Name: ShieldData
   m_EditorClassIdentifier: 
-  _absorbedDamage: 65
+  _absorbedDamage: 80
