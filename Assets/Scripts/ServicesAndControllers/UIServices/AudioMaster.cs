@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 public class AudioMaster : IService
 {
@@ -29,14 +30,25 @@ public class AudioMaster : IService
 
     public void AddAudioPlayer(AudioPlayer audioPlayer)
     {
-        if (audioPlayer.AudioPlayerType == AudioPlayerType.Main)
+        var type = audioPlayer.AudioPlayerType;
+
+        if (type == AudioPlayerType.Main)
         {
             _mainPlayer = audioPlayer as MainAudioPlayer;
             _mainPlayer.SetVolume(_settings.MusicVolume);
         }
+        else if (audioPlayer is CompositeSoundsPlayer soundsPlayer)
+        {
+            _loopingSoundPlayers.Add(type, soundsPlayer);
+        }
+        else if (_loopingSoundPlayers.ContainsKey(type) && _loopingSoundPlayers[type] is CompositeSoundsPlayer compositeSoundsPlayer)
+        {
+            compositeSoundsPlayer.AddAudioPlayer(audioPlayer as LoopingSoundsPlayer);
+            audioPlayer.SetVolume(_settings.SoundVolume);
+        }
         else
         {
-            _loopingSoundPlayers.Add(audioPlayer.AudioPlayerType, audioPlayer as LoopingSoundsPlayer);
+            _loopingSoundPlayers.Add(type, audioPlayer as LoopingSoundsPlayer);
             audioPlayer.SetVolume(_settings.SoundVolume);
         }
     }

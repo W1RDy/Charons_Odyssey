@@ -11,15 +11,18 @@ public abstract class AudioPlayer : MonoBehaviour
     protected AudioSource _audioSource;
     protected AudioConfig _currentAudio;
 
+    protected AudioService _audioService;
+
     private float _volume;
 
     [Inject]
-    private void Construct(AudioMaster audioMaster)
+    private void Construct(AudioMaster audioMaster, AudioService audioService)
     {
         _audioSource = GetComponent<AudioSource>();
-
         _audioMaster = audioMaster;
         _audioMaster.AddAudioPlayer(this);
+
+        _audioService = audioService;
     }
 
     public virtual void PlayAudio(AudioConfig audio)
@@ -39,6 +42,11 @@ public abstract class AudioPlayer : MonoBehaviour
         }
     }
 
+    public virtual void PlayAudio(string index)
+    {
+
+    }
+
     public virtual void PlayAudio()
     {
         if (!_audioSource.isPlaying)
@@ -55,7 +63,7 @@ public abstract class AudioPlayer : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
+    public virtual void SetVolume(float volume)
     {
         if (_currentAudio != null) _audioSource.volume = volume * _currentAudio.Volume;
         _volume = volume;

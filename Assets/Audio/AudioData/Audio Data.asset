@@ -126,6 +126,16 @@ MonoBehaviour:
       _volume: 0.5
       _audioClip: {fileID: 8300000, guid: 3874890ecb1f8dd428855c001758e760, type: 3}
       _additiveConfigs: []
+    - _index: MinotaurDeath
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 1e463fd1a7cbc284daec797b793f2435, type: 3}
+      _additiveConfigs: []
+    - _index: MinotaurAttack
+      _audioPlayerType: 0
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 30b0c1f78cfb08f4d8640b4b2fb321d1, type: 3}
+      _additiveConfigs: []
     _groupIndex: one shot sound
   - _audioConfigs:
     - _index: ShipMovement
@@ -152,5 +162,15 @@ MonoBehaviour:
       _audioPlayerType: 4
       _volume: 0.5
       _audioClip: {fileID: 8300000, guid: a7d46bd50addc7b46b2df64403524a38, type: 3}
+      _additiveConfigs: []
+    - _index: MinotaurMove
+      _audioPlayerType: 5
+      _volume: 0.5
+      _audioClip: {fileID: 8300000, guid: 575ed105d7fcaa64c8c16905ee06d14c, type: 3}
+      _additiveConfigs: []
+    - _index: MinotaurIdle
+      _audioPlayerType: 5
+      _volume: 0.2
+      _audioClip: {fileID: 8300000, guid: aeb3782694ed57442be7a3c9d7ebf999, type: 3}
       _additiveConfigs: []
     _groupIndex: looping sound

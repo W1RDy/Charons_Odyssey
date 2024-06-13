@@ -20,6 +20,8 @@ public class EnemyMoveState : EnemyState
         IsStateFinished = false;
         _enemy.SetAnimation("Move", true);
         _isMoving = true;
+
+        if (_enemy as Minotaur != null) _enemy.PlaySound("MinotaurMove");
     }
 
     public void SetMovePosition(Vector2 movePosition)
@@ -44,6 +46,8 @@ public class EnemyMoveState : EnemyState
         base.Exit();
         IsStateFinished = true;
         _enemy.SetAnimation("Move", false);
+
+        if (_enemy as Minotaur != null) _enemy.StopSound();
     }
 
     public override void ResetValues()

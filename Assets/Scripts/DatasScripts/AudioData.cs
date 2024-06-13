@@ -74,5 +74,6 @@ public enum AudioPlayerType
     Wheel,
     Ship,
     Location,
-    Player
+    Player,
+    Enemy
 }
