@@ -31,6 +31,7 @@ public abstract class EnemyAttackState : EnemyState
         _enemy.Flip(flipDirection);
 
         AttackWrapper();
+        if (_enemy as Minotaur != null) _enemy.PlaySound("MinotaurAttack");
     }
 
     private async void AttackWrapper()

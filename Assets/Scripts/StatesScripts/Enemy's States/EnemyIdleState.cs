@@ -8,5 +8,13 @@ public abstract class EnemyIdleState : EnemyState
     {
         base.Enter();
         IsStateFinished = true;
+
+        if (_enemy as Minotaur != null) _enemy.PlaySound("MinotaurIdle");
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        if (_enemy as Minotaur != null) _enemy.StopSound();
     }
 }

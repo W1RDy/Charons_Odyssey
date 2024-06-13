@@ -22,6 +22,7 @@ public class EnemyDeathState : EnemyState
         base.Enter();
         _enemy.SetAnimation("Death", true);
         _ = WaitWhileAnimationFinished();
+        if (_enemy as Minotaur != null) _enemy.PlaySound("MinotaurDeath");
     }
 
     private async UniTask WaitWhileAnimationFinished()

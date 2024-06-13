@@ -22,6 +22,8 @@ public class MovableEnemyChaseState : EnemyChaseState
         IsStateFinished = false;
         _enemy.SetAnimation("Move", true);
         _movable.StartMove();
+
+        if (_enemy as Minotaur != null) _enemy.PlaySound("MinotaurMove");
     }
 
     public override void Update()
@@ -34,5 +36,7 @@ public class MovableEnemyChaseState : EnemyChaseState
         base.Exit();
         _enemy.SetAnimation("Move", false);
         _movable.StopMove();
+
+        if (_enemy as Minotaur != null) _enemy.StopSound();
     }
 }

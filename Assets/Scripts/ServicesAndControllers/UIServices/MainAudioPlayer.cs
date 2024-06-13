@@ -7,6 +7,12 @@ public class MainAudioPlayer : AudioPlayer
         _audioSource.PlayOneShot(audioClip, volume);
     }
 
+    public override void PlayAudio(string index)
+    {
+        var audio = _audioService.GetMusic(index);
+        PlayAudio(audio);
+    }
+
     public override void StopAudio()
     {
         if (_audioSource.isPlaying)

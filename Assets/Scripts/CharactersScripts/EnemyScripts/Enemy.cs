@@ -44,6 +44,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
     public float ParryingWindowDuration => _parryingWindowDuration;
     public float DamageTimeBeforeAnimationEnd => _damageTimeBeforeAnimationEnd;
 
+    [SerializeField] private EnemySoundsPlayer _soundPlayer;
+
     #region Enemy's states
 
     [SerializeField] private EnemyIdleState _idleState;
@@ -237,6 +239,16 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
         {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
         }
+    }
+
+    public void PlaySound(string index)
+    {
+        _soundPlayer.PlayAudio(index);
+    }
+
+    public void StopSound()
+    {
+        _soundPlayer.StopAudio(); 
     }
 
     public void Pause()
