@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 4721353499731814393}
   - component: {fileID: 7296796927113776432}
   - component: {fileID: 5458449040545798357}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BuildingLastFloorShort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
