@@ -38,8 +38,14 @@ public class EntitiesInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        BindEnemyCounter();
         BindFactories();
         BindPlayer();
+    }
+
+    private void BindEnemyCounter()
+    {
+        Container.Bind<EnemiesCounter>().FromNew().AsSingle();
     }
 
     private void BindPlayer()

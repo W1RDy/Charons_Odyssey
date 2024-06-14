@@ -24,6 +24,8 @@
                 return "Чтобы сойти на станцию нажмите <E>";
             case TipType.OpenMap:
                 return "Чтобы открыть карту нажмите <E>";
+            case TipType.ExitToShip:
+                return "Чтобы вернуться на корабль нажмите <E>";
         }
         throw new System.ArgumentNullException("Tip with type " + tipType + " doesn't exist!");
     }
@@ -32,5 +34,6 @@
 public enum TipType
 {
     ExitToStation,
-    OpenMap
+    OpenMap,
+    ExitToShip
 }

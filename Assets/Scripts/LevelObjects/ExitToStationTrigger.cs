@@ -5,10 +5,10 @@ using Zenject;
 public class ExitToStationTrigger : MonoBehaviour, IInteractable
 {
     private MapStation _mapStation;
-    private LoadSceneManager _loadSceneManager;
-    private TipActivator _tipActivator;
+    protected LoadSceneManager _loadSceneManager;
+    protected TipActivator _tipActivator;
 
-    public bool IsActivated { get; private set; }
+    public bool IsActivated { get; protected set; }
 
     [Inject]
     private void Construct(TipActivator tipActivator, LoadSceneManager loadSceneManager)
@@ -24,14 +24,14 @@ public class ExitToStationTrigger : MonoBehaviour, IInteractable
         IsActivated = true;
     }
 
-    public void DeactivateTrigger()
+    public virtual void DeactivateTrigger()
     {
         _mapStation = null;
         gameObject.SetActive(false);
         IsActivated = false;
     }
 
-    public void Interact()
+    public virtual void Interact()
     {
         if (_mapStation != null)
         {
@@ -39,7 +39,7 @@ public class ExitToStationTrigger : MonoBehaviour, IInteractable
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (_mapStation != null)
         {
@@ -47,7 +47,7 @@ public class ExitToStationTrigger : MonoBehaviour, IInteractable
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (_mapStation != null)
         {
