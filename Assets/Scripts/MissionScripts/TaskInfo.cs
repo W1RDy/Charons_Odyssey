@@ -15,5 +15,7 @@ public enum TaskType
     HoldOutForTime,
     GetItem,
     BringItem,
-    Talk
+    Talk,
+    ReturnToShip,
+    KillEnemies
 }

@@ -65,7 +65,7 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
 
     [Inject]
-    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer, BattleActivator battleActivator)
+    private void Construct(IInstantiator instantiator, NoiseEventHandler noiseEventHandler, Player player, HPBarInitializer hpBarInitializer, BattleActivator battleActivator, EnemiesCounter enemiesCounter)
     {
         _instantiator = instantiator;
         _noiseEventHandler = noiseEventHandler;
@@ -75,6 +75,8 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
         _battleActivator = battleActivator;
         _battleActivator.AddEnemyToSubscribe(this);
+
+        enemiesCounter.AddEnemy(this); // переделать, когда добавится пул обьектов
     }
 
     public virtual void InitializeEnemy(Direction direction, bool isAvailable) // инициализация врагов, которые только заспавнились по маркеру, для основных уровней
