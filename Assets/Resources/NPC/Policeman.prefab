@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2412986933237670274
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1854483493481294207, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b23aad28ccf66a48b3daf03d9d3729c, type: 3}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4405763096245988041, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4794712304588386342, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: _talkableIndex
+      value: station_boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102586193116889617, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Name
+      value: Policeman
+      objectReference: {fileID: 0}
+    - target: {fileID: 7078134004494203780, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 626a3f98df0c89b4baf4ab2e12c770a4, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5387956a8baa2b54ca23cadd6f5fb8a8, type: 3}

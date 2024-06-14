@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1586271269001624599}
   - component: {fileID: 7289156724902852754}
   - component: {fileID: 8752885155490364112}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BuildingFirstFloorLong
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7134959390561959635}
   - component: {fileID: 273788773386466439}
   - component: {fileID: 1570185673685479681}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BuildingFirstFloorShort
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mask: {fileID: 7911654349655734267}
-  _firstPlane: {fileID: 1308952411332606889}
+  _firstPlanes: []
   _collider: {fileID: 1570185673685479681}
   _bordersChanger: {fileID: 0}
 --- !u!61 &1570185673685479681
