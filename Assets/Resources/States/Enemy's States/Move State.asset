@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f080c7ea3ee6a43bb42cdd3aca608e, type: 3}
   m_Name: Move State
   m_EditorClassIdentifier: 
-  _priorityIndex: 2
+  _priorityIndex: 3
   _stateType: 5

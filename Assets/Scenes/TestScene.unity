@@ -2104,6 +2104,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2631402746480724437, guid: 964d89af69a27cd479e3686bed1c33f3, type: 3}
+      propertyPath: ShapeModule.m_TextureClipChannel
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4837806794706279946, guid: 964d89af69a27cd479e3686bed1c33f3, type: 3}
       propertyPath: m_Name
       value: Player

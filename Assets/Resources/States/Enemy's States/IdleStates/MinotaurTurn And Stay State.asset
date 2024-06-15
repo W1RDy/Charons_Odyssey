@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bfd148c476364f40bdf7e228eb1f66f, type: 3}
   m_Name: MinotaurTurn And Stay State
   m_EditorClassIdentifier: 
-  _priorityIndex: 1
+  _priorityIndex: 2
   _stateType: 0
   _timeBetweenTurns: 10

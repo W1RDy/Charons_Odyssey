@@ -13,6 +13,8 @@ public class PlayerView : MonoBehaviour, IPause
     [SerializeField] private StunAnimation _stunAnimation;
     [SerializeField] private TakeHitAnimation _takeHitAnimation;
 
+    [SerializeField] private ParticleSystem _particleSystem;
+
     [Inject]
     private void Construct(IInstantiator instantiator)
     {
@@ -81,6 +83,12 @@ public class PlayerView : MonoBehaviour, IPause
     {
         if (isActivate) _takeHitAnimation.Play();
         else _takeHitAnimation.Kill();
+    }
+
+    public void FlipParticleSystem(Vector2 direction)
+    {
+        if ((direction.x > 0 && _particleSystem.transform.localScale.x < 0) || (direction.x < 0 && _particleSystem.transform.localScale.x > 0))
+            _particleSystem.transform.localScale = new Vector3(-1 * _particleSystem.transform.localScale.x, 1, 1);
     }
 
     public void Pause()

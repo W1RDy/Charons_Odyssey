@@ -10,7 +10,7 @@ public class Trigger : MonoBehaviour
     public event Action TriggerTurnedOff;
     public bool PlayerInTrigger { get; private set; }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
@@ -19,7 +19,7 @@ public class Trigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {

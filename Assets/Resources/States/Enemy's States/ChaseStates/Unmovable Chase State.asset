@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbb43559ddb49e4cbfd0a20f5e4931b, type: 3}
   m_Name: Unmovable Chase State
   m_EditorClassIdentifier: 
-  _priorityIndex: 2
+  _priorityIndex: 1
   _stateType: 1

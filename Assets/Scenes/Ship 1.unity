@@ -596,7 +596,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6307956379869938326, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: _dialogId
-      value: changes
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307956379869938326, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
+      propertyPath: _direction
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6307956379869938326, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: _isAvailable
@@ -922,6 +926,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6307956379869938326, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
+      propertyPath: _direction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307956379869938326, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: _isAvailable
       value: 1
       objectReference: {fileID: 0}
@@ -935,11 +943,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7275682496891747267, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.8
+      value: -13.69
       objectReference: {fileID: 0}
     - target: {fileID: 7275682496891747267, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.97
+      value: -2.16
       objectReference: {fileID: 0}
     - target: {fileID: 7275682496891747267, guid: c379e34b2b792cf4281f2e9483f84cf9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -994,57 +1002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd15d907cff6cf1408119f36f671813a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &478494824
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 478494826}
-  - component: {fileID: 478494825}
-  m_Layer: 0
-  m_Name: TaskTalkWithConductor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &478494825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478494824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e134b1a92caf246b6dc9ffa067b087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 1
-  _goals: {fileID: 926742817}
-  _taskInfo:
-    type: 3
-    targetText: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438 \u0441 \u043A\u043E\u043D\u0434\u0443\u043A\u0442\u043E\u0440\u043E\u043C"
-  _goalDialogIndex: changes
-  _npcIndex: conductor
---- !u!4 &478494826
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478494824}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 843681792}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &497270099 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 611335363606087837, guid: 3fc2755b9ef810247b9e4a7cb48b6b5e, type: 3}
@@ -1384,10 +1341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tasks:
-  - {fileID: 2137770763}
-  - {fileID: 478494825}
-  - {fileID: 1578129677}
-  - {fileID: 1659263135}
+  - {fileID: 2015857729}
   _timer: {fileID: 0}
   _isWinWhenCompletedMissions: 0
 --- !u!4 &843681792
@@ -1403,10 +1357,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2137770764}
-  - {fileID: 478494826}
-  - {fileID: 1578129678}
-  - {fileID: 1659263136}
+  - {fileID: 2015857728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &876629182 stripped
@@ -1968,58 +1919,6 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 6195794325425109951, guid: a1a03133e17b66c44a29269f912ff77d, type: 3}
   m_PrefabInstance: {fileID: 2313524752092892269}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1578129676
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1578129678}
-  - component: {fileID: 1578129677}
-  m_Layer: 0
-  m_Name: TaskTalkWithOldDemon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1578129677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578129676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e134b1a92caf246b6dc9ffa067b087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 2
-  _goals: {fileID: 926742817}
-  _taskInfo:
-    type: 3
-    targetText: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438 \u0441\u043E \u0441\u0442\u0430\u0440\u044B\u043C
-      \u0434\u0435\u043C\u043E\u043D\u043E\u043C"
-  _goalDialogIndex: comingTrouble
-  _npcIndex: old_demon
---- !u!4 &1578129678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578129676}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 843681792}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1593684094
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,57 +2012,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316b2608de5bf3444a8e4efa6e3ef677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1659263134
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1659263136}
-  - component: {fileID: 1659263135}
-  m_Layer: 0
-  m_Name: TaskTalkWithConductor2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1659263135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659263134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e134b1a92caf246b6dc9ffa067b087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 3
-  _goals: {fileID: 926742817}
-  _taskInfo:
-    type: 3
-    targetText: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438 \u0441 \u043A\u043E\u043D\u0434\u0443\u043A\u0442\u043E\u0440\u043E\u043C"
-  _goalDialogIndex: aboutGarpies
-  _npcIndex: conductor
---- !u!4 &1659263136
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659263134}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 843681792}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1745604697 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 611335363484106902, guid: 3fc2755b9ef810247b9e4a7cb48b6b5e, type: 3}
@@ -2355,6 +2203,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8c8b50d7caac334cbefe378b3a0dd92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2015857727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2015857728}
+  - component: {fileID: 2015857729}
+  m_Layer: 0
+  m_Name: TaskWaitTime
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2015857728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015857727}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 843681792}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2015857729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015857727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b8adb8a4755bb4580a5151a9855e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _index: 0
+  _goals: {fileID: 926742817}
+  _taskInfo:
+    type: 0
+    targetText: "\u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0441\u044F
+      \u043D\u0430 2 \u0441\u0442\u0430\u043D\u0446\u0438\u044E"
+  _timeForWaiting: 20
 --- !u!1 &2119813107
 GameObject:
   m_ObjectHideFlags: 0
@@ -2405,60 +2304,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2137770762
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2137770764}
-  - component: {fileID: 2137770763}
-  m_Layer: 0
-  m_Name: TaskWaitTime
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2137770763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137770762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90b8adb8a4755bb4580a5151a9855e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 0
-  _goals: {fileID: 926742817}
-  _taskInfo:
-    type: 0
-    targetText: "\u041E\u0442\u043F\u0440\u0430\u0432\u043B\u044F\u0439\u0441\u044F
-      \u043D\u0430 1 \u0441\u0442\u0430\u043D\u0446\u0438\u044E (\u043A\u0430\u0440\u0442\u0430
-      \u0430\u043A\u0442\u0438\u0432\u0438\u0440\u0443\u0435\u0442\u0441\u044F \u0432
-      \u043F\u0440\u0430\u0432\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u043A\u0430\u0431\u0438\u043D\u044B
-      \u043A\u0430\u043F\u0438\u0442\u0430\u043D\u0430)"
-  _timeForWaiting: 20
---- !u!4 &2137770764
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2137770762}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 843681792}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &611335364240730313
 PrefabInstance:
@@ -4039,7 +3884,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1631762367366073838, guid: 8f38436a4a434e04e97c22fea138e14d, type: 3}
       propertyPath: _dialogId
-      value: expertCommission
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1631762367366073838, guid: 8f38436a4a434e04e97c22fea138e14d, type: 3}
       propertyPath: _npcsId.Array.data[0]
@@ -4059,7 +3904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8104701413062739787, guid: 8f38436a4a434e04e97c22fea138e14d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.81
+      value: -11.58
       objectReference: {fileID: 0}
     - target: {fileID: 8104701413062739787, guid: 8f38436a4a434e04e97c22fea138e14d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4299,11 +4144,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7790940368718675231, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -352.8
+      value: -334
       objectReference: {fileID: 0}
     - target: {fileID: 7790940368718675231, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -147.9
+      value: 16.7
       objectReference: {fileID: 0}
     - target: {fileID: 7790940369395783486, guid: 6c0918dd13dd73d4fa9ed13c8042c3bc, type: 3}
       propertyPath: m_NavMeshData

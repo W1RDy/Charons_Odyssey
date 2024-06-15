@@ -11,9 +11,16 @@ public class PlayerMove : MonoBehaviour, IMovableWithFlips
     private float _speed;
     private bool _isMove;
 
+    private PlayerView _playerView;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Init(PlayerView playerView)
+    {
+        _playerView = playerView;
     }
 
     private void FixedUpdate()
@@ -61,7 +68,10 @@ public class PlayerMove : MonoBehaviour, IMovableWithFlips
     public void Flip(Vector2 direction)
     {
         if ((direction.x > 0 && transform.localScale.x < 0) || (direction.x < 0 && transform.localScale.x > 0))
+        {
             transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            _playerView.FlipParticleSystem(direction);
+        }
     }
 
     public bool IsMoving() => _isMove;

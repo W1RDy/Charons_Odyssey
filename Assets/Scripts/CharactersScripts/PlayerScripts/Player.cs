@@ -90,10 +90,11 @@ public class Player : MonoBehaviour, IAttackableWithWeapon, IHasHealableHealth, 
     {
         _hp = _playerData.Hp;
         _staminaValue = _playerData.StaminaValue;
+        _playerView = GetComponentInChildren<PlayerView>();
 
         _playerMove = GetComponent<PlayerMove>();
+        _playerMove.Init(_playerView);
         _playerMove.SetSpeed(_playerData.Speed);
-        _playerView = GetComponentInChildren<PlayerView>();
 
         StateMachine = new PlayerStateMachine();
         _playerStatesInitializator = GetComponent<PlayerStatesInitializer>();

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class DirectionalMove : MonoBehaviour, IMovable
+public class BulletMove : MonoBehaviour, IMovable
 {
     [SerializeField] private Vector3 _direction;
     private float _speed;
 
     private PauseToken _pauseToken;
+    private Rigidbody2D _rb;
 
     public void Init(PauseToken pauseToken)
     {
         _pauseToken = pauseToken;
+        _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!_pauseToken.IsCancellationRequested)
         {
@@ -25,7 +27,7 @@ public class DirectionalMove : MonoBehaviour, IMovable
 
     public void Move()
     {
-        transform.Translate(_direction * _speed * Time.deltaTime);
+        _rb.velocity = transform.TransformDirection(_direction) * _speed;
     }
 
     public void SetSpeed(float speed)

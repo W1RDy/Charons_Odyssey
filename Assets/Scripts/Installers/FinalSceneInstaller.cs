@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,19 @@ public class FinalSceneInstaller : MonoInstaller
 {
     [SerializeField] ButtonService _buttonService;
     [SerializeField] WindowActivator _windowActivator;
+    [SerializeField] private SubscribeController _subscribeController;
 
     public override void InstallBindings()
     {
+        BindSubscribeController();
         BindWindowActivator();
         BindTalkableFinder();
         BindButtonService();
+    }
+
+    private void BindSubscribeController()
+    {
+        Container.Bind<SubscribeController>().FromInstance(_subscribeController).AsSingle();
     }
 
     private void BindWindowActivator()
