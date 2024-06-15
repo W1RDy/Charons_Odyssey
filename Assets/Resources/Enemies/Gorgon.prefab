@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9135992025250423308}
   - component: {fileID: 5560943717138788247}
-  - component: {fileID: 5261914754925515449}
+  - component: {fileID: 4508834049099403001}
   m_Layer: 0
   m_Name: ViewZone
   m_TagString: Untagged
@@ -78,7 +78,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &5261914754925515449
+--- !u!114 &4508834049099403001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 544287072760478617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 064735805d3affd42b5870fce28f8fc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ee3d0f0552fd864683be0bcf504bb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1386210822648207681
@@ -283,6 +283,7 @@ MonoBehaviour:
     _endColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 1}
   _takeHitAnimation:
     _stepDuration: 0.1
+  _soundPlayer: {fileID: 0}
   _idleState: {fileID: 11400000, guid: b85badca845c9bb44b4485fdb6818a4b, type: 2}
   _cooldownState: {fileID: 11400000, guid: e95b6970dbc1d844c86705ad5ec32c76, type: 2}
   _attackState: {fileID: 11400000, guid: 01850b1efa966b34c818faafd554eef5, type: 2}
@@ -290,7 +291,7 @@ MonoBehaviour:
   _deathState: {fileID: 11400000, guid: 4fcf2b5fec6773e4dacc1d6fa570dcf7, type: 2}
   _chaseState: {fileID: 11400000, guid: 45627685088927d4487d25ec0590c1c4, type: 2}
   _takeHitState: {fileID: 11400000, guid: c7825f1a456c016458e0e94fcdb9062f, type: 2}
-  _trigger: {fileID: 5261914754925515449}
+  _trigger: {fileID: 4508834049099403001}
   _shootPoint: {fileID: 870068692611834619}
 --- !u!114 &9221016263822979468
 MonoBehaviour:

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f04d25bf85019349931b2baf379a20b, type: 3}
   m_Name: Stay State
   m_EditorClassIdentifier: 
-  _priorityIndex: 1
+  _priorityIndex: 2
   _stateType: 0

@@ -20,7 +20,7 @@ public class ExitToShipTrigger : ExitToStationTrigger
     public override void Interact()
     {
         TriggerInteracted?.Invoke();
-        _loadSceneManager.LoadScene(1);
+        _loadSceneManager.LoadShipScene();
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)

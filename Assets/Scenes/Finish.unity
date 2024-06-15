@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &137496127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 137496129}
+  - component: {fileID: 137496128}
+  m_Layer: 0
+  m_Name: SubscribeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &137496128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137496127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b099190436c2a34db5d486531cfa310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &137496129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137496127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 95.96923, y: -4.1136136, z: -0.15428376}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &163439098
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,6 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e726c89ee50aa4381f47f783388593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isMenuScene: 0
 --- !u!224 &163439100
 RectTransform:
   m_ObjectHideFlags: 0
@@ -873,7 +918,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 49.999996, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1002268183
@@ -1106,6 +1151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buttonService: {fileID: 163439099}
   _windowActivator: {fileID: 867357147}
+  _subscribeController: {fileID: 137496128}
 --- !u!114 &1336411555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1680,7 +1726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 49.999996, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2099346498
@@ -1735,3 +1781,4 @@ SceneRoots:
   - {fileID: 867357148}
   - {fileID: 822055694}
   - {fileID: 614160491}
+  - {fileID: 137496129}

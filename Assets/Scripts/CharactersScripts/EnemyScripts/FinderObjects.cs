@@ -16,12 +16,12 @@ public static class FinderObjects
     public static List<IHittable> FindHittableObjectByCircle(float radius, Vector2 circlePosition, AttackableObjectIndex attackableIndex)
     {
         var hittableObjLayer = attackableIndex == AttackableObjectIndex.Player ? (int)AttackableObjectIndex.Enemy : (int)AttackableObjectIndex.Player;
-        return FindByCircle<IHittable>(radius, circlePosition, hittableObjLayer);
+        return FindByCircle<IHittable>(radius, circlePosition, 1 << hittableObjLayer);
     }
 
     public static IInteractable FindInteractableObjectByCircle(float radius, Vector2 circlePosition)
     {
-        var result = FindByCircle<IInteractable>(radius, circlePosition, 0);
+        var result = FindByCircle<IInteractable>(radius, circlePosition, 1 << 0 | 1 << 13);
         if (result != null) return result[0];
         return null;
     }
@@ -44,7 +44,7 @@ public static class FinderObjects
 
     private static List<T> FindByCircle<T>(float radius, Vector2 circlePosition, int layer)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, 1 << layer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(circlePosition, radius, layer);
         List<T> result = new List<T>();
         if (colliders != null)
         {

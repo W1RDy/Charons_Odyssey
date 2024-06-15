@@ -23,6 +23,5 @@ public class TaskWaitForTime : BaseTask
         if (token.IsCancellationRequested) return;
 
         FinishTask();
-        Debug.Log("Done");
     }
 }
