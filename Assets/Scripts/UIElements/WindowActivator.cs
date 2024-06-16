@@ -34,7 +34,7 @@ public class WindowActivator : MonoBehaviour
             _defaultMenuElements.SetActive(false);
         }
 
-        if (_baseWindowElements != null && !_baseWindowElements.activeInHierarchy && type != WindowType.LoseWindow && type != WindowType.MapWindow)
+        if (_baseWindowElements != null && !_baseWindowElements.activeInHierarchy && type != WindowType.LoseWindow && type != WindowType.MapWindow && type != WindowType.TradeWindow)
         {
             _baseWindowElements.SetActive(true);
         }

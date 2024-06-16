@@ -3,8 +3,6 @@ using UnityEngine;
 
 public abstract class UnmovableEnemy : Enemy
 {
-    [SerializeField] private Trigger _trigger;
-
     private Action<Vector2> ReactToNoise;
 
     public override void InitializeEnemy(Direction direction, bool isAvailable)
@@ -17,7 +15,7 @@ public abstract class UnmovableEnemy : Enemy
         {
             if (_isAvailable)
             {
-                if (Vector2.Distance(new Vector2(noisePos.x, 0), new Vector2(transform.position.x, 0)) <= _enemyData.HearNoiseDistance && !_trigger.PlayerInTrigger)
+                if (IsCanHearNoize(noisePos))
                 {
                     var noiseDirection = (noisePos - new Vector2(transform.position.x, transform.position.y)).normalized;
                     Flip(noiseDirection);
@@ -25,6 +23,11 @@ public abstract class UnmovableEnemy : Enemy
             }
         };
         _noiseEventHandler.Noise += ReactToNoise;
+    }
+
+    private bool IsCanHearNoize(Vector2 noisePos)
+    {
+        return Math.Abs(noisePos.x - transform.position.x) <= _enemyData.HearNoiseDistance && Math.Abs(noisePos.y - transform.position.y) < transform.localScale.y && !_trigger.PlayerInTrigger;
     }
 
     protected override void Update()
