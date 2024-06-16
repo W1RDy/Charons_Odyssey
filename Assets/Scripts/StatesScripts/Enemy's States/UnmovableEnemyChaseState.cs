@@ -14,7 +14,7 @@ public class UnmovableEnemyChaseState : EnemyChaseState
     {
         var vectorToTarget = (_target.transform.position - _enemy.transform.position);
 
-        if (vectorToTarget.magnitude > _enemy.HitDistance)
+        if (vectorToTarget.magnitude > _enemy.HitDistance || !_enemy.IsPlayerOnView)
         {
             IsStateFinished = true;
 

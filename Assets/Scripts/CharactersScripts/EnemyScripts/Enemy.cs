@@ -21,6 +21,9 @@ public abstract class Enemy : MonoBehaviour, IHasHealth, IParryingHittable, IStu
 
     [SerializeField] protected bool _isAvailable;
 
+    [SerializeField] protected Trigger _trigger;
+    public bool IsPlayerOnView => _trigger.PlayerInTrigger;
+
     private EnemyView _view;
     private HPBarInitializer _hpBarInitializer;
 

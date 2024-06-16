@@ -8,8 +8,6 @@ using Zenject;
 
 public abstract class MovableEnemy : Enemy, IReclinable
 {
-    [SerializeField] private Trigger _trigger;
-
     private IMovableWithStops _movable;
     private Action<Vector2> MoveToNoise;
 
@@ -28,7 +26,7 @@ public abstract class MovableEnemy : Enemy, IReclinable
         {
             if (_isAvailable)
             {
-                if (Vector2.Distance(new Vector2(noisePos.x, 0), new Vector2(transform.position.x, 0)) <= _enemyData.HearNoiseDistance && !_trigger.PlayerInTrigger)
+                if (IsCanHearNoize(noisePos))
                 {
                     ChangeState(EnemyStateType.Move);
                     if (StateMachine.CurrentState is EnemyMoveState moveState) moveState.SetMovePosition(noisePos);
@@ -37,6 +35,11 @@ public abstract class MovableEnemy : Enemy, IReclinable
         };
 
         _noiseEventHandler.Noise += MoveToNoise;
+    }
+
+    private bool IsCanHearNoize(Vector2 noisePos)
+    {
+        return Math.Abs(noisePos.x - transform.position.x) <= _enemyData.HearNoiseDistance && Math.Abs(noisePos.y - transform.position.y) < transform.localScale.y && !_trigger.PlayerInTrigger;
     }
 
     protected override List<EnemyState> CreateStateInstances()

@@ -28,7 +28,7 @@ public class MovableEnemyChaseState : EnemyChaseState
 
     public override void Update()
     {
-        if (!_movable.IsMoving() || Vector2.Distance(_target.transform.position, _enemy.transform.position) <= _enemyDefault.HitDistance) IsStateFinished = true;
+        if (!_movable.IsMoving() || Vector2.Distance(_target.transform.position, _enemy.transform.position) <= _enemyDefault.HitDistance || !_enemy.IsPlayerOnView) IsStateFinished = true;
     }
 
     public override void Exit()
